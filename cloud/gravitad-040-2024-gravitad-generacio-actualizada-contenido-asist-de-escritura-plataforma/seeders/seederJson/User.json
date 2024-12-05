@@ -1,0 +1,379 @@
+[
+  {
+    "username": "maria_rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "password": "SecurePass123!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI456789123",
+      "basFullName": "María Rodríguez",
+      "basPhoneNumber": "+34 622 456 789",
+      "basAddress": "Calle de la Paz 10, Valencia, España"
+    }
+  },
+  {
+    "username": "juan_gomez",
+    "email": "juan.gomez@example.com",
+    "password": "Passw0rd456!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI123456789",
+      "basFullName": "Juan Gómez",
+      "basPhoneNumber": "+34 611 234 567",
+      "basAddress": "Calle Mayor 20, Sevilla, España"
+    }
+  },
+  {
+    "username": "ana_lopez",
+    "email": "ana.lopez@example.com",
+    "password": "AnaL0pez!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI987654321",
+      "basFullName": "Ana López",
+      "basPhoneNumber": "+34 622 987 654",
+      "basAddress": "Calle Real 3, Barcelona, España"
+    }
+  },
+  {
+    "username": "luis_martinez",
+    "email": "luis.martinez@example.com",
+    "password": "LuisM2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI321654987",
+      "basFullName": "Luis Martínez",
+      "basPhoneNumber": "+34 633 654 321",
+      "basAddress": "Avenida del Sol 7, Granada, España"
+    }
+  },
+  {
+    "username": "carla_garcia",
+    "email": "carla.garcia@example.com",
+    "password": "Carla123!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI654987321",
+      "basFullName": "Carla García",
+      "basPhoneNumber": "+34 644 321 654",
+      "basAddress": "Calle Luna 8, Málaga, España"
+    }
+  },
+  {
+    "username": "jose_perez",
+    "email": "jose.perez@example.com",
+    "password": "JoseP2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI147258369",
+      "basFullName": "José Pérez",
+      "basPhoneNumber": "+34 655 147 258",
+      "basAddress": "Plaza Mayor 1, Madrid, España"
+    }
+  },
+  {
+    "username": "laura_fernandez",
+    "email": "laura.fernandez@example.com",
+    "password": "LauraF2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI369258147",
+      "basFullName": "Laura Fernández",
+      "basPhoneNumber": "+34 666 369 258",
+      "basAddress": "Calle Nueva 12, Bilbao, España"
+    }
+  },
+  {
+    "username": "david_sanchez",
+    "email": "david.sanchez@example.com",
+    "password": "DavidS123!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI852963741",
+      "basFullName": "David Sánchez",
+      "basPhoneNumber": "+34 677 852 963",
+      "basAddress": "Avenida Libertad 15, Zaragoza, España"
+    }
+  },
+  {
+    "username": "sara_ruiz",
+    "email": "sara.ruiz@example.com",
+    "password": "SaraR2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI963741852",
+      "basFullName": "Sara Ruiz",
+      "basPhoneNumber": "+34 688 963 741",
+      "basAddress": "Calle Jardines 6, Valencia, España"
+    }
+  },
+  {
+    "username": "javier_gonzalez",
+    "email": "javier.gonzalez@example.com",
+    "password": "JavierG2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI741852963",
+      "basFullName": "Javier González",
+      "basPhoneNumber": "+34 699 741 852",
+      "basAddress": "Calle de los Ángeles 9, Murcia, España"
+    }
+  },
+  {
+    "username": "elena_moreno",
+    "email": "elena.moreno@example.com",
+    "password": "ElenaM2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI753951456",
+      "basFullName": "Elena Moreno",
+      "basPhoneNumber": "+34 611 753 951",
+      "basAddress": "Avenida Marítima 4, Alicante, España"
+    }
+  },
+  {
+    "username": "mario_diaz",
+    "email": "mario.diaz@example.com",
+    "password": "MarioD2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI951753357",
+      "basFullName": "Mario Díaz",
+      "basPhoneNumber": "+34 622 951 753",
+      "basAddress": "Calle del Mar 2, Cádiz, España"
+    }
+  },
+  {
+    "username": "alicia_romero",
+    "email": "alicia.romero@example.com",
+    "password": "AliciaR2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI357951753",
+      "basFullName": "Alicia Romero",
+      "basPhoneNumber": "+34 633 357 951",
+      "basAddress": "Calle de la Luz 5, Córdoba, España"
+    }
+  },
+  {
+    "username": "pedro_martin",
+    "email": "pedro.martin@example.com",
+    "password": "PedroM2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI258963147",
+      "basFullName": "Pedro Martín",
+      "basPhoneNumber": "+34 644 258 963",
+      "basAddress": "Avenida de la Ciencia 11, Granada, España"
+    }
+  },
+  {
+    "username": "isabel_flores",
+    "email": "isabel.flores@example.com",
+    "password": "IsabelF2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI147852369",
+      "basFullName": "Isabel Flores",
+      "basPhoneNumber": "+34 655 147 852",
+      "basAddress": "Calle de la Flor 7, Madrid, España"
+    }
+  },
+  {
+    "username": "victor_ruiz",
+    "email": "victor.ruiz@example.com",
+    "password": "VictorR2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI369147852",
+      "basFullName": "Víctor Ruiz",
+      "basPhoneNumber": "+34 666 369 147",
+      "basAddress": "Calle del Sol 9, Sevilla, España"
+    }
+  },
+  {
+    "username": "adriana_gutierrez",
+    "email": "adriana.gutierrez@example.com",
+    "password": "AdrianaG2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI741369852",
+      "basFullName": "Adriana Gutiérrez",
+      "basPhoneNumber": "+34 677 741 369",
+      "basAddress": "Avenida del Parque 10, Bilbao, España"
+    }
+  },
+  {
+    "username": "francisco_molina",
+    "email": "francisco.molina@example.com",
+    "password": "FranciscoM2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI258741369",
+      "basFullName": "Francisco Molina",
+      "basPhoneNumber": "+34 688 258 741",
+      "basAddress": "Calle del Río 14, Zaragoza, España"
+    }
+  },
+  {
+    "username": "sofia_fernandez",
+    "email": "sofia.fernandez@example.com",
+    "password": "SofiaF2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI147963258",
+      "basFullName": "Sofía Fernández",
+      "basPhoneNumber": "+34 699 147 963",
+      "basAddress": "Calle del Bosque 3, Málaga, España"
+    }
+  },
+  {
+    "username": "jorge_garcia",
+    "email": "jorge.garcia@example.com",
+    "password": "JorgeG2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI369258741",
+      "basFullName": "Jorge García",
+      "basPhoneNumber": "+34 611 369 258",
+      "basAddress": "Calle de la Luna 7, Valencia, España"
+    }
+  },
+  {
+    "username": "patricia_ruiz",
+    "email": "patricia.ruiz@example.com",
+    "password": "PatriciaR2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI852147963",
+      "basFullName": "Patricia Ruiz",
+      "basPhoneNumber": "+34 622 852 147",
+      "basAddress": "Avenida del Mar 2, Alicante, España"
+    }
+  },
+  {
+    "username": "diego_moreno",
+    "email": "diego.moreno@example.com",
+    "password": "DiegoM2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI741852963",
+      "basFullName": "Diego Moreno",
+      "basPhoneNumber": "+34 633 741 852",
+      "basAddress": "Calle de la Ciencia 8, Granada, España"
+    }
+  },
+  {
+    "username": "irene_diaz",
+    "email": "irene.diaz@example.com",
+    "password": "IreneD2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI963852147",
+      "basFullName": "Irene Díaz",
+      "basPhoneNumber": "+34 644 963 852",
+      "basAddress": "Calle del Sol 5, Cádiz, España"
+    }
+  },
+  {
+    "username": "sergio_romero",
+    "email": "sergio.romero@example.com",
+    "password": "SergioR2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI258369147",
+      "basFullName": "Sergio Romero",
+      "basPhoneNumber": "+34 655 258 369",
+      "basAddress": "Calle del Jardín 9, Córdoba, España"
+    }
+  },
+  {
+    "username": "natalia_martin",
+    "email": "natalia.martin@example.com",
+    "password": "NataliaM2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI741963258",
+      "basFullName": "Natalia Martín",
+      "basPhoneNumber": "+34 666 741 963",
+      "basAddress": "Avenida del Parque 4, Madrid, España"
+    }
+  },
+  {
+    "username": "marcos_flores",
+    "email": "marcos.flores@example.com",
+    "password": "MarcosF2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI852369147",
+      "basFullName": "Marcos Flores",
+      "basPhoneNumber": "+34 677 852 369",
+      "basAddress": "Calle del Sol 7, Sevilla, España"
+    }
+  },
+  {
+    "username": "andrea_sanchez",
+    "email": "andrea.sanchez@example.com",
+    "password": "AndreaS2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI963258741",
+      "basFullName": "Andrea Sánchez",
+      "basPhoneNumber": "+34 688 963 258",
+      "basAddress": "Calle del Bosque 2, Bilbao, España"
+    }
+  },
+  {
+    "username": "raul_ruiz",
+    "email": "raul.ruiz@example.com",
+    "password": "RaulR2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI147963852",
+      "basFullName": "Raúl Ruiz",
+      "basPhoneNumber": "+34 699 147 963",
+      "basAddress": "Calle del Mar 3, Valencia, España"
+    }
+  },
+  {
+    "username": "sofia_gutierrez",
+    "email": "sofia.gutierrez@example.com",
+    "password": "SofiaG2024!",
+    "creationDate": "2024-08-02",
+    "rol": "user",
+    "BasicData": {
+      "basDocumentID": "DNI852741963",
+      "basFullName": "Sofía Gutiérrez",
+      "basPhoneNumber": "+34 622 852 741",
+      "basAddress": "Avenida del Mar 6, Alicante, España"
+    }
+  }
+]

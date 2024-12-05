@@ -1,0 +1,44 @@
+{
+    "Collections": {
+        "users": {
+            "userName": "user",
+            "userEmail": "correo",
+            "userPassword": "contraseña",
+            "userType": "tipo de usuario",
+            "userPhone": "nro telefonico",
+            "userEmailVerified": "verificacion de email",
+            "userInterests": "intereses",
+            "userSocialNetworks": "redes sociales",
+            "userDemographics": {
+                "fullName": "nombre completo",
+                "birthDate": "fecha de nacimiento",
+                "dni": "documento de identidad",
+                "gender": "genero",
+                "address": "direccion",
+                "country": "pais"
+            }
+        },
+        "projects": {
+            "prjName": "nombre del proyecto",
+            "prjUserId": "id usuario",
+            "prjDescription": "descripcion",
+            "prjAuthor": "autor",
+            "prjListCollaborators": [
+                "lista de colaboradores del proyecto"
+            ],
+            "prjUsedImages": [
+                "imagenes usadas"
+            ],
+            "prjUsedAlgorithms": [
+                "algoritmos usados"
+            ],
+            "prjChangeHistory": [
+                {
+                    "prjDate": "fecha de creacion ",
+                    "prjChange": "cambios realizados"
+                }
+            ],
+            "prjTemplate": "plantilla"
+        }
+    }
+}

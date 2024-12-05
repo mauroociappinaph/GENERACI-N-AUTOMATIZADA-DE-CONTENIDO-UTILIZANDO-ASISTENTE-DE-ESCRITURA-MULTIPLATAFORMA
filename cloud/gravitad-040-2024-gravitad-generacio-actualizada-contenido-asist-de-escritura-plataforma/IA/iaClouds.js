@@ -1,0 +1,1 @@
+Parse.Cloud.define('');

@@ -1,0 +1,716 @@
+{
+  "info": {
+    "_postman_id": "c96cda01-d308-4d88-b855-ffd5ec8d527e",
+    "name": "200_backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27586620",
+    "_collection_link": "https://blue-crescent-607517.postman.co/workspace/29-al-48~0bcb72a6-75bc-4ef5-810d-7e68d8da1e5b/collection/27586620-c96cda01-d308-4d88-b855-ffd5ec8d527e?action=share&source=collection_link&creator=27586620"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"objectData\": {\r\n        \"username\": \"\",\r\n        \"password\": \"\",\r\n        \"email\": \"\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/createUser",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "createUser"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get All Users",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"page\":1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/getAllUsers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "getAllUsers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get User By Id",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\":\"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/getUserById",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "getUserById"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\":\"3JkqMPW8It\", \r\n    \"objectData\": {\r\n    } \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/updateUser",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "updateUser"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete User",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": \"\" \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/deleteUser",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "deleteUser"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n     \"username\": \"gustavohernandez\",\r\n    \"password\": \"DAzu.0429\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectData\": {\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/createProject",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "createProject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAll Projects",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"page\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/getAllProjects",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "getAllProjects"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project ById",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/getProjectById",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "getProjectById"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectData\": {\n    },\n    \"objectId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/updateProject",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "updateProject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/deleteProject",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "deleteProject"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Seeder",
+      "item": [
+        {
+          "name": "Create Seeder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectData\": {\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/createSeeder",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "createSeeder"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAll Seeder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"page\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/getAllSeeder",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "getAllSeeder"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Seeder ById",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/getSeederById",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "getSeederById"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Seeder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectData\": {\n    },\n    \"objectId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/updateSeeder",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "updateSeeder"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Seeder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Parse-Application-Id",
+                "value": "{{applicationId}}"
+              },
+              {
+                "key": "X-Parse-REST-API-Key",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "X-Parse-Session-Token",
+                "value": "{{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"objectId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:2337/server/functions/deleteSeeder",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "2337",
+              "path": [
+                "server",
+                "functions",
+                "deleteSeeder"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

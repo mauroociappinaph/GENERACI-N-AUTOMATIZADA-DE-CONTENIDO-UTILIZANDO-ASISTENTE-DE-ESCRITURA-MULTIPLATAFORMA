@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "outDir": "build",
+    "declaration": true,
+    "declarationDir": "build",
+    "sourceMap": true,
+    "target": "es2017",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true
+  },
+  "include": ["src", "cloud", "schemas"],
+  "files": ["src/global.d.ts"]
+}

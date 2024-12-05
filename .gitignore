@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+# Environment variables file
+.env
+
+# Build directory
+build/
+.build
+# VSCode directory
+.vscode/
+
+# Elastic Beanstalk extensions directory
+.ebextensions/
+
+# /src/utils/create/
+# #Create
+create/
+
+logs

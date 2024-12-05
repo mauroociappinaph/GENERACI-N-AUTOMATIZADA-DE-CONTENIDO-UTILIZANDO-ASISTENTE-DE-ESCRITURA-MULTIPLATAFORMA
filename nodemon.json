@@ -1,0 +1,5 @@
+{
+  "watch": ["src", "cloud"],
+  "ext": "ts js",
+  "exec": "yarn build && ts-node ./src/index.ts"
+}
