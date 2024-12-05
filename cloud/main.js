@@ -1,3 +1,3 @@
 //require("./testCloud/usr");
-require("./masterClouds/routes/index");
-require('./200_backend/routes/index.routes')
+require('./masterClouds/routes/index');
+require('./040_gravitad-generacio-actualizada-contenido-asist-de-escritura-plataforma/routes/index.routes');

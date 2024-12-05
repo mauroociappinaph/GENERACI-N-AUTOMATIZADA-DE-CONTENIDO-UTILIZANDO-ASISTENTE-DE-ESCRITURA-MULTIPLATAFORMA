@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "c96cda01-d308-4d88-b855-ffd5ec8d527e",
-    "name": "200_backend",
+    "name": "040_backend",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "27586620",
     "_collection_link": "https://blue-crescent-607517.postman.co/workspace/29-al-48~0bcb72a6-75bc-4ef5-810d-7e68d8da1e5b/collection/27586620-c96cda01-d308-4d88-b855-ffd5ec8d527e?action=share&source=collection_link&creator=27586620"
@@ -273,10 +273,10 @@
       ]
     },
     {
-      "name": "Projects",
+      "name": "Contents",
       "item": [
         {
-          "name": "Create Project",
+          "name": "Create Content",
           "request": {
             "method": "POST",
             "header": [
@@ -303,7 +303,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:2337/server/functions/createProject",
+              "raw": "http://localhost:2337/server/functions/createContent",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -312,14 +312,14 @@
               "path": [
                 "server",
                 "functions",
-                "createProject"
+                "createContent"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "GetAll Projects",
+          "name": "GetAll Contents",
           "request": {
             "method": "POST",
             "header": [
@@ -346,7 +346,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:2337/server/functions/getAllProjects",
+              "raw": "http://localhost:2337/server/functions/getAllContents",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -355,14 +355,14 @@
               "path": [
                 "server",
                 "functions",
-                "getAllProjects"
+                "getAllContents"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Get Project ById",
+          "name": "Get Content ById",
           "request": {
             "method": "POST",
             "header": [
@@ -389,7 +389,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:2337/server/functions/getProjectById",
+              "raw": "http://localhost:2337/server/functions/getContentById",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -398,14 +398,14 @@
               "path": [
                 "server",
                 "functions",
-                "getProjectById"
+                "getContentById"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Update Project",
+          "name": "Update Content",
           "request": {
             "method": "POST",
             "header": [
@@ -432,7 +432,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:2337/server/functions/updateProject",
+              "raw": "http://localhost:2337/server/functions/updateContent",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -441,14 +441,14 @@
               "path": [
                 "server",
                 "functions",
-                "updateProject"
+                "updateContent"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Delete Project",
+          "name": "Delete Content",
           "request": {
             "method": "POST",
             "header": [
@@ -475,7 +475,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:2337/server/functions/deleteProject",
+              "raw": "http://localhost:2337/server/functions/deleteContent",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -484,7 +484,7 @@
               "path": [
                 "server",
                 "functions",
-                "deleteProject"
+                "deleteContent"
               ]
             }
           },
