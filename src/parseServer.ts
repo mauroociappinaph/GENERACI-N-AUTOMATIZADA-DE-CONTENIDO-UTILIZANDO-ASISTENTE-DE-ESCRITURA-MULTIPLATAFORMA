@@ -27,8 +27,7 @@ export const parseServer = new ParseServer({
   appName: config.APP_NAME,
   appId: config.APPLICATION_ID,
   masterKey: config.MASTER_KEY,
-  //masterKeyIps: config.MASTER_KEY_IPS,
-  masterKeyIps: ['::1', '127.0.0.1', '192.168.50.164', '192.168.50.229'],
+  masterKeyIps: config.MASTER_KEY_IPS,
   allowClientClassCreation: true,
   auth: {
     moralis: {
