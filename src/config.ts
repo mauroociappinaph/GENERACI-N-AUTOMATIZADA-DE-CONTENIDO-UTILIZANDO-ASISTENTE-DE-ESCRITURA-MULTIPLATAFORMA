@@ -5,18 +5,26 @@ import { cleanEnv, num, str, bool, makeValidator } from 'envalid';
 
 // Definir un validador personalizado para un arreglo de strings en el formato específico
 const arrayValidator = makeValidator<string[]>((input) => {
-  // Remover los corchetes y espacios
-  const trimmedInput = input.trim().replace(/^[|]$/g, '');
-  // Dividir por comas y remover espacios adicionales
+  // Remover corchetes al principio y al final, y eliminar espacios alrededor
+  const trimmedInput = input.trim().replace(/^\[|\]$/g, '');
+
+  // Dividir por comas, luego limpiar cada elemento de comillas simples y espacios adicionales
   const array = trimmedInput.split(',').map((item) => item.trim().replace(/^'|'$/g, ''));
+
+  // Verificar que el resultado es un array de strings
+  if (!Array.isArray(array) || array.some((item) => typeof item !== 'string')) {
+    throw new Error('Input must be an array of strings');
+  }
+
   // Validar que cada elemento sea una IP válida (simplificado)
   if (
     array.some(
-      (item) => !/^(\d{1,3}.){3}\d{1,3}$/.test(item) && !/^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$/.test(item),
+      (item) => !/^(\d{1,3}\.){3}\d{1,3}$/.test(item) && !/^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$/.test(item),
     )
   ) {
     throw new Error('Invalid IP address format');
   }
+
   return array;
 });
 
@@ -153,9 +161,9 @@ export default cleanEnv(process.env, {
     desc: 'Referenece to your server URL. Replace this when your app is hosted',
     devDefault: 'http://localhost:1337/server',
   }),
-  // MASTER_KEY_IPS: arrayValidator({
-  //   desc: 'List of master key IPs',
-  // }),
+  MASTER_KEY_IPS: arrayValidator({
+    desc: 'List of master key IPs',
+  }),
   SERVER_URL_AUTH: str({
     desc: 'Referenece to your URL. Replace this when your app is hosted',
     devDefault: 'http://localhost:1337',
