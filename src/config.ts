@@ -81,21 +81,10 @@ export default cleanEnv(process.env, {
     devDefault: 'http://localhost:1337/server',
   }),
 
-  SENDGRID_MAIL_API_KEY: str({
-    desc: 'Your Sendgrid mail Api key (keep this secret)',
-  }),
-  SENDGRID_MAIL_SENDER: str({
-    desc: 'Your mail for send email with api Sendgrid (keep this secret)',
-  }),
-  SENDGRID_VERIFY_EMAIL_TEMPLATE: str({
-    desc: 'Sendgrid verify email template (keep this secret)',
-  }),
-  SENDGRID_PASS_RESET_EMAIL_TEMPLATE: str({
-    desc: 'Sendgrid reset email template (keep this secret)',
-  }),
-  SENDGRID_FORM_SUPPORT_EMAIL_TEMPLATE: str({
-    desc: 'Sendgrid email template (keep this secret)',
-  }),
+
+
+
+
   APP_NAME: str({
     desc: 'Your name app',
   }),

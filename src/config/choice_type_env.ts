@@ -20,10 +20,10 @@ const dataBaseUri = config.DEVELOPMENT_MODE === 'prod' ? config.DATABASE_URI_PRO
 const moralisApiKey = config.DEVELOPMENT_MODE === 'prod' ? config.MORALIS_API_KEY_PROD : config.MORALIS_API_KEY_DEV;
 const moralisApiKeyStreams = config.DEVELOPMENT_MODE === 'prod' ? config.MORALIS_API_KEY_STREAMS_PROD : config.MORALIS_API_KEY_STREAMS_DEV;
 
-const sendGridMailApiKey = config.SENDGRID_MAIL_API_KEY;
-const sendGridMailSender = config.SENDGRID_MAIL_SENDER;
-const sendGridPassResetEmailTemplate = config.SENDGRID_PASS_RESET_EMAIL_TEMPLATE;
-const sendGridVerifyEmailTemplate = config.SENDGRID_VERIFY_EMAIL_TEMPLATE;
+  //const sendGridMailApiKey = config.SENDGRID_MAIL_API_KEY;
+  //const sendGridMailSender = config.SENDGRID_MAIL_SENDER;
+  //const sendGridPassResetEmailTemplate = config.SENDGRID_PASS_RESET_EMAIL_TEMPLATE;
+  //const sendGridVerifyEmailTemplate = config.SENDGRID_VERIFY_EMAIL_TEMPLATE;
 
 const { USER_DASHBOARD1,
         USER_PASS_DASHBOARD1,
@@ -65,17 +65,17 @@ const serverData: {
 const apiData: {
   moralisApiKey: string;
   moralisApiKeyStreams: string;
-  sendGridMailApiKey: string;
-  sendGridMailSender: string;
-  sendGridPassResetEmailTemplate: string;
-  sendGridVerifyEmailTemplate: string;
+  //sendGridMailApiKey: string;
+  //sendGridMailSender: string;
+  //sendGridPassResetEmailTemplate: string;
+  //sendGridVerifyEmailTemplate: string;
 } = {
   moralisApiKey,
   moralisApiKeyStreams,
-  sendGridMailApiKey,
-  sendGridMailSender,
-  sendGridPassResetEmailTemplate,
-  sendGridVerifyEmailTemplate
+  //sendGridMailApiKey,
+  //sendGridMailSender,
+  //sendGridPassResetEmailTemplate,
+  //sendGridVerifyEmailTemplate
 };
 
 const dashboardData: {

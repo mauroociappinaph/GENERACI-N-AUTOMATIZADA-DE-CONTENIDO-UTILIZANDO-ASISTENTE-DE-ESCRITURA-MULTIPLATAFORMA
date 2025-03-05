@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs');
+const { loadEnvFile } = require('process');
 
 const PATH_NAME = path.join(__dirname, '../modules/');
-
 
 fs.readdirSync(PATH_NAME).forEach((folder) => {
   const folderPath = path.join(PATH_NAME, folder);
@@ -14,5 +14,4 @@ fs.readdirSync(PATH_NAME).forEach((folder) => {
     }
   });
 });
-
-
+console.log('servidor iniciado');
