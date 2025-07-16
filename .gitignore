@@ -80,3 +80,8 @@ Thumbs.db
 
 # Prisma
 /backend/prisma/migrations/
+
+# Kiro IDE configuration (keep specs and steering, ignore local settings)
+.kiro/
+!.kiro/specs/
+!.kiro/steering/
