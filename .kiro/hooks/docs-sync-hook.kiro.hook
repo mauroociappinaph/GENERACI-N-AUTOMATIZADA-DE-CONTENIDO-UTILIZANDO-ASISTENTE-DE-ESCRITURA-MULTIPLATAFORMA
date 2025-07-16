@@ -4,7 +4,7 @@
   "description": "Listens to TypeScript source files and configuration changes to automatically update project documentation",
   "version": "1",
   "when": {
-    "type": "fileEdited",
+    "type": "userTriggered",
     "patterns": [
       "backend/src/**/*.ts",
       "frontend/src/**/*.ts",
