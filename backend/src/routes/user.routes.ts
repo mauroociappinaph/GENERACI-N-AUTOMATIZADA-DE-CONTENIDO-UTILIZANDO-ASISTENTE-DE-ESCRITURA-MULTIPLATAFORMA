@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { UserController } from '@/controllers/user.controller';
 import { authenticateToken } from '@/middleware/auth.middleware';
-import { requirePermission, requireRole } from '@/middleware/authorization.middleware';
-import { UserRole } from '../generated/prisma';
+import {
+  requirePermission,
+  requireRole,
+} from '@/middleware/authorization.middleware';
+import { UserRole } from '@prisma/client';
 
 const router = Router();
 
@@ -76,7 +79,11 @@ router.get('/roles', requirePermission('users:read'), UserController.getRoles);
  *       400:
  *         description: Rol inválido
  */
-router.get('/roles/:role/permissions', requireRole(UserRole.ADMIN, UserRole.MANAGER), UserController.getRolePermissions);
+router.get(
+  '/roles/:role/permissions',
+  requireRole(UserRole.ADMIN, UserRole.MANAGER),
+  UserController.getRolePermissions
+);
 
 /**
  * @swagger
@@ -117,7 +124,11 @@ router.get('/roles/:role/permissions', requireRole(UserRole.ADMIN, UserRole.MANA
  *                           hierarchy:
  *                             type: number
  */
-router.get('/roles/info', requirePermission('users:read'), UserController.getAllRolesInfo);
+router.get(
+  '/roles/info',
+  requirePermission('users:read'),
+  UserController.getAllRolesInfo
+);
 
 /**
  * @swagger
@@ -152,7 +163,11 @@ router.get('/roles/info', requirePermission('users:read'), UserController.getAll
  *                           category:
  *                             type: string
  */
-router.get('/permissions/info', requireRole(UserRole.ADMIN, UserRole.MANAGER), UserController.getAllPermissionsInfo);
+router.get(
+  '/permissions/info',
+  requireRole(UserRole.ADMIN, UserRole.MANAGER),
+  UserController.getAllPermissionsInfo
+);
 
 /**
  * @swagger
@@ -189,7 +204,11 @@ router.get('/permissions/info', requireRole(UserRole.ADMIN, UserRole.MANAGER), U
  *                     userRole:
  *                       type: string
  */
-router.get('/permissions/:permission/check', authenticateToken, UserController.checkUserPermission);
+router.get(
+  '/permissions/:permission/check',
+  authenticateToken,
+  UserController.checkUserPermission
+);
 
 /**
  * @swagger
@@ -409,7 +428,11 @@ router.post('/', requirePermission('users:create'), UserController.createUser);
  *       403:
  *         description: Sin permisos para actualizar usuarios
  */
-router.put('/:id', requirePermission('users:update'), UserController.updateUser);
+router.put(
+  '/:id',
+  requirePermission('users:update'),
+  UserController.updateUser
+);
 
 /**
  * @swagger
@@ -506,7 +529,11 @@ router.put('/:id/password', authenticateToken, UserController.changePassword);
  *       403:
  *         description: Sin permisos para cambiar estado de usuarios
  */
-router.patch('/:id/toggle-status', requireRole(UserRole.ADMIN, UserRole.MANAGER), UserController.toggleUserStatus);
+router.patch(
+  '/:id/toggle-status',
+  requireRole(UserRole.ADMIN, UserRole.MANAGER),
+  UserController.toggleUserStatus
+);
 
 /**
  * @swagger
@@ -545,6 +572,10 @@ router.patch('/:id/toggle-status', requireRole(UserRole.ADMIN, UserRole.MANAGER)
  *       403:
  *         description: Sin permisos para eliminar usuarios
  */
-router.delete('/:id', requirePermission('users:delete'), UserController.deleteUser);
+router.delete(
+  '/:id',
+  requirePermission('users:delete'),
+  UserController.deleteUser
+);
 
 export default router;

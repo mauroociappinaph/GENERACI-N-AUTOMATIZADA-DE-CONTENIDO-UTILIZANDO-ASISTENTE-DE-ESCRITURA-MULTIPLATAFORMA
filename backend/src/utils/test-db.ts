@@ -17,7 +17,6 @@ async function testDatabaseConnection(): Promise<void> {
     console.log('✅ User count query successful. Current users:', userCount);
 
     console.log('🎉 All database tests passed!');
-
   } catch (error) {
     console.error('❌ Database test failed:', error);
   } finally {

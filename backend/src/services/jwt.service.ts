@@ -20,8 +20,10 @@ export interface TokenPair {
 
 export class JwtService {
   // JWT Service for handling authentication tokens
-  private static readonly ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_SECRET || 'access-secret-key';
-  private static readonly REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_SECRET || 'refresh-secret-key';
+  private static readonly ACCESS_TOKEN_SECRET =
+    process.env.JWT_ACCESS_SECRET || 'access-secret-key';
+  private static readonly REFRESH_TOKEN_SECRET =
+    process.env.JWT_REFRESH_SECRET || 'refresh-secret-key';
   private static readonly ACCESS_TOKEN_EXPIRES_IN = '15m'; // 15 minutes
   private static readonly REFRESH_TOKEN_EXPIRES_IN = '7d'; // 7 days
 
@@ -82,7 +84,10 @@ export class JwtService {
    */
   static verifyRefreshToken(token: string): JwtPayload {
     try {
-      const decoded = jwt.verify(token, this.REFRESH_TOKEN_SECRET) as JwtPayload;
+      const decoded = jwt.verify(
+        token,
+        this.REFRESH_TOKEN_SECRET
+      ) as JwtPayload;
 
       if (decoded.type !== 'refresh') {
         throw new Error('Token inválido: tipo incorrecto');
@@ -148,7 +153,10 @@ export class JwtService {
   /**
    * Verifica si un token está próximo a expirar
    */
-  static isTokenExpiringSoon(token: string, thresholdMinutes: number = 5): boolean {
+  static isTokenExpiringSoon(
+    token: string,
+    thresholdMinutes: number = 5
+  ): boolean {
     const decoded = this.decodeToken(token);
     if (!decoded || !decoded.exp) {
       return true;
@@ -158,6 +166,6 @@ export class JwtService {
     const currentTime = Date.now();
     const thresholdTime = thresholdMinutes * 60 * 1000; // Convert minutes to milliseconds
 
-    return (expirationTime - currentTime) <= thresholdTime;
+    return expirationTime - currentTime <= thresholdTime;
   }
 }

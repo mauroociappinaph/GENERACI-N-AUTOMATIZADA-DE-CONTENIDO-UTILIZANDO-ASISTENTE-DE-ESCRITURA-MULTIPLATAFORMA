@@ -13,7 +13,10 @@ async function testUserService(): Promise<void> {
     console.log('1. Testing password encryption...');
     const testPassword = 'TestPassword123!';
     const hashedPassword = await PasswordService.hashPassword(testPassword);
-    const isValid = await PasswordService.verifyPassword(testPassword, hashedPassword);
+    const isValid = await PasswordService.verifyPassword(
+      testPassword,
+      hashedPassword
+    );
     console.log(`   ✅ Password hashed and verified: ${isValid}\n`);
 
     // Test 2: Password strength validation
@@ -21,8 +24,10 @@ async function testUserService(): Promise<void> {
     const weakPassword = '123';
     const strongPassword = 'StrongPass123!';
 
-    const weakValidation = PasswordService.validatePasswordStrength(weakPassword);
-    const strongValidation = PasswordService.validatePasswordStrength(strongPassword);
+    const weakValidation =
+      PasswordService.validatePasswordStrength(weakPassword);
+    const strongValidation =
+      PasswordService.validatePasswordStrength(strongPassword);
 
     console.log(`   Weak password valid: ${weakValidation.isValid}`);
     console.log(`   Weak password errors: ${weakValidation.errors.join(', ')}`);
@@ -40,11 +45,13 @@ async function testUserService(): Promise<void> {
     try {
       // Clean up any existing test user
       await prisma.user.deleteMany({
-        where: { email: testUser.email }
+        where: { email: testUser.email },
       });
 
       const createdUser = await userService.createUser(testUser);
-      console.log(`   ✅ User created: ${createdUser.email} (ID: ${createdUser.id})\n`);
+      console.log(
+        `   ✅ User created: ${createdUser.email} (ID: ${createdUser.id})\n`
+      );
 
       // Test 4: Get user by email
       console.log('4. Testing get user by email...');
@@ -53,34 +60,39 @@ async function testUserService(): Promise<void> {
 
       // Test 5: Verify credentials
       console.log('5. Testing credential verification...');
-      const verifiedUser = await userService.verifyCredentials(testUser.email, testUser.password);
+      const verifiedUser = await userService.verifyCredentials(
+        testUser.email,
+        testUser.password
+      );
       console.log(`   ✅ Credentials verified: ${verifiedUser?.email}\n`);
 
       // Test 6: Update user
       console.log('6. Testing user update...');
       const updatedUser = await userService.updateUser(createdUser.id, {
         firstName: 'Updated',
-        lastName: 'Name'
+        lastName: 'Name',
       });
-      console.log(`   ✅ User updated: ${updatedUser.firstName} ${updatedUser.lastName}\n`);
+      console.log(
+        `   ✅ User updated: ${updatedUser.firstName} ${updatedUser.lastName}\n`
+      );
 
       // Test 7: Get users list
       console.log('7. Testing users list...');
       const usersList = await userService.getUsers(1, 10);
-      console.log(`   ✅ Users list retrieved: ${usersList.users.length} users, total: ${usersList.total}\n`);
+      console.log(
+        `   ✅ Users list retrieved: ${usersList.users.length} users, total: ${usersList.total}\n`
+      );
 
       // Clean up
       await prisma.user.delete({
-        where: { id: createdUser.id }
+        where: { id: createdUser.id },
       });
       console.log('   🧹 Test user cleaned up\n');
-
     } catch (error) {
       console.error('   ❌ Error in user operations:', error);
     }
 
     console.log('✅ All User Service tests completed!');
-
   } catch (error) {
     console.error('❌ Test failed:', error);
   } finally {

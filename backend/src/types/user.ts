@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { $Enums } from '../generated/prisma';
+import { $Enums } from '@prisma/client';
 
 // User validation schemas
 export const createUserSchema = z.object({
@@ -20,7 +20,9 @@ export const updateUserSchema = z.object({
 
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, 'La contraseña actual es requerida'),
-  newPassword: z.string().min(8, 'La nueva contraseña debe tener al menos 8 caracteres'),
+  newPassword: z
+    .string()
+    .min(8, 'La nueva contraseña debe tener al menos 8 caracteres'),
 });
 
 // User response types (without sensitive data)

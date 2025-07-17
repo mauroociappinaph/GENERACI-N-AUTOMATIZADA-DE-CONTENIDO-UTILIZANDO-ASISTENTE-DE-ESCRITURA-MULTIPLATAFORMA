@@ -3,7 +3,10 @@ import { PaginationParams, PaginatedResponse } from '../types/prisma';
 /**
  * Calculate pagination offset based on page and limit
  */
-export function calculatePagination(page: number = 1, limit: number = 10): { skip: number; take: number } {
+export function calculatePagination(
+  page: number = 1,
+  limit: number = 10
+): { skip: number; take: number } {
   const skip = (page - 1) * limit;
   return { skip, take: limit };
 }
@@ -35,9 +38,14 @@ export function createPaginatedResponse<T>(
 /**
  * Parse and validate pagination parameters
  */
-export function parsePaginationParams(params: Record<string, unknown>): PaginationParams {
+export function parsePaginationParams(
+  params: Record<string, unknown>
+): PaginationParams {
   const page = Math.max(1, parseInt(String(params.page)) || 1);
-  const limit = Math.min(100, Math.max(1, parseInt(String(params.limit)) || 10));
+  const limit = Math.min(
+    100,
+    Math.max(1, parseInt(String(params.limit)) || 10)
+  );
   const sortBy = String(params.sortBy) || 'createdAt';
   const sortOrder = params.sortOrder === 'desc' ? 'desc' : 'asc';
 
@@ -58,7 +66,10 @@ export function excludeUserPassword<T extends { passwordHash?: string }>(
 /**
  * Create Prisma orderBy object from sort parameters
  */
-export function createOrderBy(sortBy?: string, sortOrder?: 'asc' | 'desc'): Record<string, 'asc' | 'desc'> {
+export function createOrderBy(
+  sortBy?: string,
+  sortOrder?: 'asc' | 'desc'
+): Record<string, 'asc' | 'desc'> {
   if (!sortBy) return { createdAt: 'desc' };
 
   return {

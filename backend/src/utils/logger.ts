@@ -18,7 +18,7 @@ const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: ${info.message}`
+    info => `${info.timestamp} ${info.level}: ${info.message}`
   )
 );
 
@@ -96,7 +96,11 @@ export const logError = (error: Error, context?: string, metadata?: any) => {
 };
 
 // Función para logging de eventos de negocio
-export const logBusinessEvent = (event: string, data?: any, userId?: string) => {
+export const logBusinessEvent = (
+  event: string,
+  data?: any,
+  userId?: string
+) => {
   logger.info('Business Event', {
     event,
     userId,
@@ -106,7 +110,11 @@ export const logBusinessEvent = (event: string, data?: any, userId?: string) => 
 };
 
 // Función para logging de performance
-export const logPerformance = (operation: string, duration: number, metadata?: any) => {
+export const logPerformance = (
+  operation: string,
+  duration: number,
+  metadata?: any
+) => {
   const level = duration > 1000 ? 'warn' : 'info';
   logger.log(level, 'Performance', {
     operation,

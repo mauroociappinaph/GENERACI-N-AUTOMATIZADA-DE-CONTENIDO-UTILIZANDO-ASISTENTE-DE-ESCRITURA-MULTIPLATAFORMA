@@ -1,4 +1,4 @@
-import { UserRole } from '../generated/prisma';
+import { UserRole } from '@prisma/client';
 
 /**
  * Definición de todos los permisos disponibles en el sistema
@@ -51,16 +51,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'reports:update',
     'audit:read',
   ],
-  [UserRole.USER]: [
-    'data:create',
-    'data:read',
-    'data:update',
-    'reports:read',
-  ],
-  [UserRole.VIEWER]: [
-    'data:read',
-    'reports:read',
-  ],
+  [UserRole.USER]: ['data:create', 'data:read', 'data:update', 'reports:read'],
+  [UserRole.VIEWER]: ['data:read', 'reports:read'],
 };
 
 /**

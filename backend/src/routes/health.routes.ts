@@ -24,7 +24,9 @@ router.get('/db', async (_req: Request, res: Response) => {
     const isConnected = await database.testConnection();
     res.json({
       status: isConnected ? 'OK' : 'ERROR',
-      message: isConnected ? 'Database connection successful' : 'Database connection failed',
+      message: isConnected
+        ? 'Database connection successful'
+        : 'Database connection failed',
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

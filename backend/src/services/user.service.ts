@@ -1,4 +1,4 @@
-import { PrismaClient, User, $Enums } from '../generated/prisma';
+import { PrismaClient, User, $Enums } from '@prisma/client';
 import { PasswordService } from './password.service';
 import {
   CreateUserInput,
@@ -142,7 +142,7 @@ export class UserService {
     ]);
 
     return {
-      users: users.map((user) => this.toUserResponse(user)),
+      users: users.map(user => this.toUserResponse(user)),
       total,
       page,
       totalPages: Math.ceil(total / limit),

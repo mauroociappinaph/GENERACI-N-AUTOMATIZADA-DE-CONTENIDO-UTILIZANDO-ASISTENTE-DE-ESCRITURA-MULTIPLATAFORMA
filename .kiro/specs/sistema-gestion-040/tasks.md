@@ -46,14 +46,14 @@
 
 - [ ] 4. Desarrollar API base y estructura del backend
 
-  - [ ] 4.1 Configurar Express server con middlewares básicos
+  - [x] 4.1 Configurar Express server con middlewares básicos
 
     - Configurar CORS, helmet, rate limiting
     - Implementar middleware de logging y manejo de errores
     - Configurar Swagger para documentación de API
     - _Requerimientos: 6.1, 7.2_
 
-  - [ ] 4.2 Implementar servicios de validación y auditoría
+  - [x] 4.2 Implementar servicios de validación y auditoría
     - Crear servicio de auditoría para logging de actividades
     - Implementar middleware de validación con Zod
     - Crear utilidades para manejo de errores consistente

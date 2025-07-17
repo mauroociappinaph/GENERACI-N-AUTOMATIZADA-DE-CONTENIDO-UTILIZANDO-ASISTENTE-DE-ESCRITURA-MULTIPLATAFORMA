@@ -18,7 +18,10 @@ export class PasswordService {
   /**
    * Verifica si una contraseña coincide con su hash
    */
-  static async verifyPassword(password: string, hash: string): Promise<boolean> {
+  static async verifyPassword(
+    password: string,
+    hash: string
+  ): Promise<boolean> {
     try {
       return await bcrypt.compare(password, hash);
     } catch (error) {

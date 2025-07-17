@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 import { UserService } from '@/services/user.service';
 import { prisma } from '@/config/prisma';
-import { CreateUserInput, UpdateUserInput, ChangePasswordInput } from '@/types/user';
-import { $Enums } from '../generated/prisma';
+import {
+  CreateUserInput,
+  UpdateUserInput,
+  ChangePasswordInput,
+} from '@/types/user';
+import { $Enums } from '@prisma/client';
 import { Permission } from '@/types/roles';
 
 export class UserController {
@@ -16,10 +20,19 @@ export class UserController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const role = req.query.role as $Enums.UserRole | undefined;
-      const isActive = req.query.isActive === 'true' ? true :
-                      req.query.isActive === 'false' ? false : undefined;
+      const isActive =
+        req.query.isActive === 'true'
+          ? true
+          : req.query.isActive === 'false'
+            ? false
+            : undefined;
 
-      const result = await UserController.userService.getUsers(page, limit, role, isActive);
+      const result = await UserController.userService.getUsers(
+        page,
+        limit,
+        role,
+        isActive
+      );
 
       res.json({
         success: true,
@@ -283,11 +296,14 @@ export class UserController {
         success: true,
         data: {
           user,
-          message: `Usuario ${user.isActive ? 'activado' : 'desactivado'} exitosamente`
+          message: `Usuario ${user.isActive ? 'activado' : 'desactivado'} exitosamente`,
         },
       });
     } catch (error) {
-      if (error instanceof Error && error.message.includes('Usuario no encontrado')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Usuario no encontrado')
+      ) {
         res.status(404).json({
           error: {
             code: 'USER_NOT_FOUND',
@@ -338,7 +354,10 @@ export class UserController {
         data: { message: 'Usuario eliminado exitosamente' },
       });
     } catch (error) {
-      if (error instanceof Error && error.message.includes('Usuario no encontrado')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Usuario no encontrado')
+      ) {
         res.status(404).json({
           error: {
             code: 'USER_NOT_FOUND',
@@ -405,7 +424,9 @@ export class UserController {
         return;
       }
 
-      const { getRolePermissions } = await import('@/middleware/authorization.middleware');
+      const { getRolePermissions } = await import(
+        '@/middleware/authorization.middleware'
+      );
       const permissions = getRolePermissions(role as $Enums.UserRole);
 
       res.json({
@@ -430,7 +451,9 @@ export class UserController {
    */
   static async getAllRolesInfo(req: Request, res: Response): Promise<void> {
     try {
-      const { getAllRolesInfo } = await import('@/middleware/authorization.middleware');
+      const { getAllRolesInfo } = await import(
+        '@/middleware/authorization.middleware'
+      );
       const rolesInfo = getAllRolesInfo();
 
       res.json({
@@ -453,9 +476,14 @@ export class UserController {
   /**
    * Obtener información completa de todos los permisos
    */
-  static async getAllPermissionsInfo(req: Request, res: Response): Promise<void> {
+  static async getAllPermissionsInfo(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     try {
-      const { getAllPermissionsInfo } = await import('@/middleware/authorization.middleware');
+      const { getAllPermissionsInfo } = await import(
+        '@/middleware/authorization.middleware'
+      );
       const permissionsInfo = getAllPermissionsInfo();
 
       res.json({
@@ -494,8 +522,13 @@ export class UserController {
         return;
       }
 
-      const { hasPermission } = await import('@/middleware/authorization.middleware');
-      const hasAccess = hasPermission(req.user.role as $Enums.UserRole, permission as Permission);
+      const { hasPermission } = await import(
+        '@/middleware/authorization.middleware'
+      );
+      const hasAccess = hasPermission(
+        req.user.role as $Enums.UserRole,
+        permission as Permission
+      );
 
       res.json({
         success: true,

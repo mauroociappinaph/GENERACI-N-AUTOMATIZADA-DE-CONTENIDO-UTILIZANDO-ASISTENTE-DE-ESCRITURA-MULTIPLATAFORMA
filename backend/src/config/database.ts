@@ -1,5 +1,5 @@
 import { prisma } from './prisma';
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 // Database connection utility class
 export class Database {

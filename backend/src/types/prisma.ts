@@ -5,10 +5,11 @@ export type {
   AuditLog,
   Report,
   UserRole,
-} from '../generated/prisma';
+  Prisma,
+} from '@prisma/client';
 
 // Import types for use in interfaces
-import type { User, UserRole } from '../generated/prisma';
+import type { User, UserRole, Prisma } from '@prisma/client';
 
 // Custom types for API responses
 export interface UserWithoutPassword extends Omit<User, 'passwordHash'> {}
@@ -31,14 +32,14 @@ export interface UpdateUserData {
 
 export interface CreateDataRecordData {
   type: string;
-  data: Record<string, unknown>;
-  metadata?: Record<string, unknown>;
+  data: Prisma.InputJsonValue;
+  metadata?: Prisma.InputJsonValue;
 }
 
 export interface UpdateDataRecordData {
   type?: string;
-  data?: Record<string, unknown>;
-  metadata?: Record<string, unknown>;
+  data?: Prisma.InputJsonValue;
+  metadata?: Prisma.InputJsonValue;
 }
 
 export interface CreateAuditLogData {
@@ -46,8 +47,8 @@ export interface CreateAuditLogData {
   action: string;
   resourceType: string;
   resourceId?: string;
-  oldValues?: Record<string, unknown>;
-  newValues?: Record<string, unknown>;
+  oldValues?: Prisma.InputJsonValue;
+  newValues?: Prisma.InputJsonValue;
   ipAddress?: string;
   userAgent?: string;
 }

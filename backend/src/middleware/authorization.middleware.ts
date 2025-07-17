@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserRole } from '../generated/prisma';
+import { UserRole } from '@prisma/client';
 import {
   Permission,
   ROLE_PERMISSIONS,
@@ -7,7 +7,7 @@ import {
   RoleInfo,
   PermissionInfo,
   ROLE_DESCRIPTIONS,
-  PERMISSION_DESCRIPTIONS
+  PERMISSION_DESCRIPTIONS,
 } from '../types/roles';
 
 /**
@@ -77,7 +77,8 @@ export const requirePermission = (...requiredPermissions: Permission[]) => {
       res.status(403).json({
         error: {
           code: 'FORBIDDEN',
-          message: 'No tienes los permisos necesarios para realizar esta acción',
+          message:
+            'No tienes los permisos necesarios para realizar esta acción',
           details: {
             requiredPermissions,
             userPermissions,
@@ -97,8 +98,14 @@ export const requirePermission = (...requiredPermissions: Permission[]) => {
 /**
  * Middleware que permite acceso solo al propietario del recurso o a administradores
  */
-export const requireOwnershipOrAdmin = (getResourceOwnerId: (_req: Request) => string | Promise<string>) => {
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const requireOwnershipOrAdmin = (
+  getResourceOwnerId: (_req: Request) => string | Promise<string>
+) => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     if (!req.user) {
       res.status(401).json({
         error: {
@@ -151,7 +158,10 @@ export const requireOwnershipOrAdmin = (getResourceOwnerId: (_req: Request) => s
 /**
  * Función helper para verificar si un usuario tiene un permiso específico
  */
-export const hasPermission = (userRole: UserRole, permission: Permission): boolean => {
+export const hasPermission = (
+  userRole: UserRole,
+  permission: Permission
+): boolean => {
   const userPermissions = ROLE_PERMISSIONS[userRole] || [];
   return userPermissions.includes(permission);
 };
@@ -215,7 +225,10 @@ export const getAllPermissionsInfo = (): PermissionInfo[] => {
  * Función helper para verificar si un usuario puede gestionar a otro usuario
  * basado en la jerarquía de roles
  */
-export const canManageUser = (managerRole: UserRole, targetRole: UserRole): boolean => {
+export const canManageUser = (
+  managerRole: UserRole,
+  targetRole: UserRole
+): boolean => {
   // Los administradores pueden gestionar a todos
   if (managerRole === UserRole.ADMIN) {
     return true;
@@ -233,8 +246,14 @@ export const canManageUser = (managerRole: UserRole, targetRole: UserRole): bool
 /**
  * Middleware que verifica si el usuario puede gestionar el rol objetivo
  */
-export const requireRoleManagement = (getTargetRole: (_req: Request) => UserRole | Promise<UserRole>) => {
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const requireRoleManagement = (
+  getTargetRole: (_req: Request) => UserRole | Promise<UserRole>
+) => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     if (!req.user) {
       res.status(401).json({
         error: {

@@ -38,8 +38,8 @@ export class Server {
           endpoints: {
             health: `http://localhost:${config.port}/health`,
             dbHealth: `http://localhost:${config.port}/health/db`,
-            api: `http://localhost:${config.port}/api`
-          }
+            api: `http://localhost:${config.port}/api`,
+          },
         });
 
         logBusinessEvent('SERVER_STARTED', { port: config.port });
