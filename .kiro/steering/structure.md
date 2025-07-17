@@ -71,3 +71,28 @@ Both backend and frontend use TypeScript path aliases:
 - Health check: `GET /health`
 - API info: `GET /api`
 - All business endpoints should be prefixed with `/api/`
+
+## Design Principles
+
+### Single Responsibility Principle (SRP)
+
+Each folder in the `src/` directory is designed to follow the Single Responsibility Principle. For example:
+
+- `controllers/` handle incoming HTTP requests and delegate processing
+- `services/` contain business logic and orchestration
+- `models/` define data structures
+- `routes/` define endpoint definitions and routing logic
+
+This modular design improves testability, scalability, and maintainability.
+
+### Barrel Files
+
+To simplify imports and keep code clean, barrel files (`index.ts`) are used in most folders (e.g., `services`, `controllers`, `utils`). This allows imports like:
+
+```ts
+import { createUser, deleteUser } from '@/services';
+import { createUser } from '@/services/createUser';
+import { deleteUser } from '@/services/deleteUser';
+```
+
+ℹ️ Avoid deeply nested barrels or circular dependencies by keeping each index.ts file focused and only re-exporting related entities.

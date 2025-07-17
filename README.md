@@ -1,5 +1,15 @@
 # Sistema de Gestión #040
 
+Sistema integral de gestión empresarial y procesos de negocio.
+
+## Características Principales
+
+- Gestión de procesos empresariales
+- API RESTful con Express.js
+- Autenticación JWT
+- Base de datos con Prisma
+- Frontend con Next.js
+
 Sistema integral de gestión de procesos y datos empresariales diseñado para uso empresarial con arquitectura escalable y moderna.
 
 ## Estado del Proyecto
@@ -421,3 +431,7 @@ NEXT_PUBLIC_API_URL="http://localhost:3001"
 ## Licencia
 
 [Especificar licencia]
+
+---
+
+_Última actualización: Enero 2025_
