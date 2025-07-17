@@ -1,4 +1,5 @@
 import { prisma } from './prisma';
+import { PrismaClient } from '../generated/prisma';
 
 // Database connection utility class
 export class Database {
@@ -15,7 +16,7 @@ export class Database {
     return Database.instance;
   }
 
-  public getPrisma() {
+  public getPrisma(): PrismaClient {
     return prisma;
   }
 
