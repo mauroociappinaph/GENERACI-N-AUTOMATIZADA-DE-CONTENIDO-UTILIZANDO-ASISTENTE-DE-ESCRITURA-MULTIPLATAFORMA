@@ -17,8 +17,9 @@ Sistema integral de gestión de procesos y datos empresariales diseñado para us
 ✅ **Completado**: Sistema de autenticación y autorización completo
 ✅ **Completado**: API de gestión de usuarios con roles y permisos
 ✅ **Completado**: Base de datos configurada con Prisma ORM
+✅ **Completado**: API de gestión de registros de datos con validación
 🔄 **En desarrollo**: Frontend con Next.js
-⏳ **Pendiente**: Módulos de gestión de datos y reportes
+⏳ **Pendiente**: Módulos de reportes y dashboard
 
 ## Estructura del Proyecto
 
