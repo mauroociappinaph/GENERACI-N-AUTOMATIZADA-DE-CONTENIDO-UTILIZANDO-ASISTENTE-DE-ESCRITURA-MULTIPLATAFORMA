@@ -59,9 +59,9 @@
     - Crear utilidades para manejo de errores consistente
     - _Requerimientos: 7.1, 7.4_
 
-- [ ] 5. Implementar gestión de datos y registros
+- [-] 5. Implementar gestión de datos y registros
 
-  - [ ] 5.1 Crear API para gestión de registros de datos
+  - [-] 5.1 Crear API para gestión de registros de datos
 
     - Implementar endpoints CRUD para registros de datos
     - Crear servicio de validación de datos dinámicos

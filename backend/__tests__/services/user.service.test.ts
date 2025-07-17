@@ -1,6 +1,6 @@
 import { UserService } from '../../src/services/user.service';
 import { PasswordService } from '../../src/services/password.service';
-import { User, $Enums } from '../../src/generated/prisma';
+import { User, $Enums } from '@prisma/client';
 import { CreateUserInput, UpdateUserInput, ChangePasswordInput } from '../../src/types/user';
 
 // Mock Prisma Client

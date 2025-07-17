@@ -2,6 +2,7 @@ import { Application, Request, Response } from 'express';
 import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
 import healthRoutes from './health.routes';
+import dataRecordRoutes from './data-record.routes';
 
 /**
  * Configura todas las rutas de la aplicación
@@ -17,6 +18,7 @@ export const setupRoutes = (app: Application): void => {
         health: '/health',
         auth: '/api/auth',
         users: '/api/users',
+        dataRecords: '/api/data-records',
       },
     });
   });
@@ -27,4 +29,5 @@ export const setupRoutes = (app: Application): void => {
   // API routes
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);
+  app.use('/api/data-records', dataRecordRoutes);
 };

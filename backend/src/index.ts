@@ -1,3 +1,4 @@
+import 'tsconfig-paths/register';
 import { createApp, Server } from './server';
 
 /**
