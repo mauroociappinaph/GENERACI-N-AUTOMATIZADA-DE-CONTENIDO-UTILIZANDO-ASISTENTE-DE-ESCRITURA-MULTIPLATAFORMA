@@ -17,22 +17,44 @@ router.post(
   validateRequest({ body: createDataRecordSchema }),
   DataRecordController.createDataRecord
 );
+
 router.get(
   '/',
   requireRole(UserRole.ADMIN, UserRole.MANAGER, UserRole.USER, UserRole.VIEWER),
   DataRecordController.getDataRecords
 );
+
+router.get(
+  '/search',
+  requireRole(UserRole.ADMIN, UserRole.MANAGER, UserRole.USER, UserRole.VIEWER),
+  DataRecordController.searchDataRecords
+);
+
+router.get(
+  '/types',
+  requireRole(UserRole.ADMIN, UserRole.MANAGER, UserRole.USER, UserRole.VIEWER),
+  DataRecordController.getDataTypes
+);
+
+router.get(
+  '/stats',
+  requireRole(UserRole.ADMIN, UserRole.MANAGER),
+  DataRecordController.getDataRecordStats
+);
+
 router.get(
   '/:id',
   requireRole(UserRole.ADMIN, UserRole.MANAGER, UserRole.USER, UserRole.VIEWER),
   DataRecordController.getDataRecordById
 );
+
 router.put(
   '/:id',
   requireRole(UserRole.ADMIN, UserRole.MANAGER, UserRole.USER),
   validateRequest({ body: updateDataRecordSchema }),
   DataRecordController.updateDataRecord
 );
+
 router.delete(
   '/:id',
   requireRole(UserRole.ADMIN, UserRole.MANAGER),
