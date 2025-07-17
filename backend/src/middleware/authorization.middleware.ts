@@ -97,7 +97,7 @@ export const requirePermission = (...requiredPermissions: Permission[]) => {
 /**
  * Middleware que permite acceso solo al propietario del recurso o a administradores
  */
-export const requireOwnershipOrAdmin = (getResourceOwnerId: (req: Request) => string | Promise<string>) => {
+export const requireOwnershipOrAdmin = (getResourceOwnerId: (_req: Request) => string | Promise<string>) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     if (!req.user) {
       res.status(401).json({
@@ -233,7 +233,7 @@ export const canManageUser = (managerRole: UserRole, targetRole: UserRole): bool
 /**
  * Middleware que verifica si el usuario puede gestionar el rol objetivo
  */
-export const requireRoleManagement = (getTargetRole: (req: Request) => UserRole | Promise<UserRole>) => {
+export const requireRoleManagement = (getTargetRole: (_req: Request) => UserRole | Promise<UserRole>) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     if (!req.user) {
       res.status(401).json({

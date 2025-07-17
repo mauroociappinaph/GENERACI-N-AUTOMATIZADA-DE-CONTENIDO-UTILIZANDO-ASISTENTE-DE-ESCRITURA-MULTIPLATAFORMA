@@ -8,7 +8,7 @@ import {
   createUserSchema,
   updateUserSchema,
   changePasswordSchema,
-} from '@/types/user';
+} from '../types/user';
 
 export class UserService {
   private prisma: PrismaClient;

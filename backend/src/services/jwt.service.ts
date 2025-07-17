@@ -6,6 +6,10 @@ export interface JwtPayload {
   email: string;
   role: string;
   type: 'access' | 'refresh';
+  // Standard JWT claims
+  exp?: number; // Expiration time
+  iat?: number; // Issued at
+  nbf?: number; // Not before
 }
 
 export interface TokenPair {
@@ -15,6 +19,7 @@ export interface TokenPair {
 }
 
 export class JwtService {
+  // JWT Service for handling authentication tokens
   private static readonly ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_SECRET || 'access-secret-key';
   private static readonly REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_SECRET || 'refresh-secret-key';
   private static readonly ACCESS_TOKEN_EXPIRES_IN = '15m'; // 15 minutes
@@ -138,5 +143,21 @@ export class JwtService {
     } catch {
       return null;
     }
+  }
+
+  /**
+   * Verifica si un token está próximo a expirar
+   */
+  static isTokenExpiringSoon(token: string, thresholdMinutes: number = 5): boolean {
+    const decoded = this.decodeToken(token);
+    if (!decoded || !decoded.exp) {
+      return true;
+    }
+
+    const expirationTime = decoded.exp * 1000; // Convert to milliseconds
+    const currentTime = Date.now();
+    const thresholdTime = thresholdMinutes * 60 * 1000; // Convert minutes to milliseconds
+
+    return (expirationTime - currentTime) <= thresholdTime;
   }
 }

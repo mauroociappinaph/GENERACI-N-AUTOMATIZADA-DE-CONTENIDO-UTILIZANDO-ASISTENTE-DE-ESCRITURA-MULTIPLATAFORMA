@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { JwtService, JwtPayload } from '@/services/jwt.service';
 import { UserService } from '@/services/user.service';
 import { PrismaClient } from '../generated/prisma';
-import { UserResponse } from '@/types/user';
 
 const prisma = new PrismaClient();
 const userService = new UserService(prisma);
