@@ -24,6 +24,8 @@ export class SocketService {
   >;
 
   constructor(httpServer: HttpServer) {
+    console.log('🔌 Creating Socket.IO server...');
+
     this.io = new SocketIOServer(httpServer, {
       cors: {
         origin: process.env.FRONTEND_URL || "http://localhost:3000",
@@ -33,8 +35,13 @@ export class SocketService {
       transports: ['websocket', 'polling']
     });
 
+    console.log('🔌 Socket.IO server created, setting up event handlers...');
     this.setupEventHandlers();
+
+    console.log('🔌 Starting cleanup interval...');
     this.startCleanupInterval();
+
+    console.log('🔌 Socket.IO service constructor completed');
   }
 
   /**
@@ -271,14 +278,19 @@ export class SocketService {
    * Inicia el intervalo de limpieza de notificaciones expiradas
    */
   private startCleanupInterval(): void {
+    console.log('🔌 Setting up cleanup interval...');
     // Limpiar notificaciones expiradas cada 30 minutos
     setInterval(async () => {
       try {
+        console.log('🧹 Running notification cleanup...');
         await notificationService.cleanupExpiredNotifications();
+        console.log('✅ Notification cleanup completed');
       } catch (error) {
+        console.error('❌ Notification cleanup failed:', error);
         logError(error as Error, 'SocketService.cleanupInterval');
       }
     }, 30 * 60 * 1000); // 30 minutos
+    console.log('✅ Cleanup interval configured');
   }
 
   /**

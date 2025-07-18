@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import * as nodemailer from 'nodemailer';
+import * as fs from 'fs/promises';
 import {
   Notification,
   NotificationPayload,
@@ -8,12 +10,44 @@ import {
 } from '@/types/notification';
 import logger, { logError, logBusinessEvent } from '@/utils/logger';
 
+interface EmailOptions {
+  to: string;
+  subject: string;
+  text?: string;
+  html?: string;
+}
+
+interface EmailWithAttachmentOptions extends EmailOptions {
+  attachmentPath: string;
+  attachmentName: string;
+}
+
 /**
  * Servicio para gestión de notificaciones
  * Responsabilidad: Lógica de negocio para notificaciones
  */
 export class NotificationService {
   private notifications: Map<string, Notification> = new Map();
+  private emailTransporter: nodemailer.Transporter;
+
+  constructor() {
+    this.initializeEmailTransporter();
+  }
+
+  private initializeEmailTransporter(): void {
+    // Configure email transporter based on environment
+    const emailConfig = {
+      host: process.env.SMTP_HOST || 'localhost',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    };
+
+    this.emailTransporter = nodemailer.createTransport(emailConfig);
+  }
 
   /**
    * Crea una nueva notificación
@@ -286,6 +320,65 @@ export class NotificationService {
       return notifications;
     } catch (error) {
       logError(error as Error, 'NotificationService.createSystemNotification');
+      throw error;
+    }
+  }
+
+  /**
+   * Sends an email
+   */
+  async sendEmail(options: EmailOptions): Promise<void> {
+    try {
+      const mailOptions = {
+        from: process.env.SMTP_FROM || 'noreply@sistema-gestion.com',
+        to: options.to,
+        subject: options.subject,
+        text: options.text,
+        html: options.html,
+      };
+
+      await this.emailTransporter.sendMail(mailOptions);
+
+      logger.info('Email sent successfully', {
+        to: options.to,
+        subject: options.subject,
+      });
+    } catch (error) {
+      logError(error as Error, 'NotificationService.sendEmail', { options });
+      throw error;
+    }
+  }
+
+  /**
+   * Sends an email with attachment
+   */
+  async sendEmailWithAttachment(options: EmailWithAttachmentOptions): Promise<void> {
+    try {
+      const attachment = await fs.readFile(options.attachmentPath);
+
+      const mailOptions = {
+        from: process.env.SMTP_FROM || 'noreply@sistema-gestion.com',
+        to: options.to,
+        subject: options.subject,
+        text: options.text,
+        html: options.html,
+        attachments: [
+          {
+            filename: options.attachmentName,
+            content: attachment,
+          },
+        ],
+      };
+
+      await this.emailTransporter.sendMail(mailOptions);
+
+      logger.info('Email with attachment sent successfully', {
+        to: options.to,
+        subject: options.subject,
+        attachment: options.attachmentName,
+      });
+    } catch (error) {
+      logError(error as Error, 'NotificationService.sendEmailWithAttachment', { options });
       throw error;
     }
   }
