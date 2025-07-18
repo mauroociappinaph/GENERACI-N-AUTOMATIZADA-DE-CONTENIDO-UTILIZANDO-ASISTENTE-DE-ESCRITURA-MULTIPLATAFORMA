@@ -9,7 +9,9 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "validate:standards": "node scripts/validate-code-standards.js",
+    "pre-commit": "npm run validate:standards && npm run lint && npm run format:check"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
@@ -37,6 +39,7 @@
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "glob": "^11.0.3",
     "postcss": "^8",
     "prettier": "^3.0.0",
     "tailwindcss": "^3.3.0",
