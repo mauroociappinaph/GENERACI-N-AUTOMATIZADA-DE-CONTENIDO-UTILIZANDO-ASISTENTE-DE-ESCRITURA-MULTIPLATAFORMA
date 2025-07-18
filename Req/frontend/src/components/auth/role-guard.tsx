@@ -40,7 +40,8 @@ export function RoleGuard({
 
     // Determine if access should be denied
     const hasAllowedRole = !allowedRoles || allowedRoles.includes(user.role);
-    const hasPathAccess = !checkPathAccess || hasRouteAccess(pathname, user.role);
+    const hasPathAccess =
+      !checkPathAccess || hasRouteAccess(pathname, user.role);
 
     if (!hasAllowedRole || !hasPathAccess) {
       // Redirect to appropriate path if access is denied
@@ -54,7 +55,7 @@ export function RoleGuard({
     fallbackPath,
     router,
     pathname,
-    checkPathAccess
+    checkPathAccess,
   ]);
 
   // If user is authenticated and we've verified access

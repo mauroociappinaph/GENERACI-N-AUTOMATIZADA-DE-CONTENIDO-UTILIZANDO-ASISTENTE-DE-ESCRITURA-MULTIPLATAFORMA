@@ -1,9 +1,14 @@
 import React from 'react';
 import { DashboardWidget } from '@/types';
+import { AdvancedChart } from '@/components/charts/advanced-charts';
 
 interface ChartWidgetProps {
   widget: DashboardWidget;
-  data: any;
+  data: {
+    monthly?: number[];
+    data?: number[];
+    [key: string]: unknown;
+  };
 }
 
 // Simple Bar Chart Component
@@ -11,11 +16,26 @@ export function BarChart({ data, title }: { data: number[]; title?: string }) {
   if (!data || data.length === 0) return <div>No data available</div>;
 
   const maxValue = Math.max(...data);
-  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const months = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
+  ];
 
   return (
     <div className="h-48 p-4">
-      {title && <h3 className="text-sm font-medium text-gray-700 mb-4">{title}</h3>}
+      {title && (
+        <h3 className="text-sm font-medium text-gray-700 mb-4">{title}</h3>
+      )}
       <div className="flex items-end space-x-1 h-32 justify-between">
         {data.slice(0, 12).map((value, i) => {
           const heightPercentage = (value / maxValue) * 100;
@@ -42,28 +62,61 @@ export function LineChart({ data, title }: { data: number[]; title?: string }) {
   const maxValue = Math.max(...data);
   const minValue = Math.min(...data);
   const range = maxValue - minValue;
-  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const months = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
+  ];
 
   return (
     <div className="h-48 p-4">
-      {title && <h3 className="text-sm font-medium text-gray-700 mb-4">{title}</h3>}
+      {title && (
+        <h3 className="text-sm font-medium text-gray-700 mb-4">{title}</h3>
+      )}
       <div className="h-32 relative">
-        <svg className="w-full h-full" viewBox="0 0 100 50" preserveAspectRatio="none">
+        <svg
+          className="w-full h-full"
+          viewBox="0 0 100 50"
+          preserveAspectRatio="none"
+        >
           {/* Grid lines */}
           <defs>
-            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>
+            <pattern
+              id="grid"
+              width="10"
+              height="10"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 10 0 L 0 0 0 10"
+                fill="none"
+                stroke="#e5e7eb"
+                strokeWidth="0.5"
+              />
             </pattern>
           </defs>
           <rect width="100" height="50" fill="url(#grid)" />
 
           {/* Line */}
           <polyline
-            points={data.slice(0, 12).map((value, i) => {
-              const x = (i / (Math.min(data.length, 12) - 1)) * 100;
-              const y = range > 0 ? 50 - (((value - minValue) / range) * 40) : 25;
-              return `${x},${y}`;
-            }).join(' ')}
+            points={data
+              .slice(0, 12)
+              .map((value, i) => {
+                const x = (i / (Math.min(data.length, 12) - 1)) * 100;
+                const y =
+                  range > 0 ? 50 - ((value - minValue) / range) * 40 : 25;
+                return `${x},${y}`;
+              })
+              .join(' ')}
             fill="none"
             stroke="#3b82f6"
             strokeWidth="2"
@@ -75,11 +128,15 @@ export function LineChart({ data, title }: { data: number[]; title?: string }) {
           <path
             d={`
               M0,50
-              ${data.slice(0, 12).map((value, i) => {
-                const x = (i / (Math.min(data.length, 12) - 1)) * 100;
-                const y = range > 0 ? 50 - (((value - minValue) / range) * 40) : 25;
-                return `L${x},${y}`;
-              }).join(' ')}
+              ${data
+                .slice(0, 12)
+                .map((value, i) => {
+                  const x = (i / (Math.min(data.length, 12) - 1)) * 100;
+                  const y =
+                    range > 0 ? 50 - ((value - minValue) / range) * 40 : 25;
+                  return `L${x},${y}`;
+                })
+                .join(' ')}
               L100,50
               Z
             `}
@@ -89,7 +146,7 @@ export function LineChart({ data, title }: { data: number[]; title?: string }) {
           {/* Data points */}
           {data.slice(0, 12).map((value, i) => {
             const x = (i / (Math.min(data.length, 12) - 1)) * 100;
-            const y = range > 0 ? 50 - (((value - minValue) / range) * 40) : 25;
+            const y = range > 0 ? 50 - ((value - minValue) / range) * 40 : 25;
             return (
               <circle
                 key={i}
@@ -107,9 +164,12 @@ export function LineChart({ data, title }: { data: number[]; title?: string }) {
 
         {/* X-axis labels */}
         <div className="flex justify-between text-xs text-gray-500 mt-2">
-          {months.slice(0, Math.min(data.length, 12)).filter((_, i) => i % 3 === 0).map((month, i) => (
-            <span key={i}>{month}</span>
-          ))}
+          {months
+            .slice(0, Math.min(data.length, 12))
+            .filter((_, i) => i % 3 === 0)
+            .map((month, i) => (
+              <span key={i}>{month}</span>
+            ))}
         </div>
       </div>
     </div>
@@ -117,11 +177,26 @@ export function LineChart({ data, title }: { data: number[]; title?: string }) {
 }
 
 // Simple Pie Chart Component
-export function PieChart({ data, labels, title }: { data: number[]; labels?: string[]; title?: string }) {
+export function PieChart({
+  data,
+  labels,
+  title,
+}: {
+  data: number[];
+  labels?: string[];
+  title?: string;
+}) {
   if (!data || data.length === 0) return <div>No data available</div>;
 
   const total = data.reduce((sum, value) => sum + value, 0);
-  const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4'];
+  const colors = [
+    '#3b82f6',
+    '#ef4444',
+    '#10b981',
+    '#f59e0b',
+    '#8b5cf6',
+    '#06b6d4',
+  ];
 
   let cumulativePercentage = 0;
   const segments = data.map((value, index) => {
@@ -132,16 +207,16 @@ export function PieChart({ data, labels, title }: { data: number[]; labels?: str
     cumulativePercentage += percentage;
 
     const largeArcFlag = percentage > 50 ? 1 : 0;
-    const x1 = 50 + 40 * Math.cos((startAngle - 90) * Math.PI / 180);
-    const y1 = 50 + 40 * Math.sin((startAngle - 90) * Math.PI / 180);
-    const x2 = 50 + 40 * Math.cos((endAngle - 90) * Math.PI / 180);
-    const y2 = 50 + 40 * Math.sin((endAngle - 90) * Math.PI / 180);
+    const x1 = 50 + 40 * Math.cos(((startAngle - 90) * Math.PI) / 180);
+    const y1 = 50 + 40 * Math.sin(((startAngle - 90) * Math.PI) / 180);
+    const x2 = 50 + 40 * Math.cos(((endAngle - 90) * Math.PI) / 180);
+    const y2 = 50 + 40 * Math.sin(((endAngle - 90) * Math.PI) / 180);
 
     const pathData = [
       `M 50 50`,
       `L ${x1} ${y1}`,
       `A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-      'Z'
+      'Z',
     ].join(' ');
 
     return {
@@ -149,13 +224,15 @@ export function PieChart({ data, labels, title }: { data: number[]; labels?: str
       color: colors[index % colors.length],
       percentage: percentage.toFixed(1),
       value,
-      label: labels?.[index] || `Segmento ${index + 1}`
+      label: labels?.[index] || `Segmento ${index + 1}`,
     };
   });
 
   return (
     <div className="h-48 p-4">
-      {title && <h3 className="text-sm font-medium text-gray-700 mb-4">{title}</h3>}
+      {title && (
+        <h3 className="text-sm font-medium text-gray-700 mb-4">{title}</h3>
+      )}
       <div className="flex items-center space-x-4">
         {/* Pie chart */}
         <div className="flex-shrink-0">
@@ -192,44 +269,173 @@ export function PieChart({ data, labels, title }: { data: number[]; labels?: str
   );
 }
 
-// Enhanced Chart Widget Component
+// Enhanced Chart Widget Component using Advanced Charts
 export function EnhancedChartWidget({ widget, data }: ChartWidgetProps) {
   if (!data) return <div className="p-4 text-gray-500">No data available</div>;
 
   const chartType = widget.config.chartType || 'bar';
+  const months = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
+  ];
 
-  switch (chartType) {
-    case 'bar':
-      return <BarChart data={data.monthly || data.data || []} title={widget.title} />;
+  // Transform data for advanced charts
+  const transformDataForChart = () => {
+    const rawData = data.monthly || data.data || [];
 
-    case 'line':
-      return <LineChart data={data.monthly || data.data || []} title={widget.title} />;
+    if (chartType === 'pie') {
+      // For pie charts, create segments with labels
+      return rawData.slice(0, 4).map((value: number, index: number) => ({
+        name: ['Q1', 'Q2', 'Q3', 'Q4'][index] || `Segmento ${index + 1}`,
+        value,
+      }));
+    }
 
-    case 'pie':
-      // For pie charts, we'll use the monthly data and create segments
-      const pieData = data.monthly || data.data || [];
-      const pieLabels = ['Q1', 'Q2', 'Q3', 'Q4'].slice(0, pieData.length);
-      return <PieChart data={pieData.slice(0, 4)} labels={pieLabels} title={widget.title} />;
+    // For other chart types, use monthly data
+    return rawData.slice(0, 12).map((value: number, index: number) => ({
+      name: months[index] || `Mes ${index + 1}`,
+      value,
+      trend: value * 0.8 + Math.random() * value * 0.4,
+    }));
+  };
 
-    case 'doughnut':
-      // Similar to pie but with a hole in the middle (simplified version)
-      const doughnutData = data.monthly || data.data || [];
-      const doughnutLabels = ['Usuarios', 'Registros', 'Reportes', 'Otros'].slice(0, doughnutData.length);
-      return (
-        <div className="h-48 p-4">
-          <h3 className="text-sm font-medium text-gray-700 mb-4">{widget.title}</h3>
-          <div className="flex items-center justify-center h-32">
-            <div className="relative">
-              <PieChart data={doughnutData.slice(0, 4)} labels={doughnutLabels} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 bg-white rounded-full border-4 border-gray-100" />
-              </div>
-            </div>
+  const chartData = transformDataForChart();
+
+  // Use advanced charts with fallback to simple charts
+  try {
+    switch (chartType) {
+      case 'bar':
+        return (
+          <div className="h-64">
+            <AdvancedChart
+              data={chartData}
+              type="bar"
+              title={widget.title}
+              height={200}
+              showGrid={true}
+              showLegend={false}
+              animate={true}
+            />
           </div>
-        </div>
-      );
+        );
 
-    default:
-      return <div className="p-4 text-gray-500">Chart type not supported: {chartType}</div>;
+      case 'line':
+        return (
+          <div className="h-64">
+            <AdvancedChart
+              data={chartData}
+              type="line"
+              title={widget.title}
+              height={200}
+              showGrid={true}
+              showLegend={false}
+              animate={true}
+            />
+          </div>
+        );
+
+      case 'area':
+        return (
+          <div className="h-64">
+            <AdvancedChart
+              data={chartData}
+              type="area"
+              title={widget.title}
+              height={200}
+              showGrid={true}
+              showLegend={false}
+              animate={true}
+            />
+          </div>
+        );
+
+      case 'pie':
+        return (
+          <div className="h-64">
+            <AdvancedChart
+              data={chartData}
+              type="pie"
+              title={widget.title}
+              height={200}
+              showLegend={true}
+              animate={true}
+            />
+          </div>
+        );
+
+      case 'composed':
+        return (
+          <div className="h-64">
+            <AdvancedChart
+              data={chartData}
+              type="composed"
+              title={widget.title}
+              height={200}
+              showGrid={true}
+              showLegend={true}
+              animate={true}
+            />
+          </div>
+        );
+
+      case 'doughnut':
+        // Use pie chart for doughnut (Recharts doesn't have built-in doughnut)
+        return (
+          <div className="h-64">
+            <AdvancedChart
+              data={chartData}
+              type="pie"
+              title={widget.title}
+              height={200}
+              showLegend={true}
+              animate={true}
+            />
+          </div>
+        );
+
+      default:
+        // Fallback to simple charts for unsupported types
+        return (
+          <BarChart data={data.monthly || data.data || []} title={widget.title} />
+        );
+    }
+  } catch (error) {
+    // Fallback to simple charts if advanced charts fail
+    // eslint-disable-next-line no-console
+    console.warn('Advanced chart failed, falling back to simple chart:', error);
+
+    switch (chartType) {
+      case 'line':
+        return (
+          <LineChart
+            data={data.monthly || data.data || []}
+            title={widget.title}
+          />
+        );
+      case 'pie':
+        const pieData = data.monthly || data.data || [];
+        const pieLabels = ['Q1', 'Q2', 'Q3', 'Q4'].slice(0, pieData.length);
+        return (
+          <PieChart
+            data={pieData.slice(0, 4)}
+            labels={pieLabels}
+            title={widget.title}
+          />
+        );
+      default:
+        return (
+          <BarChart data={data.monthly || data.data || []} title={widget.title} />
+        );
+    }
   }
 }

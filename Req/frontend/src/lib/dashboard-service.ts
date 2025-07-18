@@ -210,7 +210,10 @@ export const dashboardService = {
             count: 1453,
             trend: '+5%',
             data: [1200, 1250, 1300, 1400, 1453],
-            monthly: [1120, 1145, 1182, 1215, 1248, 1290, 1310, 1345, 1375, 1400, 1430, 1453],
+            monthly: [
+              1120, 1145, 1182, 1215, 1248, 1290, 1310, 1345, 1375, 1400, 1430,
+              1453,
+            ],
           };
         case 'reports':
           return {
@@ -219,16 +222,29 @@ export const dashboardService = {
             data: [65, 70, 75, 80, 85],
             monthly: [55, 58, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85],
             lineData: {
-              labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+              labels: [
+                'Ene',
+                'Feb',
+                'Mar',
+                'Abr',
+                'May',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dic',
+              ],
               datasets: [
                 {
                   label: 'Reportes Generados',
                   data: [55, 58, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85],
                   borderColor: '#3b82f6',
                   backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                }
-              ]
-            }
+                },
+              ],
+            },
           };
         case 'activity':
           return {
@@ -297,7 +313,10 @@ export const dashboardService = {
       localStorage.setItem('dashboard_widgets', JSON.stringify(widgets));
 
       // Also store a timestamp for cache invalidation
-      localStorage.setItem('dashboard_widgets_timestamp', Date.now().toString());
+      localStorage.setItem(
+        'dashboard_widgets_timestamp',
+        Date.now().toString()
+      );
 
       return true;
     } catch (error) {
@@ -310,7 +329,9 @@ export const dashboardService = {
    * Add a new widget to the dashboard
    * In a real app, this would create a new widget on the backend
    */
-  async addWidget(widget: Omit<DashboardWidget, 'id'>): Promise<DashboardWidget> {
+  async addWidget(
+    widget: Omit<DashboardWidget, 'id'>
+  ): Promise<DashboardWidget> {
     try {
       // In a real app, this would be an API call
       // const response = await apiClient.post<ApiResponse<DashboardWidget>>('/api/dashboard/widgets/add', widget);
@@ -391,5 +412,5 @@ export const dashboardService = {
       console.error('Error loading saved widget configuration:', error);
       return null;
     }
-  }
+  },
 };

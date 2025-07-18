@@ -17,9 +17,9 @@ export default function AdminPage() {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600">
-              Esta sección está restringida solo para administradores del sistema.
-              Aquí puede gestionar usuarios, configurar parámetros del sistema y
-              revisar logs de auditoría.
+              Esta sección está restringida solo para administradores del
+              sistema. Aquí puede gestionar usuarios, configurar parámetros del
+              sistema y revisar logs de auditoría.
             </p>
           </CardContent>
         </Card>

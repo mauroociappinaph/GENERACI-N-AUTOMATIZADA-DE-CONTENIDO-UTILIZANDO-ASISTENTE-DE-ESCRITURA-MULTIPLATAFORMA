@@ -1,14 +1,24 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { DataRecord, SearchCriteria } from '@/types';
-import { dataService, DataRecordListResponse } from '@/lib/data-service';
+import { dataService } from '@/lib/data-service';
 import { DataTable } from '@/components/data/data-table';
 import { DataFilters } from '@/components/data/data-filters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useRouter } from 'next/navigation';
+import { toast } from '@/components/ui/use-toast';
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+} from '@/components/ui/alert-dialog';
 
 export default function DataPage() {
   const router = useRouter();
@@ -32,6 +42,9 @@ export default function DataPage() {
     limit: 20,
   });
 
+  const [recordToDelete, setRecordToDelete] = useState<DataRecord | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
   const fetchRecords = useCallback(async (criteria: SearchCriteria) => {
     try {
       setLoading(true);
@@ -47,7 +60,9 @@ export default function DataPage() {
       }
     } catch (err) {
       setError('Error de conexión al cargar los registros');
-      console.error('Error fetching records:', err);
+      if (err instanceof Error) {
+        setError(`Error de conexión: ${err.message}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -59,35 +74,19 @@ export default function DataPage() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    setSearchCriteria(prev => ({
-      ...prev,
-      query,
-      page: 1,
-    }));
+    setSearchCriteria(prev => ({ ...prev, query, page: 1 }));
   };
 
-  const handleFilterChange = (filters: Record<string, any>) => {
-    setSearchCriteria(prev => ({
-      ...prev,
-      filters,
-      page: 1,
-    }));
+  const handleFilterChange = (filters: Record<string, unknown>) => {
+    setSearchCriteria(prev => ({ ...prev, filters, page: 1 }));
   };
 
   const handleSortChange = (sortBy: string, sortOrder: 'asc' | 'desc') => {
-    setSearchCriteria(prev => ({
-      ...prev,
-      sortBy,
-      sortOrder,
-      page: 1,
-    }));
+    setSearchCriteria(prev => ({ ...prev, sortBy, sortOrder, page: 1 }));
   };
 
   const handlePageChange = (page: number) => {
-    setSearchCriteria(prev => ({
-      ...prev,
-      page,
-    }));
+    setSearchCriteria(prev => ({ ...prev, page }));
   };
 
   const handleCreateNew = () => {
@@ -102,22 +101,33 @@ export default function DataPage() {
     router.push(`/data/${id}`);
   };
 
-  const handleDeleteRecord = async (id: string) => {
-    if (!confirm('¿Está seguro de que desea eliminar este registro?')) {
-      return;
-    }
+  const handleDeleteRecord = async () => {
+    if (!recordToDelete) return;
 
     try {
-      const response = await dataService.deleteRecord(id);
+      const response = await dataService.deleteRecord(recordToDelete.id);
       if (response.success) {
-        // Refresh the list
+        toast({
+          title: 'Registro eliminado',
+          description: `El registro "${recordToDelete.id}" fue eliminado correctamente.`,
+        });
         fetchRecords(searchCriteria);
       } else {
-        alert(response.error?.message || 'Error al eliminar el registro');
+        toast({
+          title: 'Error al eliminar',
+          description: response.error?.message || 'Error desconocido.',
+          variant: 'destructive',
+        });
       }
     } catch (err) {
-      alert('Error de conexión al eliminar el registro');
-      console.error('Error deleting record:', err);
+      toast({
+        title: 'Error de conexión',
+        description: err instanceof Error ? err.message : 'Error desconocido.',
+        variant: 'destructive',
+      });
+    } finally {
+      setShowDeleteDialog(false);
+      setRecordToDelete(null);
     }
   };
 
@@ -147,7 +157,6 @@ export default function DataPage() {
               />
             </div>
           </div>
-
           <DataFilters
             onFilterChange={handleFilterChange}
             currentFilters={searchCriteria.filters}
@@ -174,7 +183,6 @@ export default function DataPage() {
               {error}
             </div>
           )}
-
           <DataTable
             records={records}
             loading={loading}
@@ -185,10 +193,40 @@ export default function DataPage() {
             onPageChange={handlePageChange}
             onView={handleViewRecord}
             onEdit={handleEditRecord}
-            onDelete={handleDeleteRecord}
+            onDelete={(id: string) => {
+              const record = records.find(r => r.id === id) || null;
+              setRecordToDelete(record);
+              setShowDeleteDialog(true);
+            }}
           />
         </CardContent>
       </Card>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar registro?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer. El registro{' '}
+              <span className="font-semibold">
+                {recordToDelete?.id || 'N/A'}
+              </span>{' '}
+              será eliminado permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteDialog(false)}
+            >
+              Cancelar
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteRecord}>
+              Eliminar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

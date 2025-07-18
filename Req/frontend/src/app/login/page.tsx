@@ -2,7 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { useAuthStore } from '@/store/auth-store';
 import { AuthService } from '@/lib/auth-service';
 import { FormEvent, useState } from 'react';
@@ -74,7 +81,7 @@ export default function LoginPage() {
                 type="email"
                 placeholder="correo@ejemplo.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -96,24 +103,23 @@ export default function LoginPage() {
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
               />
             </div>
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full"
-              isLoading={isLoading}
-            >
+            <Button type="submit" className="w-full" isLoading={isLoading}>
               Iniciar sesión
             </Button>
 
             <p className="text-center text-sm text-gray-600">
               ¿Problemas para acceder?{' '}
-              <Link href="/contacto" className="text-blue-600 hover:text-blue-500">
+              <Link
+                href="/contacto"
+                className="text-blue-600 hover:text-blue-500"
+              >
                 Contacte a soporte
               </Link>
             </p>

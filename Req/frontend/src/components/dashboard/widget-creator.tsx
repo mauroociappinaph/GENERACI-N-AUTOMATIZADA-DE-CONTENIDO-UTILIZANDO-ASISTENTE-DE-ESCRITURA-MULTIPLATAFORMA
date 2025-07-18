@@ -14,15 +14,19 @@ export function WidgetCreator({
   onWidgetCreated,
   onCancel,
   className = '',
-  defaultOpen = false
+  defaultOpen = false,
 }: WidgetCreatorProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [widgetType, setWidgetType] = useState<WidgetType>(WidgetType.METRICS);
   const [title, setTitle] = useState('');
   const [dataSource, setDataSource] = useState('users');
-  const [chartType, setChartType] = useState<'line' | 'bar' | 'pie' | 'doughnut'>('bar');
+  const [chartType, setChartType] = useState<
+    'line' | 'bar' | 'pie' | 'doughnut'
+  >('bar');
   const [refreshInterval, setRefreshInterval] = useState(60000); // 1 minute default
-  const [widgetSize, setWidgetSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [widgetSize, setWidgetSize] = useState<'small' | 'medium' | 'large'>(
+    'medium'
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreateWidget = async () => {
@@ -132,14 +136,20 @@ export function WidgetCreator({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleCreateWidget(); }}>
+            <form
+              className="space-y-4"
+              onSubmit={e => {
+                e.preventDefault();
+                handleCreateWidget();
+              }}
+            >
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Tipo de Widget
                 </label>
                 <select
                   value={widgetType}
-                  onChange={(e) => setWidgetType(e.target.value as WidgetType)}
+                  onChange={e => setWidgetType(e.target.value as WidgetType)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value={WidgetType.METRICS}>Métricas</option>
@@ -156,7 +166,7 @@ export function WidgetCreator({
                 <input
                   type="text"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={e => setTitle(e.target.value)}
                   placeholder={getDefaultTitle(widgetType)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -168,7 +178,7 @@ export function WidgetCreator({
                 </label>
                 <select
                   value={dataSource}
-                  onChange={(e) => setDataSource(e.target.value)}
+                  onChange={e => setDataSource(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="users">Usuarios</option>
@@ -185,7 +195,11 @@ export function WidgetCreator({
                   </label>
                   <select
                     value={chartType}
-                    onChange={(e) => setChartType(e.target.value as 'line' | 'bar' | 'pie' | 'doughnut')}
+                    onChange={e =>
+                      setChartType(
+                        e.target.value as 'line' | 'bar' | 'pie' | 'doughnut'
+                      )
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="bar">Barras</option>
@@ -202,7 +216,11 @@ export function WidgetCreator({
                 </label>
                 <select
                   value={widgetSize}
-                  onChange={(e) => setWidgetSize(e.target.value as 'small' | 'medium' | 'large')}
+                  onChange={e =>
+                    setWidgetSize(
+                      e.target.value as 'small' | 'medium' | 'large'
+                    )
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="small">Pequeño (1x1)</option>
@@ -217,7 +235,7 @@ export function WidgetCreator({
                 </label>
                 <select
                   value={refreshInterval}
-                  onChange={(e) => setRefreshInterval(Number(e.target.value))}
+                  onChange={e => setRefreshInterval(Number(e.target.value))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="30000">30 segundos</option>

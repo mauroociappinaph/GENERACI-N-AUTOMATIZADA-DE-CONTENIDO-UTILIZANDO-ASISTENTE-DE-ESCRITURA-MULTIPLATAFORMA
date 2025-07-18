@@ -20,60 +20,91 @@ const roleDefaultPaths = {
   [UserRole.VIEWER]: '/dashboard',
 };
 
+// Helper function to parse authentication token
+function parseAuthToken(token: string): {
+  isAuthenticated: boolean;
+  userRole: UserRole | null;
+} {
+  try {
+    const parsedToken = JSON.parse(decodeURIComponent(token));
+    return {
+      isAuthenticated: parsedToken.state?.isAuthenticated || false,
+      userRole: (parsedToken.state?.user?.role as UserRole) || null,
+    };
+  } catch {
+    // Handle error silently
+    return { isAuthenticated: false, userRole: null };
+  }
+}
+
+// Helper function to handle unauthenticated users
+function handleUnauthenticatedUser(
+  pathname: string,
+  isPublicRoute: boolean,
+  request: NextRequest
+) {
+  if (!isPublicRoute && pathname !== '/') {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+  return null;
+}
+
+// Helper function to handle authenticated users
+function handleAuthenticatedUser(
+  pathname: string,
+  isPublicRoute: boolean,
+  userRole: UserRole | null,
+  request: NextRequest
+) {
+  if (isPublicRoute) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  if (userRole) {
+    const hasAccess = checkRoleAccess(pathname, userRole);
+    if (!hasAccess) {
+      const defaultPath = roleDefaultPaths[userRole] || '/dashboard';
+      return NextResponse.redirect(new URL(defaultPath, request.url));
+    }
+  }
+
+  if (pathname === '/') {
+    const defaultPath = userRole ? roleDefaultPaths[userRole] : '/dashboard';
+    return NextResponse.redirect(new URL(defaultPath, request.url));
+  }
+
+  return null;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the path is a public route
-  const isPublicRoute = publicRoutes.some(route =>
-    pathname === route || pathname.startsWith(`${route}/`)
+  const isPublicRoute = publicRoutes.some(
+    route => pathname === route || pathname.startsWith(`${route}/`)
   );
 
-  // Get the token from cookies
   const token = request.cookies.get('auth-storage')?.value;
-  let isAuthenticated = false;
-  let userRole: UserRole | null = null;
+  const { isAuthenticated, userRole } = token
+    ? parseAuthToken(token)
+    : { isAuthenticated: false, userRole: null };
 
-  // Parse the token to check if user is authenticated and get role
-  if (token) {
-    try {
-      const parsedToken = JSON.parse(decodeURIComponent(token));
-      isAuthenticated = parsedToken.state?.isAuthenticated || false;
-      userRole = parsedToken.state?.user?.role || null;
-    } catch (error) {
-      console.error('Error parsing auth token:', error);
-    }
+  if (!isAuthenticated) {
+    const response = handleUnauthenticatedUser(
+      pathname,
+      isPublicRoute,
+      request
+    );
+    if (response) return response;
   }
 
-  // Redirect logic for unauthenticated users
-  if (!isAuthenticated && !isPublicRoute && pathname !== '/') {
-    // Redirect to login if not authenticated and trying to access protected route
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  // Redirect logic for authenticated users
   if (isAuthenticated) {
-    // Redirect to dashboard if already authenticated and trying to access public route
-    if (isPublicRoute) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
-
-    // Handle role-based access
-    if (userRole) {
-      // Check if user is trying to access a route they don't have permission for
-      const hasAccess = checkRoleAccess(pathname, userRole);
-
-      if (!hasAccess) {
-        // Redirect to the default path for their role
-        const defaultPath = roleDefaultPaths[userRole] || '/dashboard';
-        return NextResponse.redirect(new URL(defaultPath, request.url));
-      }
-    }
-
-    // Redirect root path to appropriate dashboard
-    if (pathname === '/') {
-      const defaultPath = userRole ? roleDefaultPaths[userRole] : '/dashboard';
-      return NextResponse.redirect(new URL(defaultPath, request.url));
-    }
+    const response = handleAuthenticatedUser(
+      pathname,
+      isPublicRoute,
+      userRole,
+      request
+    );
+    if (response) return response;
   }
 
   return NextResponse.next();
@@ -81,8 +112,12 @@ export function middleware(request: NextRequest) {
 
 // Helper function to check if a user role has access to a specific path
 function checkRoleAccess(pathname: string, role: UserRole): boolean {
-  // Root paths like /admin, /dashboard, etc.
-  const rootPath = '/' + pathname.split('/')[1];
+  // For root path, consider it as a valid access point if the user has any allowed route
+  if (pathname === '/') {
+    return true;
+  }
+
+  const rootPath = `/${pathname.split('/')[1]}`;
 
   // Admin has access to everything
   if (role === UserRole.ADMIN) {
@@ -91,7 +126,9 @@ function checkRoleAccess(pathname: string, role: UserRole): boolean {
 
   // Check if the role has access to this route
   const allowedRoutes = roleBasedRoutes[role] || [];
-  return allowedRoutes.some(route => rootPath === route);
+  return allowedRoutes.some(
+    route => rootPath === route || pathname.startsWith(`${route}/`)
+  );
 }
 
 // Configure the middleware to run on specific paths

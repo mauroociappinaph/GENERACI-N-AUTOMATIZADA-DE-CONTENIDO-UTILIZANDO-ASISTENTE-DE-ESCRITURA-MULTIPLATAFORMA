@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DashboardWidget } from '@/types';
 import { DraggableWidget } from './draggable-widget';
 import { WidgetCreator } from './widget-creator';
@@ -47,159 +47,179 @@ export function WidgetLayoutManager({
   }, [widgets, gridCols, gridRows]);
 
   // Find next available position for a new widget
-  const findAvailablePosition = useCallback((width: number = 1, height: number = 1) => {
-    const grid = createGrid();
+  const findAvailablePosition = useCallback(
+    (width: number = 1, height: number = 1) => {
+      const grid = createGrid();
 
-    for (let y = 0; y <= gridRows - height; y++) {
-      for (let x = 0; x <= gridCols - width; x++) {
-        let canPlace = true;
+      for (let y = 0; y <= gridRows - height; y++) {
+        for (let x = 0; x <= gridCols - width; x++) {
+          let canPlace = true;
 
-        // Check if the area is free
-        for (let row = y; row < y + height && canPlace; row++) {
-          for (let col = x; col < x + width && canPlace; col++) {
-            if (grid[row][col] !== null) {
-              canPlace = false;
+          // Check if the area is free
+          for (let row = y; row < y + height && canPlace; row++) {
+            for (let col = x; col < x + width && canPlace; col++) {
+              if (grid[row][col] !== null) {
+                canPlace = false;
+              }
             }
           }
-        }
 
-        if (canPlace) {
-          return { x, y };
+          if (canPlace) {
+            return { x, y };
+          }
         }
       }
-    }
 
-    // If no space found, place at the end
-    return { x: 0, y: gridRows };
-  }, [createGrid, gridCols, gridRows]);
+      // If no space found, place at the end
+      return { x: 0, y: gridRows };
+    },
+    [createGrid, gridCols, gridRows]
+  );
 
   // Handle widget position updates
-  const handleWidgetPositionUpdate = useCallback(async (
-    id: string,
-    newPosition: { x: number; y: number; w: number; h: number }
-  ) => {
-    const updatedWidgets = widgets.map(widget =>
-      widget.id === id
-        ? { ...widget, position: newPosition }
-        : widget
-    );
+  const handleWidgetPositionUpdate = useCallback(
+    async (
+      id: string,
+      newPosition: { x: number; y: number; w: number; h: number }
+    ) => {
+      const updatedWidgets = widgets.map(widget =>
+        widget.id === id ? { ...widget, position: newPosition } : widget
+      );
 
-    onWidgetsChange(updatedWidgets);
+      onWidgetsChange(updatedWidgets);
 
-    // Persist changes
-    try {
-      await dashboardService.saveWidgetConfiguration(updatedWidgets);
-    } catch (error) {
-      console.error('Error saving widget configuration:', error);
-    }
-  }, [widgets, onWidgetsChange]);
+      // Persist changes
+      try {
+        await dashboardService.saveWidgetConfiguration(updatedWidgets);
+      } catch (error) {
+        console.error('Error saving widget configuration:', error);
+      }
+    },
+    [widgets, onWidgetsChange]
+  );
 
   // Handle widget drag end
-  const handleWidgetDragEnd = useCallback(async (id: string, newPosition: { x: number; y: number }) => {
-    const widget = widgets.find(w => w.id === id);
-    if (!widget) return;
+  const handleWidgetDragEnd = useCallback(
+    async (id: string, newPosition: { x: number; y: number }) => {
+      const widget = widgets.find(w => w.id === id);
+      if (!widget) return;
 
-    const updatedPosition = {
-      ...newPosition,
-      w: widget.position.w,
-      h: widget.position.h,
-    };
+      const updatedPosition = {
+        ...newPosition,
+        w: widget.position.w,
+        h: widget.position.h,
+      };
 
-    await handleWidgetPositionUpdate(id, updatedPosition);
-    setDraggedWidget(null);
-  }, [widgets, handleWidgetPositionUpdate]);
+      await handleWidgetPositionUpdate(id, updatedPosition);
+      setDraggedWidget(null);
+    },
+    [widgets, handleWidgetPositionUpdate]
+  );
 
   // Handle widget movement (arrow keys or buttons)
-  const handleWidgetMove = useCallback((id: string, direction: 'up' | 'down' | 'left' | 'right') => {
-    const widget = widgets.find(w => w.id === id);
-    if (!widget) return;
+  const handleWidgetMove = useCallback(
+    (id: string, direction: 'up' | 'down' | 'left' | 'right') => {
+      const widget = widgets.find(w => w.id === id);
+      if (!widget) return;
 
-    const { x, y, w, h } = widget.position;
-    let newX = x;
-    let newY = y;
+      const { x, y, w, h } = widget.position;
+      let newX = x;
+      let newY = y;
 
-    switch (direction) {
-      case 'up':
-        newY = Math.max(0, y - 1);
-        break;
-      case 'down':
-        newY = y + 1;
-        break;
-      case 'left':
-        newX = Math.max(0, x - 1);
-        break;
-      case 'right':
-        newX = Math.min(gridCols - w, x + 1);
-        break;
-    }
+      switch (direction) {
+        case 'up':
+          newY = Math.max(0, y - 1);
+          break;
+        case 'down':
+          newY = y + 1;
+          break;
+        case 'left':
+          newX = Math.max(0, x - 1);
+          break;
+        case 'right':
+          newX = Math.min(gridCols - w, x + 1);
+          break;
+      }
 
-    handleWidgetPositionUpdate(id, { x: newX, y: newY, w, h });
-  }, [widgets, gridCols, handleWidgetPositionUpdate]);
+      handleWidgetPositionUpdate(id, { x: newX, y: newY, w, h });
+    },
+    [widgets, gridCols, handleWidgetPositionUpdate]
+  );
 
   // Handle widget resize
-  const handleWidgetResize = useCallback((id: string, size: 'small' | 'medium' | 'large') => {
-    const widget = widgets.find(w => w.id === id);
-    if (!widget) return;
+  const handleWidgetResize = useCallback(
+    (id: string, size: 'small' | 'medium' | 'large') => {
+      const widget = widgets.find(w => w.id === id);
+      if (!widget) return;
 
-    const { x, y } = widget.position;
-    let w = 1;
-    let h = 1;
+      const { x, y } = widget.position;
+      let w = 1;
+      let h = 1;
 
-    switch (size) {
-      case 'small':
-        w = 1;
-        h = 1;
-        break;
-      case 'medium':
-        w = 2;
-        h = 1;
-        break;
-      case 'large':
-        w = 2;
-        h = 2;
-        break;
-    }
+      switch (size) {
+        case 'small':
+          w = 1;
+          h = 1;
+          break;
+        case 'medium':
+          w = 2;
+          h = 1;
+          break;
+        case 'large':
+          w = 2;
+          h = 2;
+          break;
+      }
 
-    // Ensure the widget doesn't exceed grid boundaries
-    const maxW = Math.min(w, gridCols - x);
-    const maxH = Math.min(h, gridRows - y);
+      // Ensure the widget doesn't exceed grid boundaries
+      const maxW = Math.min(w, gridCols - x);
+      const maxH = Math.min(h, gridRows - y);
 
-    handleWidgetPositionUpdate(id, { x, y, w: maxW, h: maxH });
-  }, [widgets, gridCols, gridRows, handleWidgetPositionUpdate]);
+      handleWidgetPositionUpdate(id, { x, y, w: maxW, h: maxH });
+    },
+    [widgets, gridCols, gridRows, handleWidgetPositionUpdate]
+  );
 
   // Handle widget removal
-  const handleWidgetRemove = useCallback(async (id: string) => {
-    const updatedWidgets = widgets.filter(w => w.id !== id);
-    onWidgetsChange(updatedWidgets);
+  const handleWidgetRemove = useCallback(
+    async (id: string) => {
+      const updatedWidgets = widgets.filter(w => w.id !== id);
+      onWidgetsChange(updatedWidgets);
 
-    // Persist changes
-    try {
-      await dashboardService.deleteWidget(id);
-    } catch (error) {
-      console.error('Error deleting widget:', error);
-    }
-  }, [widgets, onWidgetsChange]);
+      // Persist changes
+      try {
+        await dashboardService.deleteWidget(id);
+      } catch (error) {
+        console.error('Error deleting widget:', error);
+      }
+    },
+    [widgets, onWidgetsChange]
+  );
 
   // Handle new widget creation
-  const handleWidgetCreated = useCallback(async (newWidget: DashboardWidget) => {
-    // Find available position
-    const position = findAvailablePosition(newWidget.position.w, newWidget.position.h);
-    const widgetWithPosition = {
-      ...newWidget,
-      position: { ...newWidget.position, ...position },
-    };
+  const handleWidgetCreated = useCallback(
+    async (newWidget: DashboardWidget) => {
+      // Find available position
+      const position = findAvailablePosition(
+        newWidget.position.w,
+        newWidget.position.h
+      );
+      const widgetWithPosition = {
+        ...newWidget,
+        position: { ...newWidget.position, ...position },
+      };
 
-    const updatedWidgets = [...widgets, widgetWithPosition];
-    onWidgetsChange(updatedWidgets);
-    setShowCreator(false);
+      const updatedWidgets = [...widgets, widgetWithPosition];
+      onWidgetsChange(updatedWidgets);
+      setShowCreator(false);
 
-    // Persist changes
-    try {
-      await dashboardService.saveWidgetConfiguration(updatedWidgets);
-    } catch (error) {
-      console.error('Error saving new widget:', error);
-    }
-  }, [widgets, onWidgetsChange, findAvailablePosition]);
+      // Persist changes
+      try {
+        await dashboardService.saveWidgetConfiguration(updatedWidgets);
+      } catch (error) {}
+    },
+    [widgets, onWidgetsChange, findAvailablePosition]
+  );
 
   // Calculate grid template based on widgets
   const getGridStyle = () => {

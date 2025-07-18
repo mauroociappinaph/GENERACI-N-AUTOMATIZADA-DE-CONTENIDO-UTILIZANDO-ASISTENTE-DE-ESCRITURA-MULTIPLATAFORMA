@@ -49,7 +49,10 @@ export default function EditDataRecordPage({
         }
       } catch (err) {
         setError('Error de conexión al cargar el registro');
-        console.error('Error loading record:', err);
+        // Handle error appropriately - could use proper logging service
+        if (err instanceof Error) {
+          setError(`Error de conexión: ${err.message}`);
+        }
       } finally {
         setIsLoadingRecord(false);
       }
@@ -77,7 +80,10 @@ export default function EditDataRecordPage({
       }
       return false;
     } catch (err) {
-      console.error('Error checking for conflicts:', err);
+      // Handle error appropriately - could use proper logging service
+      if (err instanceof Error) {
+        setError(`Error checking conflicts: ${err.message}`);
+      }
       return false;
     }
   };
@@ -114,7 +120,10 @@ export default function EditDataRecordPage({
       }
     } catch (err) {
       setError('Error de conexión al actualizar el registro');
-      console.error('Error updating record:', err);
+      // Handle error appropriately - could use proper logging service
+      if (err instanceof Error) {
+        setError(`Error de conexión: ${err.message}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +165,10 @@ export default function EditDataRecordPage({
       }
     } catch (err) {
       setError('Error de conexión al resolver el conflicto');
-      console.error('Error resolving conflict:', err);
+      // Handle error appropriately - could use proper logging service
+      if (err instanceof Error) {
+        setError(`Error de conexión: ${err.message}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -175,7 +187,10 @@ export default function EditDataRecordPage({
         setHistory(response.data);
       }
     } catch (err) {
-      console.error('Error loading history:', err);
+      // Handle error appropriately - could use proper logging service
+      if (err instanceof Error) {
+        setError(`Error loading history: ${err.message}`);
+      }
     } finally {
       setIsLoadingHistory(false);
     }
@@ -207,7 +222,10 @@ export default function EditDataRecordPage({
       }
     } catch (err) {
       setError('Error de conexión al restaurar la versión');
-      console.error('Error restoring version:', err);
+      // Handle error appropriately - could use proper logging service
+      if (err instanceof Error) {
+        setError(`Error de conexión: ${err.message}`);
+      }
     } finally {
       setIsLoading(false);
     }

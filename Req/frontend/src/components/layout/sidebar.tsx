@@ -1,5 +1,9 @@
 import { cn } from '@/lib/utils';
-import { NavigationItem, filterNavigationByRole, mainNavigation } from '@/lib/navigation';
+import {
+  NavigationItem,
+  filterNavigationByRole,
+  mainNavigation,
+} from '@/lib/navigation';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserRole } from '@/types';
@@ -15,17 +19,18 @@ export function Sidebar({ className, userRole }: SidebarProps) {
   const filteredNavigation = filterNavigationByRole(mainNavigation, userRole);
 
   return (
-    <div className={cn('flex flex-col h-full bg-gray-900 text-white w-64', className)}>
+    <div
+      className={cn(
+        'flex flex-col h-full bg-gray-900 text-white w-64',
+        className
+      )}
+    >
       <div className="p-4">
         <h1 className="text-xl font-bold">Sistema de Gestión</h1>
       </div>
       <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-        {filteredNavigation.map((item) => (
-          <NavItem
-            key={item.href}
-            item={item}
-            pathname={pathname}
-          />
+        {filteredNavigation.map(item => (
+          <NavItem key={item.href} item={item} pathname={pathname} />
         ))}
       </nav>
       <div className="p-4 border-t border-gray-800">
@@ -42,7 +47,7 @@ interface NavItemProps {
 
 function NavItem({ item, pathname }: NavItemProps) {
   const isActive = pathname === item.href;
-  const isParentActive = pathname.startsWith(item.href + '/');
+  const isParentActive = pathname.startsWith(`${item.href}/`);
   const hasChildren = item.children && item.children.length > 0;
 
   const [isExpanded, setIsExpanded] = useState(isActive || isParentActive);
@@ -54,7 +59,7 @@ function NavItem({ item, pathname }: NavItemProps) {
           href={item.href}
           className={cn(
             'flex flex-1 items-center px-4 py-2 text-sm font-medium rounded-md transition-colors',
-            (isActive || isParentActive)
+            isActive || isParentActive
               ? 'bg-gray-800 text-white'
               : 'text-gray-300 hover:bg-gray-700 hover:text-white'
           )}
@@ -71,12 +76,20 @@ function NavItem({ item, pathname }: NavItemProps) {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={cn("h-4 w-4 transition-transform", isExpanded ? "transform rotate-180" : "")}
+              className={cn(
+                'h-4 w-4 transition-transform',
+                isExpanded ? 'transform rotate-180' : ''
+              )}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
         )}
@@ -85,7 +98,7 @@ function NavItem({ item, pathname }: NavItemProps) {
       {/* Submenu */}
       {hasChildren && isExpanded && (
         <div className="ml-6 space-y-1 border-l border-gray-700 pl-2">
-          {item.children!.map((child) => (
+          {item.children!.map(child => (
             <Link
               key={child.href}
               href={child.href}

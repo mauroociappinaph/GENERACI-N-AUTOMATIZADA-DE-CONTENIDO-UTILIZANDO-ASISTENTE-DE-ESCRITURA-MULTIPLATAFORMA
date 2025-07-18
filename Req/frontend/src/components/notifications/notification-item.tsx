@@ -125,26 +125,25 @@ export function NotificationItem({ notification }: NotificationItemProps) {
               </p>
 
               {/* Additional data */}
-              {notification.data && Object.keys(notification.data).length > 0 && (
-                <div className="mt-2 p-2 bg-gray-100 rounded text-xs">
-                  <details>
-                    <summary className="cursor-pointer text-gray-600 hover:text-gray-800">
-                      Ver detalles
-                    </summary>
-                    <pre className="mt-2 text-gray-700 whitespace-pre-wrap">
-                      {JSON.stringify(notification.data, null, 2)}
-                    </pre>
-                  </details>
-                </div>
-              )}
+              {notification.data &&
+                Object.keys(notification.data).length > 0 && (
+                  <div className="mt-2 p-2 bg-gray-100 rounded text-xs">
+                    <details>
+                      <summary className="cursor-pointer text-gray-600 hover:text-gray-800">
+                        Ver detalles
+                      </summary>
+                      <pre className="mt-2 text-gray-700 whitespace-pre-wrap">
+                        {JSON.stringify(notification.data, null, 2)}
+                      </pre>
+                    </details>
+                  </div>
+                )}
 
               <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
                 <span>{formatDate(notification.createdAt)}</span>
                 <span className="capitalize">{notification.type}</span>
                 {notification.expiresAt && (
-                  <span>
-                    Expira: {formatDate(notification.expiresAt)}
-                  </span>
+                  <span>Expira: {formatDate(notification.expiresAt)}</span>
                 )}
               </div>
             </div>

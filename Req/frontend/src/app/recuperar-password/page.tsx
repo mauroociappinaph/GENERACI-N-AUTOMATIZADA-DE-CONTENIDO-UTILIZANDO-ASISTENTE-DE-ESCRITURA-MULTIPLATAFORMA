@@ -2,22 +2,30 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 
 // Mock password recovery function - in a real app, this would call an API
 const mockRecoverPassword = async (email: string) => {
   // Simulate API call delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // For demo purposes, accept any email
-  if (!email.includes('@')) {
-    throw new Error('Correo electrónico inválido');
-  }
-
-  // Return success
-  return { success: true };
+  return new Promise<{ success: boolean }>((resolve, reject) => {
+    setTimeout(() => {
+      // For demo purposes, accept any email
+      if (!email.includes('@')) {
+        reject(new Error('Correo electrónico inválido'));
+      } else {
+        resolve({ success: true });
+      }
+    }, 1000);
+  });
 };
 
 export default function RecuperarPasswordPage() {
@@ -43,7 +51,9 @@ export default function RecuperarPasswordPage() {
       // Show success message
       setIsSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al procesar la solicitud');
+      setError(
+        err instanceof Error ? err.message : 'Error al procesar la solicitud'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -64,7 +74,8 @@ export default function RecuperarPasswordPage() {
         {isSuccess ? (
           <CardContent className="space-y-4">
             <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm">
-              Se han enviado las instrucciones para recuperar su contraseña a {email}. Por favor, revise su bandeja de entrada.
+              Se han enviado las instrucciones para recuperar su contraseña a{' '}
+              {email}. Por favor, revise su bandeja de entrada.
             </div>
 
             <div className="text-center mt-4">
@@ -91,23 +102,22 @@ export default function RecuperarPasswordPage() {
                   type="email"
                   placeholder="correo@ejemplo.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </div>
             </CardContent>
 
             <CardFooter className="flex flex-col space-y-4">
-              <Button
-                type="submit"
-                className="w-full"
-                isLoading={isLoading}
-              >
+              <Button type="submit" className="w-full" isLoading={isLoading}>
                 Enviar instrucciones
               </Button>
 
               <p className="text-center text-sm text-gray-600">
-                <Link href="/login" className="text-blue-600 hover:text-blue-500">
+                <Link
+                  href="/login"
+                  className="text-blue-600 hover:text-blue-500"
+                >
                   Volver a inicio de sesión
                 </Link>
               </p>

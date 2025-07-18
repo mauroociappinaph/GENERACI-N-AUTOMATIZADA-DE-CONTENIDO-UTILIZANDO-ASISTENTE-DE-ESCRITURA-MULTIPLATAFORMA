@@ -33,7 +33,10 @@ export function Widget({
 
       try {
         setLoading(true);
-        const data = await dashboardService.getWidgetData(widget.id, widget.config.dataSource);
+        const data = await dashboardService.getWidgetData(
+          widget.id,
+          widget.config.dataSource
+        );
         setWidgetData(data);
         setError(null);
       } catch (err) {
@@ -56,7 +59,11 @@ export function Widget({
   // Render different widget content based on type
   const renderWidgetContent = () => {
     if (loading) {
-      return <div className="flex justify-center items-center py-4"><Loading size="sm" /></div>;
+      return (
+        <div className="flex justify-center items-center py-4">
+          <Loading size="sm" />
+        </div>
+      );
     }
 
     if (error) {
@@ -201,7 +208,13 @@ export function Widget({
 }
 
 // Widget type implementations
-function MetricsWidget({ widget, data }: { widget: DashboardWidget; data: any }) {
+function MetricsWidget({
+  widget,
+  data,
+}: {
+  widget: DashboardWidget;
+  data: any;
+}) {
   if (!data) return <div>No data available</div>;
 
   // Determine trend color
@@ -216,13 +229,35 @@ function MetricsWidget({ widget, data }: { widget: DashboardWidget; data: any })
       <div className="text-2xl font-bold">{data.count}</div>
       <p className={`text-xs flex items-center ${trendColor}`}>
         {data.trend?.startsWith('+') && (
-          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          <svg
+            className="w-3 h-3 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 15l7-7 7 7"
+            />
           </svg>
         )}
         {data.trend?.startsWith('-') && (
-          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <svg
+            className="w-3 h-3 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         )}
         {data.trend} desde el mes pasado
@@ -231,23 +266,23 @@ function MetricsWidget({ widget, data }: { widget: DashboardWidget; data: any })
   );
 }
 
-
-
 function TableWidget({ widget, data }: { widget: DashboardWidget; data: any }) {
   if (!data || !data.monthly) return <div>No data available</div>;
 
   // Create some sample data based on the monthly data
-  const tableData = data.monthly.slice(0, 5).map((value: number, i: number) => ({
-    id: `rec-${i+1}`,
-    name: `Registro ${i+1}`,
-    value,
-    status: value > 1300 ? 'Alto' : value > 1200 ? 'Medio' : 'Bajo',
-    date: new Date(Date.now() - (i * 86400000)).toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit'
-    })
-  }));
+  const tableData = data.monthly
+    .slice(0, 5)
+    .map((value: number, i: number) => ({
+      id: `rec-${i + 1}`,
+      name: `Registro ${i + 1}`,
+      value,
+      status: value > 1300 ? 'Alto' : value > 1200 ? 'Medio' : 'Bajo',
+      date: new Date(Date.now() - i * 86400000).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+      }),
+    }));
 
   return (
     <div className="overflow-x-auto">
@@ -281,13 +316,15 @@ function TableWidget({ widget, data }: { widget: DashboardWidget; data: any }) {
                 {item.date}
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-sm">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  item.status === 'Alto'
-                    ? 'bg-red-100 text-red-800'
-                    : item.status === 'Medio'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-green-100 text-green-800'
-                }`}>
+                <span
+                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    item.status === 'Alto'
+                      ? 'bg-red-100 text-red-800'
+                      : item.status === 'Medio'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-green-100 text-green-800'
+                  }`}
+                >
                   {item.status}
                 </span>
               </td>
@@ -299,7 +336,13 @@ function TableWidget({ widget, data }: { widget: DashboardWidget; data: any }) {
   );
 }
 
-function ActivityWidget({ widget, data }: { widget: DashboardWidget; data: any }) {
+function ActivityWidget({
+  widget,
+  data,
+}: {
+  widget: DashboardWidget;
+  data: any;
+}) {
   if (!data || !data.items) return <div>No data available</div>;
 
   return (
@@ -308,10 +351,13 @@ function ActivityWidget({ widget, data }: { widget: DashboardWidget; data: any }
         // Calculate time ago
         const timestamp = new Date(item.timestamp);
         const now = new Date();
-        const diffMinutes = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60));
-        const timeAgo = diffMinutes < 60
-          ? `Hace ${diffMinutes} minutos`
-          : `Hace ${Math.floor(diffMinutes / 60)} horas`;
+        const diffMinutes = Math.floor(
+          (now.getTime() - timestamp.getTime()) / (1000 * 60)
+        );
+        const timeAgo =
+          diffMinutes < 60
+            ? `Hace ${diffMinutes} minutos`
+            : `Hace ${Math.floor(diffMinutes / 60)} horas`;
 
         // Get initials for avatar
         const initials = item.userName
@@ -340,12 +386,15 @@ function ActivityWidget({ widget, data }: { widget: DashboardWidget; data: any }
 
         return (
           <div key={item.id} className="flex items-start space-x-4">
-            <div className={`h-8 w-8 rounded-full flex items-center justify-center ${getActionColor(item.action)}`}>
+            <div
+              className={`h-8 w-8 rounded-full flex items-center justify-center ${getActionColor(item.action)}`}
+            >
               <span className="text-xs font-medium">{initials}</span>
             </div>
             <div className="space-y-1">
               <p className="text-sm font-medium">
-                {item.userName} {item.action} {item.resourceType === 'record' ? 'un registro' : 'un reporte'}
+                {item.userName} {item.action}{' '}
+                {item.resourceType === 'record' ? 'un registro' : 'un reporte'}
               </p>
               <p className="text-xs text-gray-500">{timeAgo}</p>
             </div>

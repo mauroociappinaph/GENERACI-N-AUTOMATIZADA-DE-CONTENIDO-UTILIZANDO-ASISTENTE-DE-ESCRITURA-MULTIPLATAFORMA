@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { DataRecord } from '@/types';
 import { dataService } from '@/lib/data-service';
 import { DataRecordForm } from '@/components/data/data-record-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function NewDataRecordPage() {
   const router = useRouter();
@@ -27,7 +27,10 @@ export default function NewDataRecordPage() {
       }
     } catch (err) {
       setError('Error de conexión al crear el registro');
-      console.error('Error creating record:', err);
+      // Handle error appropriately - could use proper logging service
+      if (err instanceof Error) {
+        setError(`Error: ${err.message}`);
+      }
     } finally {
       setIsLoading(false);
     }

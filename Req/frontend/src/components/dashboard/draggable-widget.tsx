@@ -9,7 +9,10 @@ interface DraggableWidgetProps {
   onResize: (id: string, size: 'small' | 'medium' | 'large') => void;
   onRemove: (id: string) => void;
   onDragEnd: (id: string, newPosition: { x: number; y: number }) => void;
-  onPositionUpdate?: (id: string, position: { x: number; y: number; w: number; h: number }) => void;
+  onPositionUpdate?: (
+    id: string,
+    position: { x: number; y: number; w: number; h: number }
+  ) => void;
   className?: string;
   gridSize?: number;
   isDragDisabled?: boolean;
@@ -64,46 +67,65 @@ export function DraggableWidget({
     e.preventDefault();
   };
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging) return;
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
 
-    const dx = e.clientX - startPos.x;
-    const dy = e.clientY - startPos.y;
+      const dx = e.clientX - startPos.x;
+      const dy = e.clientY - startPos.y;
 
-    setPosition({ x: dx, y: dy });
-  }, [isDragging, startPos.x, startPos.y]);
+      setPosition({ x: dx, y: dy });
+    },
+    [isDragging, startPos.x, startPos.y]
+  );
 
-  const calculateNewPosition = useCallback((clientX: number, clientY: number) => {
-    // Calculate new position based on mouse position and drag offset
-    const newX = Math.max(0, Math.round((clientX - dragOffset.x) / gridSize));
-    const newY = Math.max(0, Math.round((clientY - dragOffset.y) / gridSize));
+  const calculateNewPosition = useCallback(
+    (clientX: number, clientY: number) => {
+      // Calculate new position based on mouse position and drag offset
+      const newX = Math.max(0, Math.round((clientX - dragOffset.x) / gridSize));
+      const newY = Math.max(0, Math.round((clientY - dragOffset.y) / gridSize));
 
-    return { x: newX, y: newY };
-  }, [dragOffset.x, dragOffset.y, gridSize]);
+      return { x: newX, y: newY };
+    },
+    [dragOffset.x, dragOffset.y, gridSize]
+  );
 
-  const handleMouseUp = useCallback((e: MouseEvent) => {
-    if (!isDragging) return;
+  const handleMouseUp = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
 
-    setIsDragging(false);
+      setIsDragging(false);
 
-    // Calculate new grid position
-    const newPosition = calculateNewPosition(e.clientX, e.clientY);
+      // Calculate new grid position
+      const newPosition = calculateNewPosition(e.clientX, e.clientY);
 
-    // Only update if position actually changed
-    if (newPosition.x !== widget.position.x || newPosition.y !== widget.position.y) {
-      // Update position using the new callback
-      onDragEnd(widget.id, newPosition);
+      // Only update if position actually changed
+      if (
+        newPosition.x !== widget.position.x ||
+        newPosition.y !== widget.position.y
+      ) {
+        // Update position using the new callback
+        onDragEnd(widget.id, newPosition);
 
-      // Also call position update if provided
-      if (onPositionUpdate) {
-        onPositionUpdate(widget.id, {
-          ...newPosition,
-          w: widget.position.w,
-          h: widget.position.h,
-        });
+        // Also call position update if provided
+        if (onPositionUpdate) {
+          onPositionUpdate(widget.id, {
+            ...newPosition,
+            w: widget.position.w,
+            h: widget.position.h,
+          });
+        }
       }
-    }
-  }, [isDragging, calculateNewPosition, onDragEnd, onPositionUpdate, widget.id, widget.position]);
+    },
+    [
+      isDragging,
+      calculateNewPosition,
+      onDragEnd,
+      onPositionUpdate,
+      widget.id,
+      widget.position,
+    ]
+  );
 
   // Add and remove event listeners
   useEffect(() => {
@@ -137,7 +159,9 @@ export function DraggableWidget({
         className
       )}
       style={{
-        transform: isDragging ? `translate(${position.x}px, ${position.y}px)` : undefined,
+        transform: isDragging
+          ? `translate(${position.x}px, ${position.y}px)`
+          : undefined,
       }}
       onMouseDown={handleMouseDown}
     >

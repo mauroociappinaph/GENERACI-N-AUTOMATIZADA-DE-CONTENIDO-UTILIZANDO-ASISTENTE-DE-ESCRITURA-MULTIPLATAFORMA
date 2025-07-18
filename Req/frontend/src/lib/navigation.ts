@@ -103,17 +103,17 @@ export function filterNavigationByRole(
   navigation: NavigationItem[],
   role?: UserRole | null
 ): NavigationItem[] {
-  if (!role) return navigation.filter((item) => !item.roles);
+  if (!role) return navigation.filter(item => !item.roles);
 
   return navigation
-    .filter((item) => !item.roles || item.roles.includes(role))
-    .map((item) => {
+    .filter(item => !item.roles || item.roles.includes(role))
+    .map(item => {
       if (!item.children) return item;
 
       return {
         ...item,
         children: item.children.filter(
-          (child) => !child.roles || child.roles.includes(role)
+          child => !child.roles || child.roles.includes(role)
         ),
       };
     });
@@ -150,9 +150,15 @@ export function hasRouteAccess(path: string, role?: UserRole | null): boolean {
   if (path !== basePath) {
     const childPath = path.split('/').slice(0, 3).join('/');
     const navItem = mainNavigation.find(item => item.href === basePath);
-    const childNavItem = navItem?.children?.find(item => item.href === childPath);
+    const childNavItem = navItem?.children?.find(
+      item => item.href === childPath
+    );
 
-    if (childNavItem && childNavItem.roles && !childNavItem.roles.includes(role)) {
+    if (
+      childNavItem &&
+      childNavItem.roles &&
+      !childNavItem.roles.includes(role)
+    ) {
       return false;
     }
   }

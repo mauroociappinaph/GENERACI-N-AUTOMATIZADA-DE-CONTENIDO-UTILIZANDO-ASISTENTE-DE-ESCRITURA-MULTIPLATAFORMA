@@ -5,7 +5,7 @@ import {
   NotificationFilter,
   NotificationStats,
   NotificationType,
-  ApiResponse
+  ApiResponse,
 } from '@/types';
 
 /**
@@ -27,7 +27,8 @@ export class NotificationService {
       return;
     }
 
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
     this.socket = io(backendUrl, {
       auth: {
@@ -57,7 +58,7 @@ export class NotificationService {
         resolve();
       });
 
-      this.socket.on('connect_error', (error) => {
+      this.socket.on('connect_error', error => {
         console.error('❌ Failed to connect to notification service:', error);
         this.isConnected = false;
         reject(error);
@@ -92,14 +93,16 @@ export class NotificationService {
     });
 
     // Manejar reconexión
-    this.socket.on('reconnect', (attemptNumber) => {
-      console.log(`🔄 Reconnected to notification service (attempt ${attemptNumber})`);
+    this.socket.on('reconnect', attemptNumber => {
+      console.log(
+        `🔄 Reconnected to notification service (attempt ${attemptNumber})`
+      );
       this.isConnected = true;
       this.socket?.emit('join_user_room', userId);
     });
 
     // Manejar desconexión
-    this.socket.on('disconnect', (reason) => {
+    this.socket.on('disconnect', reason => {
       console.log('🔌 Disconnected from notification service:', reason);
       this.isConnected = false;
     });
@@ -157,9 +160,11 @@ export class NotificationService {
     }
 
     // Emitir evento personalizado para que otros componentes puedan escuchar
-    window.dispatchEvent(new CustomEvent('notification-received', {
-      detail: notification
-    }));
+    window.dispatchEvent(
+      new CustomEvent('notification-received', {
+        detail: notification,
+      })
+    );
   }
 
   /**
@@ -183,28 +188,37 @@ export class NotificationService {
   /**
    * Obtiene notificaciones del servidor
    */
-  async getNotifications(filter: NotificationFilter = {}): Promise<Notification[]> {
+  async getNotifications(
+    filter: NotificationFilter = {}
+  ): Promise<Notification[]> {
     try {
       const params = new URLSearchParams();
 
       if (filter.type) params.append('type', filter.type);
-      if (filter.read !== undefined) params.append('read', filter.read.toString());
+      if (filter.read !== undefined)
+        params.append('read', filter.read.toString());
       if (filter.limit) params.append('limit', filter.limit.toString());
       if (filter.offset) params.append('offset', filter.offset.toString());
 
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
-      const response = await fetch(`${backendUrl}/api/notifications?${params.toString()}`, {
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(
+        `${backendUrl}/api/notifications?${params.toString()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.getToken()}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('getNotifications - response status:', response.status);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result: ApiResponse<Notification[]> = await response.json();
+      console.log('getNotifications - response data:', result);
       return result.data || [];
     } catch (error) {
       console.error('Error fetching notifications:', error);
@@ -217,10 +231,11 @@ export class NotificationService {
    */
   async getNotificationStats(): Promise<NotificationStats> {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
       const response = await fetch(`${backendUrl}/api/notifications/stats`, {
         headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
+          Authorization: `Bearer ${this.getToken()}`,
           'Content-Type': 'application/json',
         },
       });
@@ -230,7 +245,13 @@ export class NotificationService {
       }
 
       const result: ApiResponse<NotificationStats> = await response.json();
-      return result.data || { total: 0, unread: 0, byType: {} as Record<NotificationType, number> };
+      return (
+        result.data || {
+          total: 0,
+          unread: 0,
+          byType: {} as Record<NotificationType, number>,
+        }
+      );
     } catch (error) {
       console.error('Error fetching notification stats:', error);
       throw error;
@@ -242,14 +263,18 @@ export class NotificationService {
    */
   async markAsRead(notificationId: string): Promise<void> {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
-      const response = await fetch(`${backendUrl}/api/notifications/${notificationId}/read`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(
+        `${backendUrl}/api/notifications/${notificationId}/read`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${this.getToken()}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -268,20 +293,25 @@ export class NotificationService {
    */
   async markAllAsRead(): Promise<number> {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
-      const response = await fetch(`${backendUrl}/api/notifications/mark-all-read`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(
+        `${backendUrl}/api/notifications/mark-all-read`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${this.getToken()}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result: ApiResponse<{ markedCount: number }> = await response.json();
+      const result: ApiResponse<{ markedCount: number }> =
+        await response.json();
       return result.data?.markedCount || 0;
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
@@ -294,14 +324,18 @@ export class NotificationService {
    */
   async deleteNotification(notificationId: string): Promise<void> {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
-      const response = await fetch(`${backendUrl}/api/notifications/${notificationId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(
+        `${backendUrl}/api/notifications/${notificationId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${this.getToken()}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -343,7 +377,6 @@ export class NotificationService {
    * Obtiene el token de autenticación
    */
   private getToken(): string {
-    // Intentar obtener del localStorage primero (para compatibilidad)
     const storedToken = localStorage.getItem('auth-storage');
     if (storedToken) {
       try {

@@ -15,7 +15,10 @@ interface NotificationCenterProps {
   onClose: () => void;
 }
 
-export function NotificationCenter({ isOpen, onClose }: NotificationCenterProps) {
+export function NotificationCenter({
+  isOpen,
+  onClose,
+}: NotificationCenterProps) {
   const {
     notifications,
     stats,
@@ -138,10 +141,7 @@ export function NotificationCenter({ isOpen, onClose }: NotificationCenterProps)
 
         {/* Filter */}
         <div className="p-4 border-b">
-          <NotificationFilter
-            filter={filter}
-            onChange={handleFilterChange}
-          />
+          <NotificationFilter filter={filter} onChange={handleFilterChange} />
         </div>
 
         {/* Content */}
@@ -183,7 +183,7 @@ export function NotificationCenter({ isOpen, onClose }: NotificationCenterProps)
             </div>
           ) : (
             <div className="divide-y divide-gray-200">
-              {notifications.map((notification) => (
+              {notifications.map(notification => (
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
@@ -193,17 +193,18 @@ export function NotificationCenter({ isOpen, onClose }: NotificationCenterProps)
           )}
 
           {/* Load More Button */}
-          {notifications.length > 0 && notifications.length >= (filter.limit || 20) && (
-            <div className="p-4 text-center border-t">
-              <Button
-                variant="outline"
-                onClick={handleLoadMore}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Cargando...' : 'Cargar más'}
-              </Button>
-            </div>
-          )}
+          {notifications.length > 0 &&
+            notifications.length >= (filter.limit || 20) && (
+              <div className="p-4 text-center border-t">
+                <Button
+                  variant="outline"
+                  onClick={handleLoadMore}
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Cargando...' : 'Cargar más'}
+                </Button>
+              </div>
+            )}
         </div>
       </Card>
     </div>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { NavigationItem, filterNavigationByRole, mainNavigation } from '@/lib/navigation';
+import { filterNavigationByRole, mainNavigation } from '@/lib/navigation';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserRole } from '@/types';
@@ -18,12 +18,14 @@ export function MobileNav({ userRole, isOpen, onClose }: MobileNavProps) {
   const filteredNavigation = filterNavigationByRole(mainNavigation, userRole);
 
   // Track expanded sections
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({});
 
   const toggleSection = (href: string) => {
     setExpandedSections(prev => ({
       ...prev,
-      [href]: !prev[href]
+      [href]: !prev[href],
     }));
   };
 
@@ -53,17 +55,23 @@ export function MobileNav({ userRole, isOpen, onClose }: MobileNavProps) {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-          {filteredNavigation.map((item) => {
+          {filteredNavigation.map(item => {
             const isActive = pathname === item.href;
-            const isParentActive = pathname.startsWith(item.href + '/');
+            const isParentActive = pathname.startsWith(`${item.href}/`);
             const hasChildren = item.children && item.children.length > 0;
-            const isExpanded = expandedSections[item.href] || isActive || isParentActive;
+            const isExpanded =
+              expandedSections[item.href] || isActive || isParentActive;
 
             return (
               <div key={item.href} className="space-y-1">
@@ -72,7 +80,7 @@ export function MobileNav({ userRole, isOpen, onClose }: MobileNavProps) {
                     href={item.href}
                     className={cn(
                       'flex flex-1 items-center px-4 py-3 text-sm font-medium rounded-md transition-colors',
-                      (isActive || isParentActive)
+                      isActive || isParentActive
                         ? 'bg-gray-800 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     )}
@@ -98,12 +106,20 @@ export function MobileNav({ userRole, isOpen, onClose }: MobileNavProps) {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={cn("h-4 w-4 transition-transform", isExpanded ? "transform rotate-180" : "")}
+                        className={cn(
+                          'h-4 w-4 transition-transform',
+                          isExpanded ? 'transform rotate-180' : ''
+                        )}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </button>
                   )}
@@ -112,7 +128,7 @@ export function MobileNav({ userRole, isOpen, onClose }: MobileNavProps) {
                 {/* Submenu */}
                 {hasChildren && isExpanded && (
                   <div className="ml-6 space-y-1 border-l border-gray-700 pl-2">
-                    {item.children!.map((child) => (
+                    {item.children!.map(child => (
                       <Link
                         key={child.href}
                         href={child.href}

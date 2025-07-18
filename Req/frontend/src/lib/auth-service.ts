@@ -26,7 +26,7 @@ export interface RefreshTokenResponse {
  */
 export class AuthService {
   private static getBackendUrl(): string {
-    return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   }
 
   /**
@@ -56,14 +56,18 @@ export class AuthService {
       return result.data;
     } catch (error) {
       console.error('Login error:', error);
-      throw error instanceof Error ? error : new Error('Error al iniciar sesión');
+      throw error instanceof Error
+        ? error
+        : new Error('Error al iniciar sesión');
     }
   }
 
   /**
    * Refresca el token de acceso
    */
-  static async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
+  static async refreshToken(
+    refreshToken: string
+  ): Promise<RefreshTokenResponse> {
     try {
       const response = await fetch(`${this.getBackendUrl()}/api/auth/refresh`, {
         method: 'POST',
@@ -87,7 +91,9 @@ export class AuthService {
       return result.data;
     } catch (error) {
       console.error('Refresh token error:', error);
-      throw error instanceof Error ? error : new Error('Error al refrescar token');
+      throw error instanceof Error
+        ? error
+        : new Error('Error al refrescar token');
     }
   }
 
@@ -99,13 +105,15 @@ export class AuthService {
       const response = await fetch(`${this.getBackendUrl()}/api/auth/logout`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
-        console.warn('Logout request failed, but continuing with client-side logout');
+        console.warn(
+          'Logout request failed, but continuing with client-side logout'
+        );
       }
     } catch (error) {
       console.warn('Logout error:', error);
@@ -121,14 +129,16 @@ export class AuthService {
       const response = await fetch(`${this.getBackendUrl()}/api/auth/me`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error?.message || 'Error al obtener información del usuario');
+        throw new Error(
+          errorData.error?.message || 'Error al obtener información del usuario'
+        );
       }
 
       const result: ApiResponse<{ user: User }> = await response.json();
@@ -140,7 +150,9 @@ export class AuthService {
       return result.data.user;
     } catch (error) {
       console.error('Get current user error:', error);
-      throw error instanceof Error ? error : new Error('Error al obtener información del usuario');
+      throw error instanceof Error
+        ? error
+        : new Error('Error al obtener información del usuario');
     }
   }
 

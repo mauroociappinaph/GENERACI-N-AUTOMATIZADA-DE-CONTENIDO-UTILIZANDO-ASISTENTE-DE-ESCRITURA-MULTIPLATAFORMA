@@ -12,10 +12,10 @@ export interface User {
 }
 
 export enum UserRole {
-  ADMIN = 'admin',
-  MANAGER = 'manager',
-  USER = 'user',
-  VIEWER = 'viewer',
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  USER = 'USER',
+  VIEWER = 'VIEWER',
 }
 
 export interface AuthState {
@@ -62,7 +62,14 @@ export interface WidgetConfig {
   dataSource?: string;
   refreshInterval?: number;
   filters?: Record<string, unknown>;
-  chartType?: 'line' | 'bar' | 'pie' | 'doughnut';
+  chartType?:
+    | 'line'
+    | 'bar'
+    | 'pie'
+    | 'doughnut'
+    | 'area'
+    | 'composed'
+    | 'scatter';
 }
 
 export interface ApiResponse<ResponseType = unknown> {
@@ -97,7 +104,7 @@ export interface Notification {
   type: NotificationType;
   title: string;
   message: string;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   read: boolean;
   createdAt: Date;
   expiresAt?: Date;
@@ -118,7 +125,7 @@ export interface NotificationPayload {
   type: NotificationType;
   title: string;
   message: string;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   expiresAt?: Date;
 }
 
@@ -134,4 +141,70 @@ export interface NotificationStats {
   total: number;
   unread: number;
   byType: Record<NotificationType, number>;
+}
+
+// Report types
+export interface ReportTemplate {
+  id: string;
+  name: string;
+  description?: string;
+  parameters: ReportParameter[];
+  formats: ReportFormat[];
+}
+
+export interface ReportParameter {
+  name: string;
+  type: 'string' | 'number' | 'date' | 'boolean' | 'select';
+  label: string;
+  required: boolean;
+  defaultValue?: unknown;
+  options?: { value: unknown; label: string }[];
+}
+
+export type ReportFormat = 'pdf' | 'excel' | 'csv';
+
+export interface ReportRequest {
+  templateId: string;
+  parameters: Record<string, unknown>;
+  format: ReportFormat;
+  deliveryMethod: 'download' | 'email';
+  email?: string;
+}
+
+export interface ReportResult {
+  reportId: string;
+  templateId: string;
+  format: ReportFormat;
+  generatedAt: string;
+  downloadUrl: string;
+  recordCount: number;
+}
+
+export interface ScheduledReport {
+  id: string;
+  templateId: string;
+  templateName: string;
+  parameters: Record<string, unknown>;
+  format: ReportFormat;
+  schedule: string;
+  recipients: string[];
+  isActive: boolean;
+  lastRun?: string;
+  nextRun?: string;
+}
+
+export interface ReportScheduleRequest {
+  templateId: string;
+  parameters: Record<string, unknown>;
+  format: ReportFormat;
+  schedule: string;
+  recipients: string[];
+}
+
+export interface ReportPreview {
+  templateId: string;
+  totalRecords: number;
+  previewRecords: number;
+  data: unknown[];
+  generatedAt: string;
 }

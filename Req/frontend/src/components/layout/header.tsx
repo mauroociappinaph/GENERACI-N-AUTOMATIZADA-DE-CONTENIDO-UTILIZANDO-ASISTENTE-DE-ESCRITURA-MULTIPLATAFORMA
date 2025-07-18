@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+// Button import removed as it's not used
 import { cn } from '@/lib/utils';
 import { User } from '@/types';
 import { NotificationButton } from '@/components/notifications/notification-button';

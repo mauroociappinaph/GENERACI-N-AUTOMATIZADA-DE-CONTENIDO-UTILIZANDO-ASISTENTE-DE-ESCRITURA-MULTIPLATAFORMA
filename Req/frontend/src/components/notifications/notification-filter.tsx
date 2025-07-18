@@ -7,7 +7,10 @@ interface NotificationFilterProps {
   onChange: (filter: Partial<FilterType>) => void;
 }
 
-export function NotificationFilter({ filter, onChange }: NotificationFilterProps) {
+export function NotificationFilter({
+  filter,
+  onChange,
+}: NotificationFilterProps) {
   const notificationTypes = [
     { value: '', label: 'Todos los tipos' },
     { value: NotificationType.INFO, label: 'Información' },
@@ -34,16 +37,19 @@ export function NotificationFilter({ filter, onChange }: NotificationFilterProps
     <div className="flex flex-wrap items-center gap-4">
       {/* Type Filter */}
       <div className="flex items-center space-x-2">
-        <label htmlFor="notification-type" className="text-sm font-medium text-gray-700">
+        <label
+          htmlFor="notification-type"
+          className="text-sm font-medium text-gray-700"
+        >
           Tipo:
         </label>
         <select
           id="notification-type"
           value={filter.type || ''}
-          onChange={(e) => handleTypeChange(e.target.value)}
+          onChange={e => handleTypeChange(e.target.value)}
           className="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
-          {notificationTypes.map((type) => (
+          {notificationTypes.map(type => (
             <option key={type.value} value={type.value}>
               {type.label}
             </option>
@@ -53,13 +59,16 @@ export function NotificationFilter({ filter, onChange }: NotificationFilterProps
 
       {/* Limit Filter */}
       <div className="flex items-center space-x-2">
-        <label htmlFor="notification-limit" className="text-sm font-medium text-gray-700">
+        <label
+          htmlFor="notification-limit"
+          className="text-sm font-medium text-gray-700"
+        >
           Mostrar:
         </label>
         <select
           id="notification-limit"
           value={filter.limit || 20}
-          onChange={(e) => handleLimitChange(parseInt(e.target.value, 10))}
+          onChange={e => handleLimitChange(parseInt(e.target.value, 10))}
           className="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value={10}>10</option>

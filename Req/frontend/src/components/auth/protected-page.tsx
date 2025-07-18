@@ -32,7 +32,7 @@ export function ProtectedPage({
   requireAuth = true,
   checkPathAccess = true,
 }: ProtectedPageProps) {
-  const { user, logout, isAuthenticated } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = () => {

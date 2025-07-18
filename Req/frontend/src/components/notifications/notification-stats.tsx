@@ -77,7 +77,9 @@ export function NotificationStats({ stats }: NotificationStatsProps) {
   };
 
   // Filter out types with 0 count for cleaner display
-  const activeTypes = Object.entries(stats.byType).filter(([_, count]) => count > 0);
+  const activeTypes = Object.entries(stats.byType).filter(
+    ([_, count]) => count > 0
+  );
 
   return (
     <div className="space-y-3">
@@ -113,7 +115,9 @@ export function NotificationStats({ stats }: NotificationStatsProps) {
             >
               <span>{getTypeIcon(type as NotificationType)}</span>
               <span className="font-medium">{count}</span>
-              <span className="truncate">{getTypeLabel(type as NotificationType)}</span>
+              <span className="truncate">
+                {getTypeLabel(type as NotificationType)}
+              </span>
             </div>
           ))}
         </div>
