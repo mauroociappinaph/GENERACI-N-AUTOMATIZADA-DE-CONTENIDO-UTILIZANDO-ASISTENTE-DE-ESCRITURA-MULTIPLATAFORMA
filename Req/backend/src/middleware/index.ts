@@ -9,6 +9,7 @@ import { httpLogger } from '../utils/logger';
 import { errorHandler } from './error-handler';
 import { requestValidator } from './validation';
 import { generalLimiter, authLimiter } from './rate-limiting';
+import { corsDebugMiddleware } from './cors-debug';
 
 /**
  * Configura todos los middlewares de la aplicación
@@ -33,8 +34,16 @@ export const setupMiddleware = (app: Application): void => {
     })
   );
 
-  // CORS configuration
+  // CORS debug middleware (development only)
+  if (config.nodeEnv === 'development') {
+    app.use(corsDebugMiddleware);
+  }
+
+  // CORS configuration - must be before rate limiting to handle preflight requests
   app.use(cors(config.cors));
+
+  // Handle preflight requests explicitly
+  app.options('*', cors(config.cors));
 
   // Rate limiting - apply auth limiter to auth endpoints first
   app.use('/api/auth', authLimiter);

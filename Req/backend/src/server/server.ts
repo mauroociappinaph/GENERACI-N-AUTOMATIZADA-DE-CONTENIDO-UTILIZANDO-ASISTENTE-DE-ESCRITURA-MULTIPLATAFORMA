@@ -23,23 +23,37 @@ export class Server {
    */
   public async start(): Promise<void> {
     try {
+      console.log('🚀 Starting server...');
+
       // Test database connection on startup
       logger.info('Testing database connection...');
+      console.log('📊 Testing database connection...');
+
       const isDbConnected = await database.testConnection();
 
       if (!isDbConnected) {
         logger.warn('Database connection failed, but server will start anyway');
+        console.log('⚠️  Database connection failed, but server will start anyway');
       } else {
         logger.info('Database connection test successful');
+        console.log('✅ Database connection test successful');
         logBusinessEvent('DATABASE_CONNECTED', { port: config.port });
       }
 
       // Initialize Socket.IO service
+      console.log('🔌 Initializing Socket.IO service...');
       initializeSocketService(this.httpServer);
       logger.info('Socket.IO service initialized');
+      console.log('✅ Socket.IO service initialized');
 
       // Start the HTTP server
+      console.log(`🌐 Starting HTTP server on port ${config.port}...`);
       this.httpServer.listen(config.port, () => {
+        console.log(`🎉 Server started successfully on port ${config.port}`);
+        console.log(`📍 Health check: http://localhost:${config.port}/health`);
+        console.log(`📍 API: http://localhost:${config.port}/api`);
+        console.log(`📍 WebSocket: ws://localhost:${config.port}`);
+
         logger.info('Server started successfully', {
           port: config.port,
           environment: process.env.NODE_ENV || 'development',
@@ -57,7 +71,10 @@ export class Server {
 
       // Setup graceful shutdown
       this.setupGracefulShutdown();
+      console.log('✅ Graceful shutdown handlers configured');
+
     } catch (error) {
+      console.error('❌ Failed to start server:', error);
       logError(error as Error, 'Server.start');
       process.exit(1);
     }
