@@ -31,9 +31,9 @@ Start Command: node telegram-bot.js
 En la sección "Environment Variables" agregar:
 
 ```
-TELEGRAM_BOT_TOKEN = 7624885642:AAErBCaKbHdtWXcZo8kRDHoxbY82nU6F-3w
-TELEGRAM_CHAT_ID = 7938805278
-GROQ_API_KEY = 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
+TELEGRAM_BOT_TOKEN = [TU_TOKEN_DE_TELEGRAM]
+TELEGRAM_CHAT_ID = [TU_CHAT_ID]
+GROQ_API_KEY = [TU_GROQ_API_KEY]
 NODE_ENV = production
 ```
 
