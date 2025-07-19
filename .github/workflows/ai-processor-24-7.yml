@@ -221,26 +221,26 @@ ${result}
         echo "📊 Actualizando estado del sistema..."
 
         # Crear/actualizar issue de estado del sistema
-        SYSTEM_STATUS="🤖 **AI Content Processor 24/7 - Estado del Sistema**
+        SYSTEM_STATUS="🤖 AI Content Processor 24/7 - Estado del Sistema
 
-**Última ejecución:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
-**Estado:** ✅ Operativo
-**Costo:** $0.00
-**Próxima ejecución:** 5 minutos
+Última ejecución: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+Estado: ✅ Operativo
+Costo: \$0.00
+Próxima ejecución: 5 minutos
 
-**Estadísticas:**
-- Ejecuciones hoy: $(date '+%H:%M' | awk -F: '{print int($1*12 + $2/5)}')/288
-- Presupuesto usado: $0.00/$0.00
+Estadísticas:
+- Ejecuciones hoy: $(date '+%H:%M' | awk -F: '{print int(\$1*12 + \$2/5)}')/288
+- Presupuesto usado: \$0.00/\$0.00
 - APIs disponibles: Groq, Gemini, HuggingFace, Cohere
 
-**Capacidad diaria:**
+Capacidad diaria:
 - Groq: 14,400 requests GRATIS
 - Gemini: 1,500 requests GRATIS
 - HuggingFace: 24,000 requests GRATIS
 - Cohere: 3,333 requests GRATIS
-- **Total: ~43,233 requests/día GRATIS**
+- Total: ~43,233 requests/día GRATIS
 
-*Sistema funcionando 24/7 con $0.00 de costo*"
+Sistema funcionando 24/7 con \$0.00 de costo"
 
         # Buscar issue existente de estado
         STATUS_ISSUE=$(gh issue list --label "system-status" --state open --json number --jq '.[0].number // empty')
