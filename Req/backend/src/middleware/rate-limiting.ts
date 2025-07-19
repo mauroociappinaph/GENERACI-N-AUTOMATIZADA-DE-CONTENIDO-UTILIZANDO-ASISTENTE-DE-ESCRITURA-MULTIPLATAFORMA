@@ -35,7 +35,7 @@ export const authLimiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  // Skip rate limiting for OPTIONS requests (CORS preflight)
+  // Allow OPTIONS requests to pass through without being limited
   skip: (req) => req.method === 'OPTIONS',
 });
 

@@ -7,7 +7,7 @@
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "warn",
     "no-alert": "error",
-    "no-confirm": "error",
+    "no-restricted-globals": ["error", "confirm"],
     "max-lines": ["error", {
       "max": 300,
       "skipComments": true,

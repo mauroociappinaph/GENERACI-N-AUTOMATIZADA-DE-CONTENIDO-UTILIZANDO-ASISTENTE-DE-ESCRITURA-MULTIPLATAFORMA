@@ -6,6 +6,8 @@ import dataRecordRoutes from './data-record.routes';
 import dashboardRoutes from './dashboard.routes';
 import { notificationRoutes } from './notification.routes';
 import reportRoutes from './report.routes';
+import systemConfigRoutes from './system-config.routes';
+import externalApiRoutes from './external-api.routes';
 
 /**
  * Configura todas las rutas de la aplicación
@@ -25,6 +27,8 @@ export const setupRoutes = (app: Application): void => {
         dashboard: '/api/dashboard',
         notifications: '/api/notifications',
         reports: '/api/reports',
+        systemConfig: '/api/system-config',
+        externalApi: '/api/external-api',
       },
     });
   });
@@ -39,4 +43,6 @@ export const setupRoutes = (app: Application): void => {
   app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/notifications', notificationRoutes);
   app.use('/api/reports', reportRoutes);
+  app.use('/api/system-config', systemConfigRoutes);
+  app.use('/api/external-api', externalApiRoutes);
 };

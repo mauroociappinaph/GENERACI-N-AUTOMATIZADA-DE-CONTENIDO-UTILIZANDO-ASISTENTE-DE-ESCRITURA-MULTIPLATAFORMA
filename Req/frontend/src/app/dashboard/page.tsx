@@ -8,16 +8,65 @@ import { useState } from 'react';
 type DashboardView = 'analytics' | 'widgets' | 'overview';
 
 export default function DashboardPage() {
-  const [activeView, setActiveView] = useState<DashboardView>('analytics');
+  const [activeView, setActiveView] = useState<DashboardView>('overview');
 
   const views = [
+    { id: 'overview' as DashboardView, label: 'Resumen', icon: '📋' },
     { id: 'analytics' as DashboardView, label: 'Analytics', icon: '📊' },
     { id: 'widgets' as DashboardView, label: 'Widgets', icon: '🔧' },
-    { id: 'overview' as DashboardView, label: 'Resumen', icon: '📋' },
   ];
 
   const renderContent = () => {
     switch (activeView) {
+      case 'overview':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <span className="text-2xl">👥</span>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Usuarios</p>
+                  <p className="text-2xl font-bold text-gray-900">1,234</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <span className="text-2xl">📊</span>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Registros</p>
+                  <p className="text-2xl font-bold text-gray-900">5,678</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-yellow-100 rounded-lg">
+                  <span className="text-2xl">📈</span>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Reportes</p>
+                  <p className="text-2xl font-bold text-gray-900">91</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <span className="text-2xl">⚡</span>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Sistema</p>
+                  <p className="text-2xl font-bold text-green-600">99.9%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
       case 'analytics':
         return <AnalyticsDashboard />;
       case 'widgets':
@@ -30,16 +79,14 @@ export default function DashboardPage() {
             </p>
           </div>
         );
-      case 'overview':
+      default:
         return (
           <div className="text-center py-12">
             <div className="text-4xl mb-4">📋</div>
-            <h3 className="text-lg font-medium mb-2">Vista de Resumen</h3>
-            <p className="text-gray-600">Resumen ejecutivo próximamente</p>
+            <h3 className="text-lg font-medium mb-2">Dashboard</h3>
+            <p className="text-gray-600">Bienvenido al sistema de gestión</p>
           </div>
         );
-      default:
-        return <AnalyticsDashboard />;
     }
   };
 

@@ -3,6 +3,7 @@ import { createServer, Server as HttpServer } from 'http';
 import { config } from '../config';
 import { database } from '../config/database';
 import { initializeSocketService } from '../services/socket.service';
+import { cacheService } from '../services/cache.service';
 import logger, { logError, logBusinessEvent } from '../utils/logger';
 
 /**
@@ -38,6 +39,17 @@ export class Server {
         logger.info('Database connection test successful');
         console.log('✅ Database connection test successful');
         logBusinessEvent('DATABASE_CONNECTED', { port: config.port });
+      }
+
+      // Initialize Cache service
+      console.log('🗄️  Initializing Cache service...');
+      try {
+        await cacheService.connect();
+        logger.info('Cache service initialized successfully');
+        console.log('✅ Cache service initialized successfully');
+      } catch (error) {
+        logger.warn('Cache service initialization failed, continuing without cache', error);
+        console.log('⚠️  Cache service initialization failed, continuing without cache');
       }
 
       // Initialize Socket.IO service
@@ -89,6 +101,9 @@ export class Server {
       logBusinessEvent('SERVER_SHUTDOWN_INITIATED', { signal });
 
       try {
+        await cacheService.disconnect();
+        logger.info('Cache service disconnected successfully');
+
         await database.close();
         logger.info('Database connection closed successfully');
         logBusinessEvent('SERVER_SHUTDOWN_COMPLETED', { signal });
