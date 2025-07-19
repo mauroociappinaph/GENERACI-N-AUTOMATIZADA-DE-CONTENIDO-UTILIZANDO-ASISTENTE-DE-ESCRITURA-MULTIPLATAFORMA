@@ -147,26 +147,27 @@ ${result}
 
                 // Notificar a Telegram
                 if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
-                  const telegramMessage = `🤖 *IA 24/7 Completada*
-
-*Issue:* #${issue.number}
-*Tipo:* ${requestType}
-*Estado:* Completado
-*Costo:* $0.00
-
-*Sistema:* GitHub Actions + APIs gratuitas
-*Próxima ejecución:* 5 minutos`;
+                  const telegramMessage = '🤖 *IA 24/7 Completada*\n\n' +
+                    '*Issue:* #' + issue.number + '\n' +
+                    '*Tipo:* ' + requestType + '\n' +
+                    '*Estado:* Completado\n' +
+                    '*Costo:* $0.00\n\n' +
+                    '*Sistema:* GitHub Actions + APIs gratuitas\n' +
+                    '*Próxima ejecución:* 5 minutos';
 
                   try {
                     const fetch = require('node-fetch');
-                    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    const telegramUrl = 'https://api.telegram.org/bot' + process.env.TELEGRAM_BOT_TOKEN + '/sendMessage';
+                    const telegramBody = JSON.stringify({
+                      chat_id: process.env.TELEGRAM_CHAT_ID,
+                      text: telegramMessage,
+                      parse_mode: 'Markdown'
+                    });
+
+                    await fetch(telegramUrl, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        chat_id: process.env.TELEGRAM_CHAT_ID,
-                        text: telegramMessage,
-                        parse_mode: 'Markdown'
-                      })
+                      body: telegramBody
                     });
                   } catch (telegramError) {
                     console.log('⚠️ Error enviando notificación Telegram:', telegramError.message);
@@ -223,24 +224,24 @@ ${result}
         # Crear/actualizar issue de estado del sistema
         SYSTEM_STATUS="🤖 AI Content Processor 24/7 - Estado del Sistema
 
-Última ejecución: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
-Estado: ✅ Operativo
-Costo: \$0.00
-Próxima ejecución: 5 minutos
+        Última ejecución: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+        Estado: ✅ Operativo
+        Costo: \$0.00
+        Próxima ejecución: 5 minutos
 
-Estadísticas:
-- Ejecuciones hoy: $(date '+%H:%M' | awk -F: '{print int(\$1*12 + \$2/5)}')/288
-- Presupuesto usado: \$0.00/\$0.00
-- APIs disponibles: Groq, Gemini, HuggingFace, Cohere
+        Estadísticas:
+        • Ejecuciones hoy: $(date '+%H:%M' | awk -F: '{print int(\$1*12 + \$2/5)}')/288
+        • Presupuesto usado: \$0.00/\$0.00
+        • APIs disponibles: Groq, Gemini, HuggingFace, Cohere
 
-Capacidad diaria:
-- Groq: 14,400 requests GRATIS
-- Gemini: 1,500 requests GRATIS
-- HuggingFace: 24,000 requests GRATIS
-- Cohere: 3,333 requests GRATIS
-- Total: ~43,233 requests/día GRATIS
+        Capacidad diaria:
+        • Groq: 14,400 requests GRATIS
+        • Gemini: 1,500 requests GRATIS
+        • HuggingFace: 24,000 requests GRATIS
+        • Cohere: 3,333 requests GRATIS
+        • Total: ~43,233 requests/día GRATIS
 
-Sistema funcionando 24/7 con \$0.00 de costo"
+        Sistema funcionando 24/7 con \$0.00 de costo"
 
         # Buscar issue existente de estado
         STATUS_ISSUE=$(gh issue list --label "system-status" --state open --json number --jq '.[0].number // empty')
