@@ -56,3 +56,15 @@ export interface ReportScheduleRequest {
   schedule: string;
   recipients: string[];
 }
+
+export interface GeneratedReport {
+  id: string;
+  templateId: string;
+  userId: string;
+  format: ReportFormat;
+  parameters: Record<string, any>;
+  filePath: string;
+  downloadUrl: string;
+  generatedAt: Date;
+  expiresAt?: Date;
+}

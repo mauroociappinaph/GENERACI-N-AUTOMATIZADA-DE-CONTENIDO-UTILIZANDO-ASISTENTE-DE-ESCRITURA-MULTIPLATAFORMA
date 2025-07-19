@@ -93,7 +93,7 @@ export class ReportService {
     return {
       id: report.id,
       name: report.name,
-      description: report.description || undefined,
+      description: report.description ?? undefined,
       query: (report.template as any).query,
       parameters: (report.template as any).parameters || [],
       format: (report.template as any).format || 'pdf',
@@ -127,7 +127,7 @@ export class ReportService {
     }
   }
 
-  private formatQueryValue(value: any): string {
+  private formatQueryValue(value: unknown): string {
     if (value === null || value === undefined) {
       return 'NULL';
     }
@@ -142,7 +142,7 @@ export class ReportService {
 
   private async generatePDFReport(
     template: ReportTemplate,
-    data: any[],
+    data: Record<string, unknown>[],
     reportId: string
   ): Promise<string> {
     const browser = await puppeteer.launch({
@@ -187,7 +187,7 @@ export class ReportService {
 
   private async generateExcelReport(
     template: ReportTemplate,
-    data: any[],
+    data: Record<string, unknown>[],
     reportId: string
   ): Promise<string> {
     const workbook = new ExcelJS.Workbook();
@@ -195,7 +195,7 @@ export class ReportService {
 
     if (data.length > 0) {
       // Add headers
-      const headers = Object.keys(data[0]);
+      const headers = Object.keys(data[0] || {});
       worksheet.addRow(headers);
 
       // Style headers
@@ -230,14 +230,14 @@ export class ReportService {
 
   private async generateCSVReport(
     template: ReportTemplate,
-    data: any[],
+    data: Record<string, unknown>[],
     reportId: string
   ): Promise<string> {
     if (data.length === 0) {
       throw new Error('No data available for CSV export');
     }
 
-    const headers = Object.keys(data[0]);
+    const headers = Object.keys(data[0] || {});
     const csvContent = [
       headers.join(','),
       ...data.map((row) =>
