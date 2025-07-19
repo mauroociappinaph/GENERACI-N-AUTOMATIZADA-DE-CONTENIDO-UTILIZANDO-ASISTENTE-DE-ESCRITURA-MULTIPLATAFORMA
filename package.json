@@ -5,9 +5,11 @@
   "main": "telegram-bot.js",
   "scripts": {
     "start": "node telegram-bot.js",
+    "dev": "node start-bot.js",
     "test": "node test-ai-system.js",
     "demo": "node demo-ai-24-7.js",
-    "setup": "./setup-ai-system.sh"
+    "setup": "./setup-ai-system.sh",
+    "build": "echo 'No build step required'"
   },
   "keywords": [
     "ai",
@@ -20,8 +22,9 @@
   "author": "Sistema de Gestión #040",
   "license": "MIT",
   "dependencies": {
-    "node-telegram-bot-api": "^0.66.0",
-    "node-fetch": "^2.7.0"
+    "dotenv": "^16.6.1",
+    "node-fetch": "^2.7.0",
+    "node-telegram-bot-api": "^0.66.0"
   },
   "engines": {
     "node": ">=18.0.0"

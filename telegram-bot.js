@@ -10,6 +10,7 @@
  * Costo: $0.00 siempre
  */
 
+require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const FreeAISystem = require('./free-ai-system.js');
 const fs = require('fs');
