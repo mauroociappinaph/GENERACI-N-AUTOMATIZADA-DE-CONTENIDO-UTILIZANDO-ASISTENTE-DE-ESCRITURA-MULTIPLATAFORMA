@@ -12,28 +12,28 @@ export class BaseDataRecordService {
   /**
    * Registra un error con contexto
    */
-  protected logError(error: Error, context: string, metadata?: any): void {
+  protected logError(error: Error, context: string, metadata?: Record<string, unknown>): void {
     logError(error, context, metadata);
   }
 
   /**
    * Registra un evento de negocio
    */
-  protected logBusinessEvent(event: string, data?: any, userId?: string): void {
+  protected logBusinessEvent(event: string, data?: Record<string, unknown>, userId?: string): void {
     logBusinessEvent(event, data, userId);
   }
 
   /**
    * Registra métricas de rendimiento
    */
-  protected logPerformance(operation: string, duration: number, metadata?: any): void {
+  protected logPerformance(operation: string, duration: number, metadata?: Record<string, unknown>): void {
     logPerformance(operation, duration, metadata);
   }
 
   /**
    * Valida datos según su tipo
    */
-  protected async validateData(type: string, data: any): Promise<{
+  protected async validateData(type: string, data: Record<string, unknown>): Promise<{
     isValid: boolean;
     errors?: string[];
     validatedData?: unknown;
@@ -44,7 +44,7 @@ export class BaseDataRecordService {
   /**
    * Valida metadatos
    */
-  protected validateMetadata(metadata: any): {
+  protected validateMetadata(metadata: Record<string, unknown>): {
     isValid: boolean;
     errors?: string[];
     validatedData?: unknown;

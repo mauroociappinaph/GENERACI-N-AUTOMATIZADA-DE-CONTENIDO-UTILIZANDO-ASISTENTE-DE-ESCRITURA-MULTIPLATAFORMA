@@ -9,8 +9,9 @@ import {
   updateUserSchema,
   changePasswordSchema,
 } from '../types/user';
+import { IUserService } from './interfaces/user.interface';
 
-export class UserService {
+export class UserService implements IUserService {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {

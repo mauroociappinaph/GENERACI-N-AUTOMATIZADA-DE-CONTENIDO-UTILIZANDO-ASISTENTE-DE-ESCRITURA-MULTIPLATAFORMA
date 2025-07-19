@@ -8,25 +8,18 @@ import {
   NotificationStats,
   NotificationType
 } from '@/types/notification';
+import {
+  INotificationService,
+  EmailOptions,
+  EmailWithAttachmentOptions
+} from './interfaces/notification.interface';
 import logger, { logError, logBusinessEvent } from '@/utils/logger';
-
-interface EmailOptions {
-  to: string;
-  subject: string;
-  text?: string;
-  html?: string;
-}
-
-interface EmailWithAttachmentOptions extends EmailOptions {
-  attachmentPath: string;
-  attachmentName: string;
-}
 
 /**
  * Servicio para gestión de notificaciones
  * Responsabilidad: Lógica de negocio para notificaciones
  */
-export class NotificationService {
+export class NotificationService implements INotificationService {
   private notifications: Map<string, Notification> = new Map();
   private emailTransporter: nodemailer.Transporter;
 

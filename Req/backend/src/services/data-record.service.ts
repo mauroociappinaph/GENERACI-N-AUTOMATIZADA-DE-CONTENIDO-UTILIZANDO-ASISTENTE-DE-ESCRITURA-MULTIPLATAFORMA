@@ -55,7 +55,7 @@ export class DataRecordService {
       } = filters;
 
       // Construir condiciones de filtrado
-      const where: any = {
+      const where: Record<string, unknown> = {
         deletedAt: null, // Solo registros no eliminados
       };
 
@@ -202,7 +202,7 @@ export class DataRecordService {
       } = filters;
 
       // Construir condiciones de búsqueda
-      const where: any = {
+      const where: Record<string, unknown> = {
         deletedAt: null,
         OR: [
           {
@@ -284,7 +284,7 @@ export class DataRecordService {
       const { field = 'createdAt', order = 'desc' } = sorting;
 
       // Construir condiciones de búsqueda
-      const where: any = {
+      const where: Record<string, unknown> = {
         deletedAt: null
       };
 
@@ -413,7 +413,7 @@ export class DataRecordService {
       const { field = 'createdAt', order = 'desc' } = sorting;
 
       // Construir condiciones de filtrado
-      const where: any = {
+      const where: Record<string, unknown> = {
         deletedAt: null
       };
 
