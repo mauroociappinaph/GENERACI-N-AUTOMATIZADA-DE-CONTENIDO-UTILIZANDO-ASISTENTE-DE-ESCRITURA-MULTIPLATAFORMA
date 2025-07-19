@@ -19,7 +19,7 @@ import {
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
 
-export default function DataPage() {
+export default function RecordsPage() {
   const router = useRouter();
   const [records, setRecords] = useState<DataRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -89,15 +89,15 @@ export default function DataPage() {
   };
 
   const handleCreateNew = () => {
-    router.push('/data/new');
+    router.push('/records/new');
   };
 
   const handleEditRecord = (id: string) => {
-    router.push(`/data/${id}/edit`);
+    router.push(`/records/${id}/edit`);
   };
 
   const handleViewRecord = (id: string) => {
-    router.push(`/data/${id}`);
+    router.push(`/records/${id}`);
   };
 
   const handleDeleteRecord = async () => {
@@ -134,9 +134,9 @@ export default function DataPage() {
     <div className="container mx-auto py-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Gestión de Datos</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Registros</h1>
           <p className="text-gray-600 mt-1">
-            Administre y consulte los registros de datos del sistema
+            Administre y consulte los registros del sistema
           </p>
         </div>
         <Button onClick={handleCreateNew}>Crear Nuevo Registro</Button>
@@ -167,7 +167,7 @@ export default function DataPage() {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle>
-              Registros de Datos
+              Lista de Registros
               {pagination.total > 0 && (
                 <span className="text-sm font-normal text-gray-500 ml-2">
                   ({pagination.total} registros)

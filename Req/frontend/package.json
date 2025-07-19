@@ -14,7 +14,6 @@
     "pre-commit": "npm run validate:standards && npm run lint && npm run format:check"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

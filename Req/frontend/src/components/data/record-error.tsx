@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 
 interface RecordErrorProps {
-  error: string | null;
+  error: string;
 }
 
 export function RecordError({ error }: RecordErrorProps) {
@@ -13,7 +13,7 @@ export function RecordError({ error }: RecordErrorProps) {
       <Card>
         <CardContent className="pt-6">
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            {error || 'Registro no encontrado'}
+            {error}
           </div>
         </CardContent>
       </Card>

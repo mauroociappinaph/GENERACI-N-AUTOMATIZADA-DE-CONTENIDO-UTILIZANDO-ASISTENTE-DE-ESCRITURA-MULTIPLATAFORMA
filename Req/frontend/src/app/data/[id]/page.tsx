@@ -1,7 +1,7 @@
 'use client';
 
 import { useDataRecordView } from '@/hooks/use-data-record-view';
-import { RecordHeader } from '@/components/data/record-header';
+import { RecordViewHeader } from '@/components/data/record-view-header';
 import { RecordGeneralInfo } from '@/components/data/record-general-info';
 import { RecordDataDisplay } from '@/components/data/record-data-display';
 import { RecordMetadata } from '@/components/data/record-metadata';
@@ -35,13 +35,17 @@ export default function ViewDataRecordPage({
     return <RecordLoading />;
   }
 
-  if (error || !record) {
+  if (error) {
     return <RecordError error={error} />;
+  }
+
+  if (!record) {
+    return <RecordError error="Registro no encontrado" />;
   }
 
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <RecordHeader
+      <RecordViewHeader
         record={record}
         onBackToList={handleBackToList}
         onEdit={handleEdit}

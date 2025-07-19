@@ -30,7 +30,7 @@ export const mainNavigation: NavigationItem[] = [
       },
       {
         name: 'Crear registro',
-        href: '/records/create',
+        href: '/records/new',
         description: 'Crear un nuevo registro',
         roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.USER],
       },
