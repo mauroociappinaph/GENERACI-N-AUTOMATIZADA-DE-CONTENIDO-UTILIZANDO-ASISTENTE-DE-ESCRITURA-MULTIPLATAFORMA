@@ -6,6 +6,13 @@ export * from './prisma';
 // Re-export user types
 export * from './user';
 
+// Re-export other types
+export * from './data-record';
+export * from './external-api';
+export * from './notification';
+export * from './report';
+export * from './roles';
+
 export interface AuthResponse {
   user: UserWithoutPassword;
   accessToken: string;
