@@ -176,7 +176,7 @@ export function getDefaultRouteForRole(role?: UserRole | null): string {
 
   // Use the same defaults as defined in middleware.ts
   const roleDefaultPaths = {
-    [UserRole.ADMIN]: '/admin',
+    [UserRole.ADMIN]: '/dashboard', // Changed from /admin to /dashboard for better UX
     [UserRole.MANAGER]: '/dashboard',
     [UserRole.USER]: '/dashboard',
     [UserRole.VIEWER]: '/dashboard',

@@ -14,7 +14,7 @@ const roleBasedRoutes = {
 
 // Define default redirect paths based on roles
 const roleDefaultPaths = {
-  [UserRole.ADMIN]: '/admin',
+  [UserRole.ADMIN]: '/dashboard',
   [UserRole.MANAGER]: '/dashboard',
   [UserRole.USER]: '/dashboard',
   [UserRole.VIEWER]: '/dashboard',

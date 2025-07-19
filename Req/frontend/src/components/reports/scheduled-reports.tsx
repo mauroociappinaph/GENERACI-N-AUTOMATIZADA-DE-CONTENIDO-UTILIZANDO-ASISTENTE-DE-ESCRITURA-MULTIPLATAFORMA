@@ -3,7 +3,11 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ReportTemplate, ScheduledReport } from '@/types';
+import {
+  ReportTemplate,
+  ScheduledReport,
+  ReportScheduleRequest,
+} from '@/types';
 import { reportService } from '@/lib/report-service';
 import { ScheduledReportWizard } from './scheduled-report-wizard';
 
@@ -21,6 +25,11 @@ export function ScheduledReports({ templates }: ScheduledReportsProps) {
   const [editingReport, setEditingReport] = useState<ScheduledReport | null>(
     null
   );
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    show: boolean;
+    reportId: string;
+    reportName: string;
+  }>({ show: false, reportId: '', reportName: '' });
 
   useEffect(() => {
     loadScheduledReports();
@@ -41,14 +50,22 @@ export function ScheduledReports({ templates }: ScheduledReportsProps) {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this scheduled report?')) {
-      return;
-    }
+  const handleDeleteClick = (id: string) => {
+    const report = scheduledReports.find(r => r.id === id);
+    setDeleteConfirmation({
+      show: true,
+      reportId: id,
+      reportName: report?.templateName || 'Unknown Report',
+    });
+  };
 
+  const handleDeleteConfirm = async () => {
     try {
-      await reportService.deleteScheduledReport(id);
-      setScheduledReports(prev => prev.filter(report => report.id !== id));
+      await reportService.deleteScheduledReport(deleteConfirmation.reportId);
+      setScheduledReports(prev =>
+        prev.filter(report => report.id !== deleteConfirmation.reportId)
+      );
+      setDeleteConfirmation({ show: false, reportId: '', reportName: '' });
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to delete scheduled report'
@@ -56,9 +73,15 @@ export function ScheduledReports({ templates }: ScheduledReportsProps) {
     }
   };
 
+  const handleDeleteCancel = () => {
+    setDeleteConfirmation({ show: false, reportId: '', reportName: '' });
+  };
+
   const handleToggleActive = async (report: ScheduledReport) => {
     try {
-      const updateData = {
+      const updateData: Partial<ReportScheduleRequest> & {
+        isActive?: boolean;
+      } = {
         templateId: report.templateId,
         parameters: report.parameters,
         format: report.format,
@@ -66,10 +89,7 @@ export function ScheduledReports({ templates }: ScheduledReportsProps) {
         recipients: report.recipients,
         isActive: !report.isActive,
       };
-      await reportService.updateScheduledReport(
-        report.id,
-        updateData as unknown
-      );
+      await reportService.updateScheduledReport(report.id, updateData);
       setScheduledReports(prev =>
         prev.map(r =>
           r.id === report.id ? { ...r, isActive: !r.isActive } : r
@@ -245,7 +265,7 @@ export function ScheduledReports({ templates }: ScheduledReportsProps) {
                     Edit
                   </Button>
                   <Button
-                    onClick={() => handleDelete(report.id)}
+                    onClick={() => handleDeleteClick(report.id)}
                     variant="outline"
                     size="sm"
                     className="text-red-600 border-red-300 hover:bg-red-50"
@@ -274,6 +294,47 @@ export function ScheduledReports({ templates }: ScheduledReportsProps) {
             loadScheduledReports();
           }}
         />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirmation.show && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <Card className="p-6 max-w-md w-full mx-4">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <span className="text-red-500 text-2xl">⚠️</span>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Confirm Deletion
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-gray-700">
+                Are you sure you want to delete the scheduled report for{' '}
+                <span className="font-medium">
+                  {deleteConfirmation.reportName}
+                </span>
+                ?
+              </p>
+
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button onClick={handleDeleteCancel} variant="outline">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDeleteConfirm}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Delete Report
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
       )}
     </div>
   );

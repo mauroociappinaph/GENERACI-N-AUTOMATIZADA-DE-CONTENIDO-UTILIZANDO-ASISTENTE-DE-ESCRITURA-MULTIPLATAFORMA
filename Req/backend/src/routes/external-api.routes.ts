@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { externalApiController } from '../controllers/external-api.controller';
-import { authMiddleware } from '../middleware/auth.middleware';
-import { authorize } from '../middleware/authorization.middleware';
+import { authenticateToken } from '../middleware/auth.middleware';
+import { requireRole } from '../middleware/authorization.middleware';
 
 const router = Router();
 
@@ -142,7 +142,7 @@ const router = Router();
  *       403:
  *         description: Forbidden
  */
-router.post('/clients', authMiddleware, authorize(['admin']), externalApiController.registerClient);
+router.post('/clients', authenticateToken, requireRole('ADMIN'), externalApiController.registerClient);
 
 /**
  * @swagger
@@ -172,7 +172,7 @@ router.post('/clients', authMiddleware, authorize(['admin']), externalApiControl
  *                     metrics:
  *                       type: object
  */
-router.get('/clients', authMiddleware, authorize(['admin', 'manager']), externalApiController.getClients);
+router.get('/clients', authenticateToken, requireRole('ADMIN', 'MANAGER'), externalApiController.getClients);
 
 /**
  * @swagger
@@ -199,7 +199,7 @@ router.get('/clients', authMiddleware, authorize(['admin', 'manager']), external
  *       403:
  *         description: Forbidden
  */
-router.delete('/clients/:clientName', authMiddleware, authorize(['admin']), externalApiController.removeClient);
+router.delete('/clients/:clientName', authenticateToken, requireRole('ADMIN'), externalApiController.removeClient);
 
 /**
  * @swagger
@@ -232,7 +232,7 @@ router.delete('/clients/:clientName', authMiddleware, authorize(['admin']), exte
  *       500:
  *         description: External API request failed
  */
-router.post('/clients/:clientName/request', authMiddleware, authorize(['admin', 'manager', 'user']), externalApiController.makeRequest);
+router.post('/clients/:clientName/request', authenticateToken, requireRole('ADMIN', 'MANAGER', 'USER'), externalApiController.makeRequest);
 
 /**
  * @swagger
@@ -255,7 +255,7 @@ router.post('/clients/:clientName/request', authMiddleware, authorize(['admin', 
  *       404:
  *         description: API client not found
  */
-router.get('/clients/:clientName/metrics', authMiddleware, authorize(['admin', 'manager']), externalApiController.getClientMetrics);
+router.get('/clients/:clientName/metrics', authenticateToken, requireRole('ADMIN', 'MANAGER'), externalApiController.getClientMetrics);
 
 /**
  * @swagger
@@ -278,7 +278,7 @@ router.get('/clients/:clientName/metrics', authMiddleware, authorize(['admin', '
  *       404:
  *         description: API client not found
  */
-router.delete('/clients/:clientName/metrics', authMiddleware, authorize(['admin']), externalApiController.resetClientMetrics);
+router.delete('/clients/:clientName/metrics', authenticateToken, requireRole('ADMIN'), externalApiController.resetClientMetrics);
 
 /**
  * @swagger
@@ -311,7 +311,7 @@ router.delete('/clients/:clientName/metrics', authMiddleware, authorize(['admin'
  *                       type: string
  *                       format: date-time
  */
-router.get('/health', authMiddleware, authorize(['admin', 'manager']), externalApiController.healthCheck);
+router.get('/health', authenticateToken, requireRole('ADMIN', 'MANAGER'), externalApiController.healthCheck);
 
 /**
  * @swagger
@@ -333,6 +333,6 @@ router.get('/health', authMiddleware, authorize(['admin', 'manager']), externalA
  *       500:
  *         description: Failed to clear cache
  */
-router.delete('/cache', authMiddleware, authorize(['admin']), externalApiController.clearCache);
+router.delete('/cache', authenticateToken, requireRole('ADMIN'), externalApiController.clearCache);
 
 export default router;

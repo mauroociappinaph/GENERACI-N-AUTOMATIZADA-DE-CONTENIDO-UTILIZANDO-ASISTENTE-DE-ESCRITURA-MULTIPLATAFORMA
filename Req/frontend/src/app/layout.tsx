@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import { cookies } from 'next/headers';
-import { useAuthStore } from '@/store/auth-store';
+import { AuthInitializer } from '@/components/auth/auth-initializer';
 
 export const metadata: Metadata = {
   title: 'Sistema de Gestión #040',
@@ -36,12 +36,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     // console.error('Error parsing auth cookie in RootLayout:', error);
   }
 
-  // Initialize the store with the server-side fetched state
-  useAuthStore.setState(initialState, true);
-
   return (
     <html lang="es">
       <body className="min-h-screen bg-gray-50 antialiased">
+        <AuthInitializer
+          user={initialState.user}
+          token={initialState.token}
+          isAuthenticated={initialState.isAuthenticated}
+        />
         {children}
         <Toaster
           position="top-right"
