@@ -8,6 +8,7 @@ import { notificationRoutes } from './notification.routes';
 import reportRoutes from './report.routes';
 import systemConfigRoutes from './system-config.routes';
 import externalApiRoutes from './external-api.routes';
+import auditRoutes from './audit.routes';
 
 /**
  * Configura todas las rutas de la aplicación
@@ -29,6 +30,7 @@ export const setupRoutes = (app: Application): void => {
         reports: '/api/reports',
         systemConfig: '/api/system-config',
         externalApi: '/api/external-api',
+        audit: '/api/audit',
       },
     });
   });
@@ -45,4 +47,5 @@ export const setupRoutes = (app: Application): void => {
   app.use('/api/reports', reportRoutes);
   app.use('/api/system-config', systemConfigRoutes);
   app.use('/api/external-api', externalApiRoutes);
+  app.use('/api/audit', auditRoutes);
 };

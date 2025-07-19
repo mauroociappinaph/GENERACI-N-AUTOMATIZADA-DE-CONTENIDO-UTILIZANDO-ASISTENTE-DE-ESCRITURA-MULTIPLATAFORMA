@@ -212,6 +212,85 @@ router.get(
 
 /**
  * @swagger
+ * /api/users/profile:
+ *   get:
+ *     summary: Obtener perfil del usuario actual
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Usuario no autenticado
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.get('/profile', UserController.getProfile);
+
+/**
+ * @swagger
+ * /api/users/profile:
+ *   put:
+ *     summary: Actualizar perfil del usuario actual
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: usuario@example.com
+ *               firstName:
+ *                 type: string
+ *                 example: Juan
+ *               lastName:
+ *                 type: string
+ *                 example: Pérez
+ *     responses:
+ *       200:
+ *         description: Perfil actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Usuario no autenticado
+ *       404:
+ *         description: Usuario no encontrado
+ *       409:
+ *         description: Email ya registrado
+ */
+router.put('/profile', UserController.updateProfile);
+
+/**
+ * @swagger
  * /api/users:
  *   get:
  *     summary: Obtener lista de usuarios

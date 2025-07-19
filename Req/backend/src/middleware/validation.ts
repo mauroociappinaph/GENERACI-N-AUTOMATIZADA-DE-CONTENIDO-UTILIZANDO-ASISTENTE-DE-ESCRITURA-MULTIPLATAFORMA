@@ -60,49 +60,196 @@ export const validateRequest = (schema: ValidationSchema) => {
 };
 
 /**
- * Middleware básico de validación de requests
- * Se aplica a todas las rutas de API para sanitización básica
+ * Advanced request validation and sanitization middleware
+ * Se aplica a todas las rutas de API para sanitización exhaustiva
  */
 export const requestValidator = (
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction
 ): void => {
-  // Sanitize common XSS attempts in query parameters
-  if (req.query) {
-    for (const key in req.query) {
-      if (typeof req.query[key] === 'string') {
-        req.query[key] = (req.query[key] as string)
-          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-          .replace(/javascript:/gi, '')
-          .replace(/on\w+\s*=/gi, '');
-      }
+  try {
+    // Check for suspicious patterns in URL
+    if (containsSuspiciousPatterns(req.url)) {
+      console.warn(`Suspicious URL pattern detected: ${req.url} from IP: ${req.ip}`);
+      res.status(400).json({
+        error: {
+          code: 'SUSPICIOUS_REQUEST',
+          message: 'Request contains potentially malicious content',
+          timestamp: new Date().toISOString(),
+        },
+      });
+      return;
     }
-  }
 
-  // Sanitize request body for basic XSS prevention
-  if (req.body && typeof req.body === 'object') {
-    sanitizeObject(req.body);
-  }
+    // Validate and sanitize headers
+    validateHeaders(req);
 
-  next();
+    // Sanitize query parameters with enhanced protection
+    if (req.query) {
+      req.query = sanitizeQueryParams(req.query);
+    }
+
+    // Sanitize request body with comprehensive protection
+    if (req.body && typeof req.body === 'object') {
+      req.body = sanitizeObject(req.body);
+    }
+
+    // Check request size limits
+    const contentLength = parseInt(req.get('content-length') || '0');
+    if (contentLength > 10 * 1024 * 1024) { // 10MB limit
+      res.status(413).json({
+        error: {
+          code: 'PAYLOAD_TOO_LARGE',
+          message: 'Request payload exceeds maximum allowed size',
+          timestamp: new Date().toISOString(),
+        },
+      });
+      return;
+    }
+
+    next();
+  } catch (error) {
+    console.error('Request validation error:', error);
+    res.status(400).json({
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: 'Invalid request format',
+        timestamp: new Date().toISOString(),
+      },
+    });
+  }
 };
 
 /**
- * Función auxiliar para sanitizar objetos recursivamente
+ * Enhanced function to sanitize objects recursively with comprehensive protection
  */
-function sanitizeObject(obj: Record<string, unknown>): void {
+function sanitizeObject(obj: Record<string, unknown>): Record<string, unknown> {
+  const sanitized: Record<string, unknown> = {};
+
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const sanitizedKey = sanitizeString(key);
+
       if (typeof obj[key] === 'string') {
-        obj[key] = (obj[key] as string)
-          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-          .replace(/javascript:/gi, '')
-          .replace(/on\w+\s*=/gi, '');
+        sanitized[sanitizedKey] = sanitizeString(obj[key] as string);
+      } else if (Array.isArray(obj[key])) {
+        sanitized[sanitizedKey] = (obj[key] as unknown[]).map(item =>
+          typeof item === 'string' ? sanitizeString(item) :
+          typeof item === 'object' && item !== null ? sanitizeObject(item as Record<string, unknown>) :
+          item
+        );
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-        sanitizeObject(obj[key] as Record<string, unknown>);
+        sanitized[sanitizedKey] = sanitizeObject(obj[key] as Record<string, unknown>);
+      } else {
+        sanitized[sanitizedKey] = obj[key];
       }
     }
+  }
+
+  return sanitized;
+}
+
+/**
+ * Comprehensive string sanitization function
+ */
+function sanitizeString(str: string): string {
+  if (typeof str !== 'string') return str;
+
+  return str
+    // Remove script tags
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // Remove javascript: protocol
+    .replace(/javascript:/gi, '')
+    // Remove event handlers
+    .replace(/on\w+\s*=/gi, '')
+    // Remove data: URLs with javascript
+    .replace(/data:text\/html[^,]*,.*<script/gi, '')
+    // Remove vbscript: protocol
+    .replace(/vbscript:/gi, '')
+    // Remove expression() CSS
+    .replace(/expression\s*\(/gi, '')
+    // Remove import statements
+    .replace(/@import/gi, '')
+    // Remove HTML comments that might contain scripts
+    .replace(/<!--[\s\S]*?-->/g, '')
+    // Remove potential XSS vectors
+    .replace(/&lt;script/gi, '')
+    .replace(/&lt;\/script/gi, '')
+    // Limit string length to prevent DoS
+    .substring(0, 10000);
+}
+
+/**
+ * Sanitize query parameters with enhanced protection
+ */
+function sanitizeQueryParams(query: Record<string, unknown>): Record<string, unknown> {
+  const sanitized: Record<string, unknown> = {};
+
+  for (const key in query) {
+    if (Object.prototype.hasOwnProperty.call(query, key)) {
+      const sanitizedKey = sanitizeString(key);
+
+      if (typeof query[key] === 'string') {
+        sanitized[sanitizedKey] = sanitizeString(query[key] as string);
+      } else if (Array.isArray(query[key])) {
+        sanitized[sanitizedKey] = (query[key] as string[]).map(item =>
+          typeof item === 'string' ? sanitizeString(item) : item
+        );
+      } else {
+        sanitized[sanitizedKey] = query[key];
+      }
+    }
+  }
+
+  return sanitized;
+}
+
+/**
+ * Check for suspicious patterns in URLs and content
+ */
+function containsSuspiciousPatterns(url: string): boolean {
+  const suspiciousPatterns = [
+    // SQL injection patterns
+    /(\b(union|select|insert|update|delete|drop|create|alter|exec|execute)\b)/i,
+    // Path traversal
+    /\.\.[\/\\]/,
+    // Command injection
+    /[;&|`$(){}[\]]/,
+    // XSS patterns
+    /<script|javascript:|vbscript:|onload=|onerror=/i,
+    // Null bytes
+    /\x00/,
+    // Excessive length (potential DoS)
+    /.{2000,}/,
+  ];
+
+  return suspiciousPatterns.some(pattern => pattern.test(url));
+}
+
+/**
+ * Validate and sanitize HTTP headers
+ */
+function validateHeaders(req: Request): void {
+  const dangerousHeaders = ['x-forwarded-host', 'x-original-url', 'x-rewrite-url'];
+
+  // Remove potentially dangerous headers
+  dangerousHeaders.forEach(header => {
+    if (req.headers[header]) {
+      delete req.headers[header];
+    }
+  });
+
+  // Validate User-Agent length
+  const userAgent = req.get('User-Agent');
+  if (userAgent && userAgent.length > 500) {
+    req.headers['user-agent'] = userAgent.substring(0, 500);
+  }
+
+  // Validate Referer header
+  const referer = req.get('Referer');
+  if (referer && referer.length > 1000) {
+    req.headers['referer'] = referer.substring(0, 1000);
   }
 }
 

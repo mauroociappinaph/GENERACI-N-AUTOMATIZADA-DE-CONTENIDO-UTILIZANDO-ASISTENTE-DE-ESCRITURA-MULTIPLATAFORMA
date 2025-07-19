@@ -382,6 +382,122 @@ export class UserController {
   }
 
   /**
+   * Obtener perfil del usuario actual
+   */
+  static async getProfile(req: Request, res: Response): Promise<void> {
+    try {
+      if (!req.user?.id) {
+        res.status(401).json({
+          error: {
+            code: 'UNAUTHORIZED',
+            message: 'Usuario no autenticado',
+            timestamp: new Date().toISOString(),
+            requestId: req.headers['x-request-id'] || 'unknown',
+          },
+        });
+        return;
+      }
+
+      const user = await UserController.userService.getUserById(req.user.id);
+
+      if (!user) {
+        res.status(404).json({
+          error: {
+            code: 'USER_NOT_FOUND',
+            message: 'Usuario no encontrado',
+            timestamp: new Date().toISOString(),
+            requestId: req.headers['x-request-id'] || 'unknown',
+          },
+        });
+        return;
+      }
+
+      res.json({
+        success: true,
+        data: { user },
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: 'Error al obtener perfil',
+          details: error instanceof Error ? error.message : 'Error desconocido',
+          timestamp: new Date().toISOString(),
+          requestId: req.headers['x-request-id'] || 'unknown',
+        },
+      });
+    }
+  }
+
+  /**
+   * Actualizar perfil del usuario actual
+   */
+  static async updateProfile(req: Request, res: Response): Promise<void> {
+    try {
+      if (!req.user?.id) {
+        res.status(401).json({
+          error: {
+            code: 'UNAUTHORIZED',
+            message: 'Usuario no autenticado',
+            timestamp: new Date().toISOString(),
+            requestId: req.headers['x-request-id'] || 'unknown',
+          },
+        });
+        return;
+      }
+
+      const updateData: UpdateUserInput = req.body;
+
+      // Remove role from update data - users can't change their own role
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { role: _, ...profileData } = updateData;
+
+      const user = await UserController.userService.updateUser(req.user.id, profileData);
+
+      res.json({
+        success: true,
+        data: { user },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('Usuario no encontrado')) {
+          res.status(404).json({
+            error: {
+              code: 'USER_NOT_FOUND',
+              message: error.message,
+              timestamp: new Date().toISOString(),
+              requestId: req.headers['x-request-id'] || 'unknown',
+            },
+          });
+          return;
+        }
+
+        if (error.message.includes('email ya está registrado')) {
+          res.status(409).json({
+            error: {
+              code: 'EMAIL_ALREADY_EXISTS',
+              message: error.message,
+              timestamp: new Date().toISOString(),
+              requestId: req.headers['x-request-id'] || 'unknown',
+            },
+          });
+          return;
+        }
+      }
+
+      res.status(500).json({
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: 'Error al actualizar perfil',
+          details: error instanceof Error ? error.message : 'Error desconocido',
+          timestamp: new Date().toISOString(),
+          requestId: req.headers['x-request-id'] || 'unknown',
+        },
+      });
+    }
+  }
+
+  /**
    * Obtener roles disponibles
    */
   static async getRoles(req: Request, res: Response): Promise<void> {
