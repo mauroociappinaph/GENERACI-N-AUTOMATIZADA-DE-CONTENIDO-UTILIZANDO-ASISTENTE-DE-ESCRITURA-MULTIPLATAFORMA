@@ -1,0 +1,60 @@
+# .gitignore.production
+# Archivos que NO deben estar en la rama main/producción
+
+# ========================================
+# HERRAMIENTAS DE DESARROLLO - EXCLUIR DE PRODUCCIÓN
+# ========================================
+
+# Sistema de IA y agentes (SOLO para desarrollo)
+free-ai-system.js
+telegram-bot.js
+ai-api-rotator.js
+demo-ai-24-7.js
+demo-rotation.js
+test-ai-system.js
+test-ai-rotation.js
+test-telegram-bot.js
+
+# Scripts de configuración de desarrollo
+setup-ai-system.sh
+setup-telegram-bot.sh
+setup-free-apis.md
+setup-github-secrets.md
+
+# GitHub Actions para procesamiento de IA (SOLO desarrollo)
+.github/workflows/ai-processor-24-7.yml
+
+# Hooks de Kiro IDE (herramientas de desarrollo)
+.kiro/hooks/ai-content-processor.kiro.hook
+.kiro/hooks/telegram-*.kiro.hook
+.kiro/hooks/*-ai-*.kiro.hook
+
+# Archivos de prueba y demo
+*-demo.js
+*-test.js
+test-*.js
+demo-*.js
+
+# Documentación de desarrollo
+hook-flow-diagram.md
+ai-*.md
+telegram-*.md
+
+# Variables de entorno de desarrollo
+.env.development
+.env.local.ai
+
+# ========================================
+# ARCHIVOS QUE SÍ VAN A PRODUCCIÓN
+# ========================================
+# - Todo el código del sistema principal (Req/backend/, Req/frontend/)
+# - Configuraciones de producción
+# - Documentación de usuario
+# - Tests del sistema principal (no de herramientas de desarrollo)
+
+# ========================================
+# REGLAS DE RAMA
+# ========================================
+# main: Solo código de producción, SIN herramientas de desarrollo
+# dev: Código completo incluyendo herramientas de desarrollo
+# feature/*: Pueden incluir herramientas según necesidad
