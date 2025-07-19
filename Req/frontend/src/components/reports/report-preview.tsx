@@ -54,7 +54,7 @@ export function ReportPreview({
     }
 
     const columns = Object.keys(preview.data[0]);
-    const maxRows = 10; // Limit preview to first 10 rows
+    const maxRows = 10;
     const displayData = preview.data.slice(0, maxRows);
 
     return (
@@ -148,7 +148,7 @@ export function ReportPreview({
     });
 
     if (numericColumns.length === 0) {
-      return null; // No numeric data to visualize
+      return null;
     }
 
     // Create chart data from the first numeric column
@@ -159,21 +159,26 @@ export function ReportPreview({
     }));
 
     // If we have date/time data, create a trend chart
-    const dateColumns = columns.filter(col =>
-      col.toLowerCase().includes('date') ||
-      col.toLowerCase().includes('time') ||
-      col.toLowerCase().includes('created')
+    const dateColumns = columns.filter(
+      col =>
+        col.toLowerCase().includes('date') ||
+        col.toLowerCase().includes('time') ||
+        col.toLowerCase().includes('created')
     );
 
     if (dateColumns.length > 0 && numericColumns.length > 0) {
       const trendData = preview.data.slice(0, 20).map((row, index) => ({
-        name: new Date(row[dateColumns[0]]).toLocaleDateString() || `Point ${index + 1}`,
+        name:
+          new Date(row[dateColumns[0]]).toLocaleDateString() ||
+          `Point ${index + 1}`,
         value: row[numericColumns[0]] || 0,
       }));
 
       return (
         <Card className="p-4">
-          <h4 className="text-lg font-medium text-gray-900 mb-4">Data Visualization</h4>
+          <h4 className="text-lg font-medium text-gray-900 mb-4">
+            Data Visualization
+          </h4>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <AdvancedChart
@@ -205,7 +210,9 @@ export function ReportPreview({
     // Default visualization for numeric data
     return (
       <Card className="p-4">
-        <h4 className="text-lg font-medium text-gray-900 mb-4">Data Visualization</h4>
+        <h4 className="text-lg font-medium text-gray-900 mb-4">
+          Data Visualization
+        </h4>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <AdvancedChart
