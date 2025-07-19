@@ -4,10 +4,11 @@ Para que el sistema funcione automáticamente, necesitas configurar estos secret
 
 ## 📋 **Secrets Requeridos:**
 
-### 1. **GROQ_API_KEY** ✅ (Ya tienes)
+### 1. **GROQ_API_KEY** ✅ (Ya configurado)
 
-```
-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
+```bash
+# Tu API key de Groq que empieza con: gsk_...
+# Ejemplo: gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ### 2. **GOOGLE_API_KEY** (Opcional - para más capacidad)
@@ -63,8 +64,8 @@ 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
 ### Opción 2: GitHub CLI (más rápido)
 
 ```bash
-# Configurar Groq (ya tienes la key)
-gh secret set GROQ_API_KEY --body "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"
+# Configurar Groq (reemplaza con tu API key)
+gh secret set GROQ_API_KEY --body "TU_GROQ_API_KEY_AQUI"
 
 # Si tienes las otras APIs:
 gh secret set GOOGLE_API_KEY --body "TU_GOOGLE_API_KEY"

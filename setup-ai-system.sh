@@ -24,10 +24,15 @@ fi
 echo "✅ GitHub CLI configurado correctamente"
 echo ""
 
-# Configurar secret de Groq (ya tienes la key)
+# Configurar secret de Groq
 echo "🔑 Configurando API key de Groq..."
-gh secret set GROQ_API_KEY --body "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"
-echo "✅ GROQ_API_KEY configurado"
+read -p "Ingresa tu Groq API key (gsk_...): " groq_key
+if [[ $groq_key == gsk_* ]]; then
+    gh secret set GROQ_API_KEY --body "$groq_key"
+    echo "✅ GROQ_API_KEY configurado"
+else
+    echo "⚠️ API key de Groq inválida (debe empezar con gsk_)"
+fi
 
 # Preguntar por otras APIs opcionales
 echo ""

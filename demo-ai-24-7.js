@@ -5,8 +5,8 @@
 
 const FreeAISystem = require('./free-ai-system.js');
 
-// Configurar tu API key de Groq
-process.env.GROQ_API_KEY = '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';
+// Configurar tu API key de Groq (usar variable de entorno)
+process.env.GROQ_API_KEY = process.env.GROQ_API_KEY || 'TU_GROQ_API_KEY_AQUI';
 
 // Simular issues de GitHub con requests de IA
 const mockIssues = [
