@@ -389,7 +389,7 @@ export class AuditService {
           resourceType: resourceTypes.AUTH,
           newValues: {
             alertType,
-            details,
+            details: details as any,
             timestamp: new Date().toISOString(),
           },
           ipAddress: details.ipAddress as string || null,
@@ -399,7 +399,8 @@ export class AuditService {
 
       // Send notification to administrators
       try {
-        await NotificationService.createNotification({
+        const notificationService = new NotificationService();
+        await notificationService.createNotification('system', {
           title: `Security Alert: ${alertType}`,
           message: `Security alert triggered: ${JSON.stringify(details)}`,
           type: 'SECURITY_ALERT',

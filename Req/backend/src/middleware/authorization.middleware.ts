@@ -300,3 +300,5 @@ export const requireRoleManagement = (
     }
   };
 };
+// Alias para compatibilidad
+export const authorizationMiddleware = requirePermission;

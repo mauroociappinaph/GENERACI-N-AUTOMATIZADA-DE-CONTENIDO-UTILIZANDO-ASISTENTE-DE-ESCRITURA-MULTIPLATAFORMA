@@ -11,6 +11,28 @@ import {
   DataRecord
 } from '@/types/data-record';
 import { logError, logPerformance } from '@/utils/logger';
+import {
+  buildBasicWhereConditions,
+  buildDateRangeConditions,
+  buildSearchConditions,
+  buildDataFilterConditions,
+  buildAdvancedSearchConditions,
+  buildSearchTermsConditions,
+  buildDataFieldConditions,
+  mergeORConditions,
+  mergeANDConditions
+} from '@/helpers/data-record/query-builders';
+import {
+  buildDynamicFilterConditions,
+  sanitizeDynamicFilters
+} from '@/helpers/data-record/filter-builders';
+import {
+  validateDataRecordFilters,
+  validateAdvancedSearchParams,
+  validateSearchTerm,
+  sanitizeSearchTerm
+} from '@/helpers/validation/form-validators';
+import { getDaysAgo } from '@/helpers/formatting/date-formatters';
 
 /**
  * Servicio principal para la gestión de registros de datos
@@ -71,15 +93,17 @@ export class DataRecordService {
 
       // Filtrar por rango de fechas
       if (dateFrom || dateTo) {
-        where.createdAt = {};
+        const dateFilter: { gte?: Date; lte?: Date } = {};
 
         if (dateFrom) {
-          where.createdAt.gte = new Date(dateFrom);
+          dateFilter.gte = new Date(dateFrom);
         }
 
         if (dateTo) {
-          where.createdAt.lte = new Date(dateTo);
+          dateFilter.lte = new Date(dateTo);
         }
+
+        where.createdAt = dateFilter;
       }
 
       // Filtrar por término de búsqueda
@@ -297,15 +321,17 @@ export class DataRecordService {
 
       // Filtrar por rango de fechas
       if (criteria.dateRange) {
-        where.createdAt = {};
+        const dateFilter: { gte?: Date; lte?: Date } = {};
 
         if (criteria.dateRange.from) {
-          where.createdAt.gte = criteria.dateRange.from;
+          dateFilter.gte = criteria.dateRange.from;
         }
 
         if (criteria.dateRange.to) {
-          where.createdAt.lte = criteria.dateRange.to;
+          dateFilter.lte = criteria.dateRange.to;
         }
+
+        where.createdAt = dateFilter;
       }
 
       // Filtrar por términos de búsqueda

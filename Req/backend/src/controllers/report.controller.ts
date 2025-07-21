@@ -48,7 +48,7 @@ export class ReportController {
       logger.error('Error generating report', { error, body: req.body });
       res.status(500).json({
         error: 'Failed to generate report',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -103,7 +103,7 @@ export class ReportController {
       logger.error('Error downloading report', { error, reportId: req.params.reportId });
       res.status(500).json({
         error: 'Failed to download report',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -212,7 +212,7 @@ export class ReportController {
       logger.error('Error getting report templates', { error });
       res.status(500).json({
         error: 'Failed to get report templates',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -254,7 +254,7 @@ export class ReportController {
       logger.error('Error creating scheduled report', { error, body: req.body });
       res.status(500).json({
         error: 'Failed to create scheduled report',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -275,7 +275,7 @@ export class ReportController {
       logger.error('Error getting scheduled reports', { error });
       res.status(500).json({
         error: 'Failed to get scheduled reports',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -299,7 +299,7 @@ export class ReportController {
       logger.error('Error updating scheduled report', { error, id: req.params.id });
       res.status(500).json({
         error: 'Failed to update scheduled report',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -322,7 +322,7 @@ export class ReportController {
       logger.error('Error deleting scheduled report', { error, id: req.params.id });
       res.status(500).json({
         error: 'Failed to delete scheduled report',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
@@ -367,7 +367,7 @@ export class ReportController {
       logger.error('Error previewing report', { error, body: req.body });
       res.status(500).json({
         error: 'Failed to preview report',
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }

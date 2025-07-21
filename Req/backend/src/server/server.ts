@@ -186,8 +186,8 @@ export class Server {
    */
   private shouldUseHttps(): boolean {
     return config.nodeEnv === 'production' &&
-           process.env.SSL_CERT_PATH &&
-           process.env.SSL_KEY_PATH;
+           !!process.env.SSL_CERT_PATH &&
+           !!process.env.SSL_KEY_PATH;
   }
 
   /**

@@ -87,7 +87,7 @@ export const requestValidator = (
 
     // Sanitize query parameters with enhanced protection
     if (req.query) {
-      req.query = sanitizeQueryParams(req.query);
+      req.query = sanitizeQueryParams(req.query) as any;
     }
 
     // Sanitize request body with comprehensive protection

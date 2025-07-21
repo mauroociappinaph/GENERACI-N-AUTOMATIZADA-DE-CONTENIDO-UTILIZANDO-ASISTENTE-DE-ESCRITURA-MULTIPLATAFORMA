@@ -13,6 +13,9 @@ export * from './notification';
 export * from './report';
 export * from './roles';
 
+// Re-export AI content types
+export * from './ai-content';
+
 export interface AuthResponse {
   user: UserWithoutPassword;
   accessToken: string;

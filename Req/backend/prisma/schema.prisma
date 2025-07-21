@@ -18,6 +18,56 @@ enum UserRole {
   VIEWER
 }
 
+// AI Content enums
+enum ContentCategory {
+  SOCIAL_MEDIA
+  BLOG
+  EMAIL
+  PRODUCT_DESCRIPTION
+  BIOGRAPHY
+  MARKETING
+  NEWSLETTER
+  ADVERTISEMENT
+}
+
+enum Platform {
+  FACEBOOK
+  TWITTER
+  INSTAGRAM
+  LINKEDIN
+  BLOG
+  EMAIL
+  YOUTUBE
+  TIKTOK
+  PINTEREST
+}
+
+enum ContentTone {
+  PROFESSIONAL
+  CASUAL
+  FRIENDLY
+  FORMAL
+  CREATIVE
+  PERSUASIVE
+  HUMOROUS
+  INSPIRATIONAL
+}
+
+enum PostStatus {
+  SCHEDULED
+  PUBLISHING
+  PUBLISHED
+  FAILED
+  CANCELLED
+}
+
+enum PublishingStatus {
+  SUCCESS
+  FAILED
+  PENDING
+  RETRYING
+}
+
 // User model
 model User {
   id           String   @id @default(cuid())
@@ -31,13 +81,20 @@ model User {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Relations
-  createdRecords    DataRecord[]        @relation("CreatedBy")
-  updatedRecords    DataRecord[]        @relation("UpdatedBy")
-  deletedRecords    DataRecord[]        @relation("DeletedBy")
-  auditLogs         AuditLog[]
-  createdReports    Report[]
-  DataRecordVersion DataRecordVersion[]
-  DeletedDataRecord DeletedDataRecord[]
+  createdRecords      DataRecord[]              @relation("CreatedBy")
+  updatedRecords      DataRecord[]              @relation("UpdatedBy")
+  deletedRecords      DataRecord[]              @relation("DeletedBy")
+  auditLogs           AuditLog[]
+  createdReports      Report[]
+  DataRecordVersion   DataRecordVersion[]
+  DeletedDataRecord   DeletedDataRecord[]
+  // AI Content Relations
+  contentTemplates    ContentTemplate[]
+  generatedContent    GeneratedContent[]
+  socialMediaAccounts SocialMediaAccount[]
+  scheduledPosts      ScheduledPost[]
+  contentFeedback     ContentFeedback[]
+  contentAnalytics    ContentAnalyticsSummary[]
 
   @@map("users")
 }
@@ -143,4 +200,253 @@ model Report {
   creator User @relation(fields: [createdBy], references: [id])
 
   @@map("reports")
+}
+
+// ============================================
+// AI CONTENT GENERATION MODELS
+// ============================================
+
+// Content Templates model
+model ContentTemplate {
+  id             String          @id @default(cuid())
+  name           String
+  category       ContentCategory
+  platforms      Json // Array of Platform enums stored as JSON
+  promptTemplate String          @map("prompt_template")
+  parameters     Json // Template parameters and their types
+  tone           ContentTone
+  language       String          @default("en")
+  isActive       Boolean         @default(true) @map("is_active")
+  createdBy      String          @map("created_by")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  creator          User               @relation(fields: [createdBy], references: [id])
+  generatedContent GeneratedContent[]
+
+  // Indexes for performance
+  @@index([category])
+  @@index([isActive])
+  @@index([createdBy])
+  @@map("content_templates")
+}
+
+// Generated Content model
+model GeneratedContent {
+  id               String      @id @default(cuid())
+  templateId       String?     @map("template_id")
+  content          String
+  platform         Platform
+  language         String      @default("en")
+  tone             ContentTone
+  qualityScore     Float?      @map("quality_score") // 0.0 to 1.0
+  sentimentScore   Json?       @map("sentiment_score") // Sentiment analysis results
+  seoScore         Json?       @map("seo_score") // SEO metrics
+  readabilityScore Float?      @map("readability_score") // 0.0 to 1.0
+  suggestions      Json? // Content improvement suggestions
+  parameters       Json? // Parameters used for generation
+  vectorEmbedding  String? // Vector embedding for similarity search
+  createdBy        String      @map("created_by")
+  createdAt        DateTime    @default(now()) @map("created_at")
+
+  // Relations
+  template       ContentTemplate?     @relation(fields: [templateId], references: [id])
+  creator        User                 @relation(fields: [createdBy], references: [id])
+  scheduledPosts ScheduledPost[]
+  performance    ContentPerformance[]
+  feedback       ContentFeedback[]
+  translations   TranslationCache[]   @relation("SourceContent")
+
+  // Indexes for performance
+  @@index([templateId])
+  @@index([platform])
+  @@index([createdBy])
+  @@index([createdAt])
+  @@map("generated_content")
+}
+
+// Social Media Accounts model
+model SocialMediaAccount {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  platform     Platform
+  accountId    String   @map("account_id") // Platform-specific account ID
+  accountName  String   @map("account_name")
+  accessToken  String   @map("access_token")
+  refreshToken String?  @map("refresh_token")
+  permissions  Json // Array of permissions/scopes stored as JSON
+  isActive     Boolean  @default(true) @map("is_active")
+  connectedAt  DateTime @default(now()) @map("connected_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user              User               @relation(fields: [userId], references: [id])
+  scheduledPosts    ScheduledPost[]    @relation("PostAccounts")
+  publishingResults PublishingResult[]
+
+  @@unique([userId, platform, accountId])
+  // Indexes for performance
+  @@index([userId])
+  @@index([platform])
+  @@index([isActive])
+  @@map("social_media_accounts")
+}
+
+// Scheduled Posts model
+model ScheduledPost {
+  id                      String     @id @default(cuid())
+  contentId               String     @map("content_id")
+  scheduledFor            DateTime   @map("scheduled_for")
+  status                  PostStatus @default(SCHEDULED)
+  platformSpecificContent Json?      @map("platform_specific_content") // Platform-adapted content
+  mediaAttachments        Json? // Media files and metadata
+  createdBy               String     @map("created_by")
+  createdAt               DateTime   @default(now()) @map("created_at")
+  updatedAt               DateTime   @updatedAt @map("updated_at")
+
+  // Relations
+  content           GeneratedContent     @relation(fields: [contentId], references: [id])
+  creator           User                 @relation(fields: [createdBy], references: [id])
+  accounts          SocialMediaAccount[] @relation("PostAccounts")
+  publishingResults PublishingResult[]
+
+  // Indexes for performance
+  @@index([contentId])
+  @@index([scheduledFor])
+  @@index([status])
+  @@index([createdBy])
+  @@map("scheduled_posts")
+}
+
+// Publishing Results model
+model PublishingResult {
+  id              String           @id @default(cuid())
+  scheduledPostId String           @map("scheduled_post_id")
+  accountId       String           @map("account_id")
+  platform        Platform
+  status          PublishingStatus
+  platformPostId  String?          @map("platform_post_id") // ID from social media platform
+  errorMessage    String?          @map("error_message")
+  publishedAt     DateTime?        @map("published_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+
+  // Relations
+  scheduledPost ScheduledPost      @relation(fields: [scheduledPostId], references: [id])
+  account       SocialMediaAccount @relation(fields: [accountId], references: [id])
+
+  // Indexes for performance
+  @@index([scheduledPostId])
+  @@index([accountId])
+  @@index([platform])
+  @@index([status])
+  @@map("publishing_results")
+}
+
+// Content Performance model
+model ContentPerformance {
+  id             String   @id @default(cuid())
+  contentId      String   @map("content_id")
+  platform       Platform
+  platformPostId String?  @map("platform_post_id")
+  metrics        Json // Platform-specific metrics (likes, shares, etc.)
+  engagement     Json? // Engagement metrics
+  reach          Json? // Reach and impression metrics
+  conversions    Json? // Conversion metrics if available
+  analyzedAt     DateTime @default(now()) @map("analyzed_at")
+
+  // Relations
+  content GeneratedContent @relation(fields: [contentId], references: [id])
+
+  @@unique([contentId, platform, platformPostId])
+  // Indexes for performance
+  @@index([contentId])
+  @@index([platform])
+  @@index([analyzedAt])
+  @@map("content_performance")
+}
+
+// Content Feedback model
+model ContentFeedback {
+  id           String   @id @default(cuid())
+  contentId    String   @map("content_id")
+  userId       String   @map("user_id")
+  feedbackType String   @map("feedback_type") // 'quality', 'relevance', 'tone', etc.
+  rating       Int? // 1-5 rating scale
+  comments     String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  content GeneratedContent @relation(fields: [contentId], references: [id])
+  user    User             @relation(fields: [userId], references: [id])
+
+  // Indexes for performance
+  @@index([contentId])
+  @@index([userId])
+  @@index([feedbackType])
+  @@map("content_feedback")
+}
+
+// Translation Cache model
+model TranslationCache {
+  id                  String   @id @default(cuid())
+  sourceContentHash   String   @map("source_content_hash") // Hash of source content
+  sourceLanguage      String   @map("source_language")
+  targetLanguage      String   @map("target_language")
+  translatedContent   String   @map("translated_content")
+  confidence          Float? // Translation confidence score
+  culturalAdaptations Json? // Cultural adaptations made
+  provider            String // Translation service provider
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  // Relations
+  sourceContent GeneratedContent? @relation("SourceContent", fields: [sourceContentHash], references: [id])
+
+  @@unique([sourceContentHash, sourceLanguage, targetLanguage])
+  // Indexes for performance
+  @@index([sourceContentHash])
+  @@index([sourceLanguage, targetLanguage])
+  @@map("translation_cache")
+}
+
+// Content Analytics Summary model
+model ContentAnalyticsSummary {
+  id                     String   @id @default(cuid())
+  userId                 String   @map("user_id")
+  periodStart            DateTime @map("period_start")
+  periodEnd              DateTime @map("period_end")
+  totalContentGenerated  Int      @default(0) @map("total_content_generated")
+  totalPostsPublished    Int      @default(0) @map("total_posts_published")
+  avgQualityScore        Float?   @map("avg_quality_score")
+  avgEngagementRate      Float?   @map("avg_engagement_rate")
+  topPerformingPlatforms Json     @map("top_performing_platforms") // Array of platforms stored as JSON
+  recommendations        Json? // AI-generated recommendations
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, periodStart, periodEnd])
+  // Indexes for performance
+  @@index([userId])
+  @@index([periodStart, periodEnd])
+  @@map("content_analytics_summary")
+}
+
+// Vector Similarity Index model (for content similarity search)
+model VectorIndex {
+  id              String          @id @default(cuid())
+  contentId       String          @map("content_id")
+  vectorEmbedding String          @map("vector_embedding") // Serialized vector
+  platform        Platform
+  category        ContentCategory
+  language        String
+  createdAt       DateTime        @default(now()) @map("created_at")
+
+  @@unique([contentId])
+  // Indexes for performance
+  @@index([platform])
+  @@index([category])
+  @@index([language])
+  @@map("vector_index")
 }

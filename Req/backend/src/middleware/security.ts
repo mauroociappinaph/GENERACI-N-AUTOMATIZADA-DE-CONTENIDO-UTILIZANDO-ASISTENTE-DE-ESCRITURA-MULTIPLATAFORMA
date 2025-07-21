@@ -123,7 +123,7 @@ function getClientIP(req: Request): string {
   const realIP = req.headers['x-real-ip'] as string;
   const cfConnectingIP = req.headers['cf-connecting-ip'] as string;
 
-  return cfConnectingIP || realIP || (forwarded ? forwarded.split(',')[0].trim() : req.ip);
+  return cfConnectingIP || realIP || (forwarded ? forwarded.split(',')[0].trim() : req.ip) || 'unknown';
 }
 
 function checkRapidRequests(ip: string): boolean {
