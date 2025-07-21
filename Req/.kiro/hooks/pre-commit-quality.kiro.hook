@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Pre-commit Quality Check",
+  "description": "Ejecuta validaciones de calidad antes de cada commit para asegurar código estable",
+  "version": "1.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Ejecuta un chequeo completo de calidad del código antes del commit. Realiza las siguientes validaciones:\n\n## 1. **Lint y Format del código**\n- Ejecuta ESLint en backend y frontend\n- Verifica formateo con Prettier\n- Valida estándares de código establecidos\n\n## 2. **Tests unitarios**\n- Ejecuta tests unitarios críticos\n- Verifica coverage mínimo requerido\n- Valida que no hay tests rotos\n\n## 3. **Validación de tipos TypeScript**\n- Compilación sin errores\n- Verificación de tipos estrictos\n- Validación de imports correctos\n\n## 4. **Validación de arquitectura**\n- Componentes no excedan 300 líneas\n- Principio de responsabilidad única\n- Estructura de carpetas correcta\n- Patrones de diseño implementados correctamente\n\n## 5. **Comandos a ejecutar:**\n\n```bash\n# Backend\ncd Req/backend\nnpm run lint\nnpm run format:check\nnpm run test -- --passWithNoTests\nnpm run build\n\n# Frontend  \ncd Req/frontend\nnpm run lint\nnpm run format:check\nnpm run validate:standards\nnpm run build\n```\n\n## 6. **Reporte final:**\n- ✅ Todos los checks pasaron\n- ❌ Issues encontrados (con detalles)\n- 📋 Recomendaciones de mejora\n- 🚀 Estado: Listo para commit / Requiere correcciones\n\nPor favor ejecuta estas validaciones y proporciona un reporte detallado del estado del código."
+  }
+}

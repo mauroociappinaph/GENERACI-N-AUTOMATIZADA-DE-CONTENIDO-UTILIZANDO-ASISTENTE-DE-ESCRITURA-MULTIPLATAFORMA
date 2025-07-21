@@ -1,0 +1,202 @@
+{
+  "enabled": true,
+  "name": "GitHub Issue Generator",
+  "description": "Genera automáticamente GitHub Issues basado en errores, tareas y mejoras detectadas",
+  "version": "1.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/tasks.md",
+      "**/requirements.md",
+      "**/*.test.ts",
+      "**/package.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "🎯 **GitHub Issue Generator**\n\nVoy a analizar el proyecto y generar GitHub Issues automáticamente para organizar mejor el trabajo.\n\n## 📊 **Análisis del Proyecto:**\n\n### **1. Detectar Errores de Tests**\n```bash\necho \"🔍 Analizando errores de tests...\"\n\n# Ejecutar tests y capturar errores\ncd Req/backend\nnpm run test 2>&1 | grep -E \"FAIL|error|Error\" > /tmp/test_errors.txt\n\n# Contar errores por categoría\nTYPE_ERRORS=$(grep -c \"TS[0-9]\" /tmp/test_errors.txt || echo \"0\")\nTEST_FAILURES=$(grep -c \"FAIL\" /tmp/test_errors.txt || echo \"0\")\nCOMPILE_ERRORS=$(grep -c \"error TS\" /tmp/test_errors.txt || echo \"0\")\n\necho \"📊 Errores encontrados:\"\necho \"- Errores de tipos: $TYPE_ERRORS\"\necho \"- Tests fallando: $TEST_FAILURES\"\necho \"- Errores de compilación: $COMPILE_ERRORS\"\n```\n\n### **2. Analizar Tareas Pendientes**\n```bash\necho \"📋 Analizando tareas pendientes...\"\n\n# Buscar tareas no completadas\nPENDING_TASKS=$(grep -c \"\\[ \\]\" Req/.kiro/specs/sistema-gestion-040/tasks.md || echo \"0\")\nIN_PROGRESS_TASKS=$(grep -c \"\\[-\\]\" Req/.kiro/specs/sistema-gestion-040/tasks.md || echo \"0\")\nCOMPLETED_TASKS=$(grep -c \"\\[x\\]\" Req/.kiro/specs/sistema-gestion-040/tasks.md || echo \"0\")\n\necho \"📊 Estado de tareas:\"\necho \"- Pendientes: $PENDING_TASKS\"\necho \"- En progreso: $IN_PROGRESS_TASKS\"\necho \"- Completadas: $COMPLETED_TASKS\"\n```\n\n### **3. Detectar TODOs y FIXMEs**\n```bash\necho \"🔧 Buscando TODOs y FIXMEs...\"\n\n# Buscar comentarios TODO/FIXME en código\nTODOS=$(find Req -name \"*.ts\" -o -name \"*.tsx\" -o -name \"*.js\" -o -name \"*.jsx\" | xargs grep -n \"TODO\\|FIXME\\|HACK\" | wc -l || echo \"0\")\n\necho \"📊 Items de mejora encontrados: $TODOS\"\n```\n\n## 🎯 **Generación Automática de Issues:**\n\n### **Tipo 1: Issues de Bugs (Errores de Tests)**\n\nPara cada error crítico encontrado, crear:\n\n```bash\n# Ejemplo de issue de bug\ngh issue create \\\n  --title \"🐛 Fix TypeScript errors in JWT Service\" \\\n  --body \"## 🐛 Bug Report\n\n### **Error Description:**\nTypeScript error: Type 'string | undefined' is not assignable to type 'string'\n\n### **File Affected:**\n`src/services/jwt.service.ts:121`\n\n### **Error Details:**\n\\`\\`\\`\nType 'string | undefined' is not assignable to type 'string | null'.\nType 'undefined' is not assignable to type 'string | null'.\n\\`\\`\\`\n\n### **Steps to Reproduce:**\n1. Run `npm run test`\n2. Check JWT service tests\n3. Error appears in token extraction\n\n### **Expected Behavior:**\nJWT service should handle undefined values properly\n\n### **Proposed Solution:**\n- Add proper null checks\n- Update type definitions\n- Ensure backward compatibility\n\n### **Priority:** High\n### **Estimated Time:** 2-3 hours\n### **Related Files:**\n- `src/services/jwt.service.ts`\n- `__tests__/services/jwt.service.test.ts`\" \\\n  --label \"bug,high-priority,backend,typescript\" \\\n  --milestone \"Production Ready\"\n```\n\n### **Tipo 2: Issues de Features (Tareas Pendientes)**\n\n```bash\n# Ejemplo de issue de feature\ngh issue create \\\n  --title \"✨ Implement Axios HTTP Client Integration\" \\\n  --body \"## ✨ Feature Request\n\n### **Description:**\nReplace all fetch calls with Axios for better HTTP client management\n\n### **User Story:**\nAs a developer, I want a standardized HTTP client so that error handling and token management is consistent across the application.\n\n### **Acceptance Criteria:**\n- [ ] Install Axios in frontend project\n- [ ] Create typed HTTP client with interceptors\n- [ ] Replace all fetch calls with Axios\n- [ ] Configure automatic token handling\n- [ ] Add request/response interceptors\n- [ ] Integrate with Service Factory Pattern\n- [ ] Add comprehensive error handling\n- [ ] Update all API service files\n- [ ] Add unit tests for HTTP client\n- [ ] Update documentation\n\n### **Technical Requirements:**\n- TypeScript support\n- Automatic token injection\n- Error handling interceptors\n- Request/response logging\n- Retry logic for failed requests\n\n### **Files to Modify:**\n- `src/lib/http-client.ts` (new)\n- `src/lib/api.ts` (update)\n- All service files using fetch\n- Service factory integration\n\n### **Priority:** High\n### **Estimated Time:** 1-2 days\n### **Epic:** Frontend Architecture Improvements\" \\\n  --label \"enhancement,frontend,http-client,high-priority\" \\\n  --milestone \"Architecture Improvements\"\n```\n\n### **Tipo 3: Issues de Tech Debt (TODOs/FIXMEs)**\n\n```bash\n# Ejemplo de issue de tech debt\ngh issue create \\\n  --title \"🔧 Refactor: Fix exactOptionalPropertyTypes compatibility\" \\\n  --body \"## 🔧 Technical Debt\n\n### **Issue:**\nMultiple TypeScript errors due to strict `exactOptionalPropertyTypes: true` setting\n\n### **Impact:**\n- 13 test suites failing\n- Build errors in production\n- Type safety compromised\n\n### **Root Cause:**\nTypeScript configuration is too strict for current codebase patterns\n\n### **Proposed Solutions:**\n\n#### Option 1: Fix all type issues (Recommended)\n- Update all services to handle undefined properly\n- Add proper type guards\n- Update interfaces to be more explicit\n\n#### Option 2: Adjust TypeScript config\n- Temporarily relax exactOptionalPropertyTypes\n- Gradually fix issues over time\n\n### **Files Affected:**\n- `src/services/*.ts` (multiple)\n- `src/controllers/*.ts` (multiple)\n- `tsconfig.json`\n\n### **Priority:** Critical\n### **Estimated Time:** 3-5 days\n### **Benefits:**\n- All tests passing\n- Production-ready code\n- Better type safety\n- Improved developer experience\" \\\n  --label \"tech-debt,typescript,critical,refactor\" \\\n  --milestone \"Production Ready\"\n```\n\n### **Tipo 4: Issues de Mejoras (Performance/UX)**\n\n```bash\n# Ejemplo de issue de mejora\ngh issue create \\\n  --title \"⚡ Performance: Optimize database queries with proper indexing\" \\\n  --body \"## ⚡ Performance Improvement\n\n### **Current Issue:**\nDatabase queries may be slow due to missing indexes\n\n### **Proposed Improvement:**\nAdd proper database indexes for frequently queried fields\n\n### **Expected Benefits:**\n- Faster query response times\n- Better user experience\n- Reduced server load\n- Improved scalability\n\n### **Implementation Plan:**\n1. Analyze current query patterns\n2. Identify slow queries\n3. Add appropriate indexes\n4. Test performance improvements\n5. Monitor production metrics\n\n### **Files to Modify:**\n- `prisma/schema.prisma`\n- Database migration files\n- Query optimization in services\n\n### **Priority:** Medium\n### **Estimated Time:** 1-2 days\" \\\n  --label \"performance,database,enhancement\" \\\n  --milestone \"Performance Optimization\"\n```\n\n## 📊 **Categorización Automática:**\n\n### **Labels Automáticos:**\n- **Por Tipo**: `bug`, `enhancement`, `tech-debt`, `performance`\n- **Por Área**: `frontend`, `backend`, `database`, `security`\n- **Por Prioridad**: `critical`, `high-priority`, `medium`, `low`\n- **Por Tecnología**: `typescript`, `react`, `prisma`, `nodejs`\n- **Por Complejidad**: `good-first-issue`, `complex`, `research-needed`\n\n### **Milestones Automáticos:**\n- **Production Ready**: Issues críticos para producción\n- **Architecture Improvements**: Mejoras técnicas\n- **Performance Optimization**: Optimizaciones\n- **Feature Development**: Nuevas funcionalidades\n- **Bug Fixes**: Corrección de errores\n\n## 🎯 **Proceso de Generación:**\n\n1. **Analizar proyecto** → Detectar issues automáticamente\n2. **Categorizar problemas** → Asignar tipos y prioridades\n3. **Generar issues** → Crear con templates apropiados\n4. **Asignar labels** → Categorización automática\n5. **Crear milestones** → Organización por objetivos\n6. **Generar reporte** → Resumen de issues creados\n\n## 🚀 **¿Ejecutar generación automática?**\n\nEsto creará issues organizados para:\n- ✅ **Errores críticos** que impiden producción\n- ✅ **Tareas pendientes** del plan de implementación\n- ✅ **Mejoras técnicas** identificadas\n- ✅ **Optimizaciones** de performance\n\n## 🎯 **Generación Mejorada con Sub-Issues:**
+
+### **Estructura Jerárquica:**
+
+**Epic (Issue Padre)** → **Features (Sub-Issues)** → **Tasks (Sub-Sub-Issues)**
+
+```bash
+# Ejemplo de estructura jerárquica:
+# Epic: 🤖 AI Content Generation System (#13)
+#   ├── 🗄️ Database Schema and Models (#14)
+#   │   ├── Create content_templates table (#15)
+#   │   ├── Create generated_content table (#16)
+#   │   └── Set up vector database integration (#17)
+#   ├── 🔧 AI Service Implementation (#18)
+#   │   ├── OpenAI API integration (#19)
+#   │   ├── Prompt management system (#20)
+#   │   └── Content quality analysis (#21)
+#   └── 🎨 Frontend Components (#22)
+#       ├── Template selector component (#23)
+#       ├── Content generator interface (#24)
+#       └── Quality analyzer dashboard (#25)
+```
+
+### **Proceso de Creación Automática:**
+
+```bash
+# 1. Crear Epic (Issue Padre)
+EPIC_ID=$(gh issue create \
+  --title "🤖 AI Content Generation System (Epic)" \
+  --body "## 🎯 Epic Overview
+
+Complete AI content generation system with multi-platform support.
+
+## 📋 Sub-Issues:
+- [ ] #TBD Database Schema and Models
+- [ ] #TBD AI Service Implementation
+- [ ] #TBD Frontend Components
+
+## 📊 Progress Tracking:
+- **Total Sub-Issues:** 3
+- **Completed:** 0/3
+- **In Progress:** 0/3
+- **Estimated Time:** 15-20 days
+
+## 🏷️ Labels:
+- Epic, AI-Content, High-Priority" \
+  --label "enhancement,ai-content,high-priority,epic" \
+  --json number | jq -r '.number')
+
+echo "✅ Epic created: #$EPIC_ID"
+
+# 2. Crear Sub-Issues que referencian al Epic
+SUB_ISSUE_1=$(gh issue create \
+  --title "🗄️ Database Schema and Models" \
+  --body "## 🔗 Parent Epic: #$EPIC_ID
+
+### **Description:**
+Create database schema for AI content system
+
+### **Sub-Tasks:**
+- [ ] Create content_templates table
+- [ ] Create generated_content table
+- [ ] Set up vector database integration
+- [ ] Add proper indexing
+- [ ] Create migration scripts
+
+### **Acceptance Criteria:**
+- [ ] All tables created with proper relationships
+- [ ] Indexes optimized for performance
+- [ ] Migration scripts tested
+- [ ] Vector database integrated
+
+**Part of Epic:** #$EPIC_ID" \
+  --label "enhancement,ai-content,backend,database" \
+  --json number | jq -r '.number')
+
+# 3. Crear Sub-Sub-Issues (Tasks específicos)
+gh issue create \
+  --title "Create content_templates table" \
+  --body "## 🔗 Parent Issue: #$SUB_ISSUE_1
+## 🔗 Epic: #$EPIC_ID
+
+### **Task Description:**
+Create Prisma model for content templates
+
+### **Acceptance Criteria:**
+- [ ] Define template schema in Prisma
+- [ ] Add proper field validations
+- [ ] Create database migration
+- [ ] Add TypeScript types
+
+**Estimated Time:** 4-6 hours
+**Part of:** #$SUB_ISSUE_1 → #$EPIC_ID" \
+  --label "enhancement,database,good first issue"
+
+# 4. Actualizar Epic con referencias reales
+gh issue edit $EPIC_ID --body "## 🎯 Epic Overview
+
+Complete AI content generation system with multi-platform support.
+
+## 📋 Sub-Issues:
+- [ ] #$SUB_ISSUE_1 Database Schema and Models
+- [ ] #TBD AI Service Implementation
+- [ ] #TBD Frontend Components
+
+## 📊 Progress Tracking:
+- **Total Sub-Issues:** 3
+- **Completed:** 0/3
+- **In Progress:** 0/3
+- **Estimated Time:** 15-20 days"
+```
+
+### **Labels Automáticos por Categoría:**
+
+```bash
+# Crear labels específicos si no existen
+gh label create "epic" --description "Large feature spanning multiple issues" --color "8B5CF6"
+gh label create "database" --description "Database related tasks" --color "10B981"
+gh label create "api-integration" --description "External API integration" --color "F59E0B"
+gh label create "ml-ai" --description "Machine Learning and AI features" --color "EF4444"
+
+# Asignar labels automáticamente basado en contenido:
+if [[ $TITLE == *"Database"* ]]; then
+    LABELS="$LABELS,database"
+fi
+
+if [[ $TITLE == *"AI"* || $TITLE == *"OpenAI"* ]]; then
+    LABELS="$LABELS,ai-content,ml-ai"
+fi
+
+if [[ $TITLE == *"Frontend"* || $TITLE == *"Component"* ]]; then
+    LABELS="$LABELS,frontend"
+fi
+```
+
+### **Relaciones Padre-Hijo Automáticas:**
+
+```bash
+# Función para crear jerarquía automática
+create_issue_hierarchy() {
+    local epic_title="$1"
+    local epic_body="$2"
+    local sub_issues="$3"
+
+    # Crear Epic
+    local epic_id=$(gh issue create \
+        --title "$epic_title" \
+        --body "$epic_body" \
+        --label "enhancement,epic,high-priority" \
+        --json number | jq -r '.number')
+
+    echo "📋 Epic created: #$epic_id - $epic_title"
+
+    # Crear Sub-Issues
+    local sub_issue_refs=""
+    while IFS='|' read -r sub_title sub_body sub_labels; do
+        local sub_id=$(gh issue create \
+            --title "$sub_title" \
+            --body "## 🔗 Parent Epic: #$epic_id\n\n$sub_body\n\n**Part of Epic:** #$epic_id" \
+            --label "$sub_labels" \
+            --json number | jq -r '.number')
+
+        echo "  ├── Sub-Issue created: #$sub_id - $sub_title"
+        sub_issue_refs="$sub_issue_refs\n- [ ] #$sub_id $sub_title"
+    done <<< "$sub_issues"
+
+    # Actualizar Epic con referencias
+    gh issue edit $epic_id --body "$epic_body\n\n## 📋 Sub-Issues:$sub_issue_refs"
+}
+```
+
+## 🎯 **Ejecución Automática Mejorada:**
+
+**¿Proceder con la generación automática de GitHub Issues con estructura jerárquica, sub-issues y labels apropiados?**
+
+### **Se crearán:**
+- ✅ **3-5 Epics principales** (Issues padre)
+- ✅ **15-20 Sub-Issues** (Features específicos)
+- ✅ **30-40 Tasks** (Sub-sub-issues granulares)
+- ✅ **Labels automáticos** por categoría
+- ✅ **Relaciones padre-hijo** claramente definidas
+- ✅ **Progress tracking** en cada Epic
+
+**¿Continuar con la generación mejorada?**"
+  }
+}

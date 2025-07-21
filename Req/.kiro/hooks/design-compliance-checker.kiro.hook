@@ -1,0 +1,80 @@
+---
+name: "Design Compliance Checker"
+description: "Verifica que el código cumpla con las reglas arquitectónicas del design.md"
+trigger: "on_file_save"
+filePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+enabled: true
+---
+
+# Design Compliance Checker Hook
+
+Este hook verifica automáticamente que el código cumpla con las reglas arquitectónicas definidas en el design.md:
+
+## Reglas Verificadas:
+
+### 1. Single Responsibility Principle (SRP)
+- Cada componente/servicio debe tener una sola responsabilidad
+- Verificación por nombre de función y comentarios
+
+### 2. Límite de Líneas
+- Componentes React: máximo 300 líneas
+- Funciones/métodos: máximo 50 líneas
+- Archivos: máximo 300 líneas (con excepciones documentadas)
+
+### 3. Complejidad Ciclomática
+- Máximo 8 de complejidad por función
+- Verificación de anidamiento máximo de 4 niveles
+
+### 4. Parámetros de Función
+- Máximo 4 parámetros por función
+- Sugerencia de usar objetos para más parámetros
+
+### 5. Arquitectura de Helpers
+- Funciones reutilizables deben estar en módulos helpers/
+- Verificación de duplicación de código
+
+### 6. Estructura de Barrel Exports
+- Verificación de archivos index.ts para exports
+- Estructura de carpetas según SRP
+
+## Acciones del Hook:
+
+1. **Análisis Estático**: Parsea el código para verificar métricas
+2. **Validación de Estructura**: Verifica organización de carpetas
+3. **Reporte de Violaciones**: Lista problemas encontrados
+4. **Sugerencias de Refactoring**: Propone mejoras específicas
+5. **Bloqueo de Commits**: Previene commits que violen reglas críticas
+
+## Configuración:
+
+```typescript
+interface DesignComplianceConfig {
+  rules: {
+    maxLinesPerComponent: 300;
+    maxLinesPerFunction: 50;
+    maxComplexity: 8;
+    maxParameters: 4;
+    maxNestingDepth: 4;
+    enforceBarrelExports: true;
+    requireHelperModularization: true;
+  };
+  exceptions: {
+    allowedFiles: string[];
+    temporaryExceptions: string[];
+  };
+  actions: {
+    blockCommits: boolean;
+    generateReport: boolean;
+    suggestRefactoring: boolean;
+  };
+}
+```
+
+## Ejecución:
+
+El hook se ejecuta automáticamente al guardar archivos .ts/.tsx/.js/.jsx y:
+- Analiza el archivo modificado
+- Verifica cumplimiento de reglas
+- Muestra violaciones en tiempo real
+- Sugiere refactoring cuando sea necesario
+- Bloquea commits si hay violaciones críticas

@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/users/page": "app/admin/users/page.js",
+  "/data/[id]/edit/page": "app/data/[id]/edit/page.js",
+  "/data/[id]/page": "app/data/[id]/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/page": "app/page.js",
+  "/data/new/page": "app/data/new/page.js",
+  "/data/page": "app/data/page.js",
+  "/records/[id]/edit/page": "app/records/[id]/edit/page.js",
+  "/login/page": "app/login/page.js",
+  "/records/new/page": "app/records/new/page.js",
+  "/records/[id]/page": "app/records/[id]/page.js",
+  "/records/page": "app/records/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/reports/page": "app/reports/page.js",
+  "/recuperar-password/page": "app/recuperar-password/page.js",
+  "/admin/settings/page": "app/admin/settings/page.js"
+}

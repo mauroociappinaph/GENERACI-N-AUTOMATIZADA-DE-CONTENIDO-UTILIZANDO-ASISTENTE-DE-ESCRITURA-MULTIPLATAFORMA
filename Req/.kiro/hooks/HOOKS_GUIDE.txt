@@ -1,0 +1,249 @@
+================================================================================
+                           KIRO HOOKS SYSTEM GUIDE
+================================================================================
+
+## WHAT ARE HOOKS?
+
+Hooks are automated scripts that run when specific events happen in your project.
+Think of them like "smart assistants" that help you with repetitive tasks.
+
+## HOW DO HOOKS WORK?
+
+1. You write code or save files
+2. Kiro detects the action (trigger)
+3. The hook runs automatically
+4. It helps you with tasks like testing, creating PRs, etc.
+
+================================================================================
+                              TRIGGER TYPES
+================================================================================
+
+### 1. MANUAL TRIGGERS
+- You click a button to run the hook
+- Example: "Create New Feature" button
+- When: Only when you want it
+
+### 2. FILE TRIGGERS
+- Runs when you save specific files
+- Example: Save a .ts file → Quality check runs
+- When: Every time you save matching files
+
+### 3. GIT TRIGGERS
+- Runs during git operations
+- Example: Before commit → Organize commit message
+- When: During git actions (commit, push, branch change)
+
+### 4. AUTOMATIC TRIGGERS
+- Runs based on project state
+- Example: Feature complete → Create PR automatically
+- When: System detects specific conditions
+
+================================================================================
+                              OUR HOOKS SYSTEM
+================================================================================
+
+## HOOK #1: PRE-COMMIT QUALITY CHECK
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: When you save .ts, .tsx, .js, .jsx files                          │
+│ PURPOSE: Check code quality automatically                                   │
+│                                                                             │
+│ FLOW:                                                                       │
+│ Save file → Run tests → Check lint → Check format → Report results         │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ You save "user.service.ts" → Hook runs → "✅ All checks passed!"          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+## HOOK #2: PULL REQUEST HELPER
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: When you push to feature/* or hotfix/* branches                   │
+│ PURPOSE: Help create Pull Requests automatically                           │
+│                                                                             │
+│ FLOW:                                                                       │
+│ Push to feature/my-feature → Detect branch → Create PR template → Guide    │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ git push origin feature/axios-integration → Hook suggests PR creation      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+## HOOK #3: BRANCH MANAGEMENT HELPER
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: When you change branches (git checkout)                           │
+│ PURPOSE: Give you context about the current branch                         │
+│                                                                             │
+│ FLOW:                                                                       │
+│ Change branch → Analyze branch type → Show relevant actions → Guide        │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ git checkout feature/new-ui → "You're on a feature branch. Need help?"     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+## HOOK #4: DEPLOYMENT PIPELINE
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: Manual only (for safety)                                          │
+│ PURPOSE: Deploy to production with all safety checks                       │
+│                                                                             │
+│ FLOW:                                                                       │
+│ Click button → Run all tests → Check security → Deploy → Verify            │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ Click "Deploy to Production" → Complete validation process                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+## HOOK #5: FEATURE LIFECYCLE MANAGER
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: Manual (Click "Create New Feature")                               │
+│ PURPOSE: Create complete feature with tasks and branch                     │
+│                                                                             │
+│ FLOW:                                                                       │
+│ Click button → Describe feature → Auto-create tasks → Create branch        │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ "Create user profile feature" → Gets divided into 10 specific tasks        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+## HOOK #6: FEATURE COMPLETION DETECTOR
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: When you edit task files (tasks.md, README.md)                    │
+│ PURPOSE: Detect when features are complete and ready for merge             │
+│                                                                             │
+│ FLOW:                                                                       │
+│ Edit tasks → Check completion → Run tests → Create PR → Clean up           │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ Mark last task as done → "Feature complete! Creating PR..."                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+## HOOK #7: GIT COMMIT ORGANIZER
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TRIGGER: Before every commit (pre-commit)                                  │
+│ PURPOSE: Suggest good commit messages and organize changes                 │
+│                                                                             │
+│ FLOW:                                                                       │
+│ git commit → Analyze changes → Suggest message → Validate → Commit         │
+│                                                                             │
+│ EXAMPLE:                                                                    │
+│ Commit changes → "Suggested: feat(ui): add user profile component"         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+                              COMPLETE WORKFLOW
+================================================================================
+
+## VISUAL FLOW DIAGRAM:
+
+1. CREATE FEATURE
+   ↓
+2. [Feature Lifecycle Manager] → Creates tasks + branch
+   ↓
+3. DEVELOPMENT WORK
+   ↓
+4. [Pre-commit Quality Check] → Validates each save
+   ↓
+5. [Git Commit Organizer] → Organizes each commit
+   ↓
+6. [Feature Completion Detector] → Detects when done
+   ↓
+7. [Pull Request Helper] → Creates PR automatically
+   ↓
+8. [Branch Management] → Helps with merge and cleanup
+   ↓
+9. [Deployment Pipeline] → Deploys to production
+
+## EXAMPLE: COMPLETE FEATURE CYCLE
+
+DAY 1:
+- Click "Create New Feature" → Feature Lifecycle Manager runs
+- Describe "User Authentication" → Gets divided into 8 tasks
+- Branch "feature/user-auth" created automatically
+
+DAY 2-5:
+- Work on tasks → Pre-commit Quality Check runs on each save
+- Make commits → Git Commit Organizer suggests good messages
+- Push changes → Pull Request Helper offers to create PR
+
+DAY 6:
+- Mark last task complete → Feature Completion Detector runs
+- All tests pass → PR created automatically
+- Merge to dev → Branch cleaned up automatically
+
+================================================================================
+                              HOOK ACTIVATION
+================================================================================
+
+## WHEN DO HOOKS RUN?
+
+### AUTOMATIC HOOKS (Run by themselves):
+- Pre-commit Quality Check: Every .ts/.js file save
+- Pull Request Helper: Every push to feature branches
+- Branch Management: Every branch change
+- Feature Completion Detector: Every task file edit
+- Git Commit Organizer: Every commit attempt
+
+### MANUAL HOOKS (You click to run):
+- Feature Lifecycle Manager: When you want new feature
+- Deployment Pipeline: When ready to deploy
+
+## HOW TO USE HOOKS:
+
+### Method 1: Automatic
+- Just work normally
+- Hooks run when conditions are met
+- Follow the suggestions they give
+
+### Method 2: Manual
+- Look for hook buttons in Kiro IDE
+- Click when you need help
+- Follow the guided process
+
+### Method 3: Command Palette
+- Press Cmd+Shift+P (Mac) or Ctrl+Shift+P (Windows)
+- Type "hook" or the hook name
+- Select and run
+
+================================================================================
+                              TROUBLESHOOTING
+================================================================================
+
+## COMMON QUESTIONS:
+
+Q: Hook didn't run when I saved a file?
+A: Check if file extension matches the pattern (.ts, .tsx, .js, .jsx)
+
+Q: How do I see which hooks are active?
+A: Check the "Agent Hooks" panel in Kiro IDE
+
+Q: Can I disable a hook temporarily?
+A: Yes, edit the .kiro.hook file and set "enabled": false
+
+Q: Hook is running too often?
+A: Adjust the trigger patterns in the hook configuration
+
+Q: Want to create custom hook?
+A: Copy existing hook, modify trigger and prompt, save as .kiro.hook
+
+================================================================================
+                              BEST PRACTICES
+================================================================================
+
+## DO:
+✅ Let hooks guide you through processes
+✅ Read hook suggestions carefully
+✅ Use manual hooks for important operations
+✅ Keep hook files in version control
+
+## DON'T:
+❌ Ignore hook warnings or errors
+❌ Disable safety hooks (like pre-commit checks)
+❌ Run deployment hooks without testing
+❌ Create too many similar hooks
+
+## TIPS:
+💡 Hooks save time by automating repetitive tasks
+💡 They help maintain code quality standards
+💡 Use them to learn best practices
+💡 Customize them for your team's workflow
+
+================================================================================
+                                 END OF GUIDE
+================================================================================

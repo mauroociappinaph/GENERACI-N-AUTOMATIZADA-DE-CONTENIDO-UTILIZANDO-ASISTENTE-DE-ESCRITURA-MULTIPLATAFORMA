@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Deployment Pipeline",
+  "description": "Pipeline completo de deployment con validaciones de seguridad antes de producción",
+  "version": "1.0",
+  "when": {
+    "type": "manual",
+    "buttonText": "🚀 Deploy to Production"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Ejecuta el pipeline completo de deployment a producción con todas las validaciones de seguridad.\n\n## ⚠️ CRÍTICO: Validaciones Pre-Deployment\n\n### 1. **Verificaciones de Rama y Estado**\n```bash\n# Verificar rama actual\nCURRENT_BRANCH=$(git branch --show-current)\nif [ \"$CURRENT_BRANCH\" != \"main\" ]; then\n    echo \"❌ ERROR: Deployment solo desde rama main\"\n    exit 1\nfi\n\n# Verificar que no hay cambios sin commit\nif [ -n \"$(git status --porcelain)\" ]; then\n    echo \"❌ ERROR: Hay cambios sin commit\"\n    exit 1\nfi\n```\n\n### 2. **Tests Completos y Build**\n```bash\n# Backend - Tests y Build\ncd Req/backend\nnpm ci\nnpm run lint\nnpm run test -- --coverage\nnpm run build\n\n# Frontend - Tests y Build\ncd ../frontend\nnpm ci\nnpm run lint\nnpm run test\nnpm run build\n```\n\n### 3. **Validaciones de Seguridad**\n- Verificar que no hay secrets hardcodeados\n- Validar configuración de variables de entorno\n- Revisar dependencias con vulnerabilidades\n- Verificar configuración de CORS y headers de seguridad\n\n### 4. **Database Safety Check**\n```bash\n# Verificar migraciones\ncd Req/backend\nnpm run db:generate\n# NO ejecutar db:migrate automáticamente en producción\necho \"⚠️ MANUAL: Revisar migraciones antes de aplicar\"\n```\n\n### 5. **Pre-deployment Checklist**\n- [ ] ✅ Todos los tests pasan\n- [ ] ✅ Build exitoso sin warnings\n- [ ] ✅ No hay vulnerabilidades críticas\n- [ ] ✅ Variables de entorno configuradas\n- [ ] ✅ Database migrations revisadas\n- [ ] ✅ Rollback plan preparado\n- [ ] ✅ Monitoring configurado\n\n### 6. **Deployment Steps**\n```bash\n# 1. Backup de base de datos\necho \"📦 Creando backup de base de datos...\"\n\n# 2. Deploy de backend\necho \"🔧 Deploying backend...\"\n\n# 3. Deploy de frontend\necho \"🎨 Deploying frontend...\"\n\n# 4. Health checks\necho \"🔍 Running health checks...\"\n```\n\n### 7. **Post-deployment Verification**\n- Health check endpoints\n- Verificar funcionalidades críticas\n- Monitorear logs por errores\n- Verificar métricas de performance\n\n### 8. **Rollback Strategy**\n```bash\n# En caso de problemas críticos\necho \"⚠️ ROLLBACK DISPONIBLE:\"\necho \"git revert HEAD --no-edit\"\necho \"git push origin main\"\n```\n\n## 🚨 **IMPORTANTE:**\n- **NO deployar si hay tests fallando**\n- **NO deployar si hay vulnerabilidades críticas**\n- **SIEMPRE tener plan de rollback listo**\n- **Monitorear activamente post-deployment**\n\nPor favor ejecuta este pipeline paso a paso y reporta cualquier issue encontrado. **DETENER si alguna validación falla.**"
+  }
+}

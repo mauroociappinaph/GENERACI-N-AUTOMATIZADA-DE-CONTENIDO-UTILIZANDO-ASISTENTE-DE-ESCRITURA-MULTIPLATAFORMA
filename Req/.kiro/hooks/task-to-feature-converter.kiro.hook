@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Task to Feature Converter",
+  "description": "Automatically suggests creating features when you start working on tasks",
+  "version": "1.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/tasks.md",
+      "**/*task*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "🔍 **Analyzing task changes...**\n\nI noticed you're working on tasks. Let me check if any of these tasks should become separate features.\n\n## 📋 **Task Analysis:**\n\n### **Looking for:**\n- Large tasks that could be features\n- Tasks marked as 'in_progress' without a feature branch\n- Complex tasks with multiple sub-tasks\n- Tasks that affect multiple parts of the system\n\n### **Current task status:**\n```bash\n# Check current branch\nCURRENT_BRANCH=$(git branch --show-current)\necho \"📍 Current branch: $CURRENT_BRANCH\"\n\n# If not on a feature branch but working on tasks\nif [[ $CURRENT_BRANCH != feature/* ]] && [[ $CURRENT_BRANCH != \"main\" ]]; then\n    echo \"⚠️ Working on tasks but not on a feature branch\"\nfi\n```\n\n## 🎯 **Suggestions:**\n\n### **If task is complex enough for a feature:**\n1. **Create feature branch** for this task\n2. **Break down** the task into smaller sub-tasks\n3. **Set up tracking** for the feature\n4. **Create development plan**\n\n### **If task is simple:**\n1. **Continue on current branch** (dev or existing feature)\n2. **Make focused commits** for this task\n3. **Update task status** when complete\n\n## 🚀 **Auto-Feature Creation Criteria:**\n\n**Create feature if task:**\n- ✅ Takes more than 4 hours estimated\n- ✅ Affects multiple files/components\n- ✅ Requires new API endpoints\n- ✅ Needs database changes\n- ✅ Has multiple sub-tasks\n- ✅ Is marked as high priority\n\n**Keep as simple task if:**\n- ✅ Small bug fix\n- ✅ Documentation update\n- ✅ Configuration change\n- ✅ Single file modification\n\n## 🔄 **Automatic Process:**\n\n### **For qualifying tasks:**\n```bash\n# Extract task information\nTASK_NAME=\"[extracted from task description]\"\nTASK_TYPE=\"[frontend/backend/fullstack]\"\nTASK_PRIORITY=\"[high/medium/low]\"\n\n# Create feature automatically\necho \"🚀 Creating feature for task: $TASK_NAME\"\ngit checkout dev\ngit pull origin dev\ngit checkout -b feature/$(echo $TASK_NAME | tr ' ' '-' | tr '[:upper:]' '[:lower:]')\n\necho \"✅ Feature branch created for task\"\n```\n\n## 📊 **Current Analysis:**\n\nBased on the task file you just edited, I will:\n\n1. **Identify the specific task** you're working on\n2. **Evaluate its complexity** and scope\n3. **Suggest feature creation** if appropriate\n4. **Offer to set up** the feature automatically\n5. **Provide development guidance** for the task\n\n**Would you like me to analyze the current task and suggest if it should become a feature?**"
+  }
+}

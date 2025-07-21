@@ -1,0 +1,32 @@
+import { ExternalApiConfig, ApiRequest, ApiResponse, RetryConfig, CacheConfig, ApiClientOptions, ApiMetrics } from '../types/external-api';
+export declare class ExternalApiService {
+    private axiosInstance;
+    private config;
+    private retryConfig;
+    private cacheConfig;
+    private enableLogging;
+    private metrics;
+    constructor(options: ApiClientOptions);
+    private initializeMetrics;
+    private createAxiosInstance;
+    private setupInterceptors;
+    private sanitizeHeaders;
+    private defaultRetryCondition;
+    private generateCacheKey;
+    private getCachedResponse;
+    private setCachedResponse;
+    private executeWithRetry;
+    private createExternalApiError;
+    private updateMetrics;
+    request<T = any>(request: ApiRequest): Promise<ApiResponse<T>>;
+    get<T = any>(url: string, params?: Record<string, any>, headers?: Record<string, string>): Promise<ApiResponse<T>>;
+    post<T = any>(url: string, data?: any, headers?: Record<string, string>): Promise<ApiResponse<T>>;
+    put<T = any>(url: string, data?: any, headers?: Record<string, string>): Promise<ApiResponse<T>>;
+    patch<T = any>(url: string, data?: any, headers?: Record<string, string>): Promise<ApiResponse<T>>;
+    delete<T = any>(url: string, headers?: Record<string, string>): Promise<ApiResponse<T>>;
+    getMetrics(): ApiMetrics;
+    resetMetrics(): void;
+    updateConfig(config: Partial<ExternalApiConfig>): void;
+    updateRetryConfig(retryConfig: Partial<RetryConfig>): void;
+    updateCacheConfig(cacheConfig: Partial<CacheConfig>): void;
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Documentation Updater",
+  "description": "Updates documentation when source files change",
+  "trigger": {
+    "type": "file",
+    "patterns": [
+      "backend/src/**/*.ts",
+      "frontend/src/**/*.ts",
+      "frontend/src/**/*.tsx",
+      "backend/prisma/schema.prisma",
+      "backend/package.json",
+      "frontend/package.json",
+      "*.md"
+    ],
+    "excludePatterns": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/logs/**",
+      "**/.git/**"
+    ]
+  },
+  "action": {
+    "type": "agent",
+    "prompt": "A source file has been modified in this TypeScript project. Please review the changes and update the documentation accordingly. Focus on:\n\n1. Update the README.md if the changes affect:\n   - Project setup or installation\n   - API endpoints or functionality\n   - Architecture or technology stack\n   - Usage examples or getting started guide\n\n2. If there's a /docs folder, update relevant documentation there\n\n3. Consider updating:\n   - API documentation for new endpoints\n   - Architecture diagrams if structure changed\n   - Configuration examples if settings changed\n   - Troubleshooting guides if new issues might arise\n\nPlease analyze the modified files and determine what documentation updates are needed, then make the appropriate changes to keep the docs in sync with the codebase.",
+    "context": {
+      "includeChangedFiles": true,
+      "includeProjectStructure": true
+    }
+  },
+  "enabled": true
+}

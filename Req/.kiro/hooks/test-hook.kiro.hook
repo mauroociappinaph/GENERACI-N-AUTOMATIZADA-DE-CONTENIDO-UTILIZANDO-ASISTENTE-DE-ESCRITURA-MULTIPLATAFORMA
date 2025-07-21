@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Test Hook",
+  "description": "A simple test hook that triggers when README.md is edited to verify the hook system is working",
+  "version": "1.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "README.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The README.md file has been modified! This is a test hook to verify that the Agent Hook system is working correctly. Please confirm that you received this trigger and provide a brief summary of what changed in the README file."
+  }
+}

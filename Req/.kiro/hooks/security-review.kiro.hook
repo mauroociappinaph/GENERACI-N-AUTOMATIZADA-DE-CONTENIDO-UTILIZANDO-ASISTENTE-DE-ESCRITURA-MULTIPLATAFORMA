@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Security Review for Auth Files",
+  "description": "Automatically review security implications when authentication or authorization files are saved",
+  "version": "1.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/middleware/auth.middleware.ts",
+      "**/middleware/authorization.middleware.ts",
+      "**/services/jwt.service.ts",
+      "**/services/password.service.ts",
+      "**/controllers/auth.controller.ts",
+      "**/utils/test-auth.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "I've just saved changes to an authentication or authorization file. Please conduct a comprehensive security review of the modified file and provide specific recommendations.\n\nFocus on:\n\n1. **Vulnerability Assessment**:\n   - SQL injection prevention\n   - XSS protection\n   - CSRF protection\n   - Authentication bypass risks\n   - Authorization flaws\n   - Timing attacks\n   - Information disclosure\n\n2. **Best Practices Compliance**:\n   - Secure coding standards\n   - OWASP guidelines adherence\n   - Industry security patterns\n   - Principle of least privilege\n   - Defense in depth\n\n3. **Input Validation**:\n   - Data sanitization\n   - Type checking\n   - Length limits\n   - Format validation\n   - Boundary checks\n\n4. **Error Handling**:\n   - No sensitive information leakage\n   - Generic error messages for security\n   - Proper logging without exposing secrets\n   - Fail-safe defaults\n\n5. **Token Handling** (for JWT/auth tokens):\n   - Secure token generation\n   - Proper expiration times\n   - Token storage security\n   - Refresh token rotation\n   - Token revocation mechanisms\n\n6. **Password Security** (for password services):\n   - Strong hashing algorithms (bcrypt, scrypt, Argon2)\n   - Proper salt usage\n   - Password complexity requirements\n   - Rate limiting for login attempts\n   - Account lockout mechanisms\n\nPlease analyze the current file content and provide:\n- Specific security issues found\n- Concrete code improvements\n- Implementation recommendations\n- Risk assessment (High/Medium/Low)\n- Quick fixes vs long-term improvements\n\nInclude the modified file in your analysis using #File context."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "Translation Monitor",
+  "description": "Monitor changes to files containing user-facing text content (such as .json, .yaml, or other localization files) in the primary language. When changes are detected, automatically identify the new or modified text and generate translations for all configured target languages. Ensure translations maintain proper context and meaning while adhering to locale-specific conventions.",
+  "version": "1.0",
+  "when": {
+    "type": "fileChanged",
+    "patterns": [
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/locales/**/*",
+      "**/i18n/**/*",
+      "**/translations/**/*",
+      "**/lang/**/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A localization file has been modified. Please analyze the changes to identify new or modified text content that requires translation. For each piece of text that needs translation:\n\n1. Identify the primary language and extract the new/modified text\n2. Determine the context and meaning of the text within the application\n3. Generate accurate translations for all configured target languages\n4. Ensure translations follow locale-specific conventions (formatting, cultural appropriateness, etc.)\n5. Maintain consistency with existing translation patterns in the project\n6. Create or update the corresponding translation files for each target language\n\nPlease provide the translations in the appropriate file format and structure, preserving any keys, namespaces, or hierarchical organization present in the original files."
+  }
+}

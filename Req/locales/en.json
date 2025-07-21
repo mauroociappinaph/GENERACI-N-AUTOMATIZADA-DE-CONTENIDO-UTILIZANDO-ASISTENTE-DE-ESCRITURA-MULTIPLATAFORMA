@@ -1,0 +1,14 @@
+{
+  "welcome": "Welcome to our application",
+  "login": "Login",
+  "logout": "Logout",
+  "dashboard": "Dashboard",
+  "settings": "Settings",
+  "profile": "Profile",
+  "notifications": "Notifications",
+  "messages": {
+    "success": "Operation completed successfully",
+    "error": "An error occurred",
+    "loading": "Loading..."
+  }
+}

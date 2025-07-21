@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Pull Request Helper",
+  "description": "Automatiza la creación y gestión de Pull Requests según nuestra estrategia de branching",
+  "version": "1.0",
+  "when": {
+    "type": "onPush",
+    "branches": [
+      "feature/*",
+      "hotfix/*",
+      "test/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Ayúdame a gestionar Pull Requests según nuestra estrategia de branching.\n\n## Estrategia de Branching:\n- **main**: Producción (siempre estable)\n- **dev**: Desarrollo/Staging\n- **feature/**: Features individuales\n- **hotfix/**: Fixes urgentes\n\n## Opciones disponibles:\n\n### 1. **Crear PR de Feature → Dev**\n```bash\n# Verificar rama actual\nCURRENT_BRANCH=$(git branch --show-current)\nif [[ $CURRENT_BRANCH != feature/* ]]; then\n    echo \"❌ Error: Debes estar en una rama feature/\"\n    exit 1\nfi\n\n# Push y crear PR\ngit push origin $CURRENT_BRANCH\n```\n\n**Template de PR Feature:**\n```markdown\n## 📋 Descripción\nImplementación de [FEATURE_NAME]\n\n## 🔄 Cambios realizados\n- [ ] Funcionalidad implementada\n- [ ] Tests agregados\n- [ ] Documentación actualizada\n- [ ] Tipos TypeScript actualizados\n\n## ✅ Checklist Pre-merge\n- [ ] Código revisado\n- [ ] Tests pasan (unitarios + integración)\n- [ ] No hay conflictos con dev\n- [ ] Lint y format OK\n- [ ] Build exitoso\n- [ ] No vulnerabilidades críticas\n\n## 🔗 Relacionado\nTarea del plan de implementación: [TASK_NUMBER]\n```\n\n### 2. **Crear PR de Dev → Main (Release)**\n```bash\n# Verificar que estamos en dev\nCURRENT_BRANCH=$(git branch --show-current)\nif [ \"$CURRENT_BRANCH\" != \"dev\" ]; then\n    echo \"❌ Error: Debes estar en la rama dev\"\n    exit 1\nfi\n```\n\n**Template de PR Release:**\n```markdown\n## 🚀 Release Notes\nDeploy de nuevas funcionalidades a producción.\n\n## 📦 Funcionalidades incluidas\n- [Lista de features completadas]\n- [Correcciones de bugs]\n- [Optimizaciones de performance]\n\n## 🧪 Tests\n- [ ] Tests unitarios: ✅\n- [ ] Tests de integración: ✅\n- [ ] Tests E2E: ✅\n- [ ] Tests de seguridad: ✅\n\n## 🔒 Security Checklist\n- [ ] No secrets hardcodeados\n- [ ] Dependencias sin vulnerabilidades críticas\n- [ ] Headers de seguridad configurados\n- [ ] Validación de inputs implementada\n\n## 🗄️ Database\n- [ ] Migraciones revisadas\n- [ ] Backup plan preparado\n- [ ] Rollback strategy definida\n\n## 📊 Monitoring\n- [ ] Health checks configurados\n- [ ] Logging apropiado\n- [ ] Métricas de performance\n\n## ⚠️ IMPORTANTE\n**Este PR deployará a producción automáticamente al ser mergeado.**\n\n## 🔄 Rollback Plan\nEn caso de issues críticos:\n1. `git revert HEAD --no-edit`\n2. `git push origin main`\n3. Verificar rollback exitoso\n```\n\n### 3. **URLs para crear PRs manualmente:**\n\n**Feature → Dev:**\n`https://github.com/mauroociappinaph/GENERACI-N-AUTOMATIZADA-DE-CONTENIDO-UTILIZANDO-ASISTENTE-DE-ESCRITURA-MULTIPLATAFORMA/compare/dev...[FEATURE_BRANCH]`\n\n**Dev → Main:**\n`https://github.com/mauroociappinaph/GENERACI-N-AUTOMATIZADA-DE-CONTENIDO-UTILIZANDO-ASISTENTE-DE-ESCRITURA-MULTIPLATAFORMA/compare/main...dev`\n\n## 🎯 ¿Qué tipo de PR necesitas crear?\n\n1. **Feature PR** (feature/ → dev)\n2. **Release PR** (dev → main)\n3. **Hotfix PR** (hotfix/ → main + dev)\n4. **Revisar PRs existentes**\n\nPor favor indica qué acción quieres realizar y te ayudo con el proceso completo."
+  }
+}

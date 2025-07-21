@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "ESLint Auto-Fix",
+  "description": "Automatically detect and fix ESLint errors, TypeScript type issues, and code quality problems when TypeScript or JavaScript files are modified. This hook runs ESLint with --fix flag, checks for missing return types, identifies 'any' type usage, and generates comprehensive reports of all fixes applied.",
+  "version": "1.0",
+  "when": {
+    "type": "fileChanged",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A TypeScript or JavaScript file has been modified. Please perform comprehensive code quality fixes:\n\n1. **ESLint Auto-Fix:**\n   - Run ESLint with --fix flag on the modified file\n   - Identify and fix all auto-fixable ESLint rule violations\n   - Report any remaining ESLint errors that require manual intervention\n\n2. **TypeScript Type Checking:**\n   - Analyze functions missing explicit return types and add them\n   - Identify usage of 'any' types and replace with specific types where possible\n   - For complex 'any' types that cannot be automatically fixed, add TODO comments with suggestions\n   - Validate that all type definitions are properly imported and used\n\n3. **Code Quality Validation:**\n   - Run TypeScript compiler check to ensure no type errors\n   - Verify that the file still compiles after fixes\n   - Check for any new errors introduced by the fixes\n\n4. **Reporting:**\n   - Generate a summary report of all fixes applied\n   - List any remaining issues that require manual attention\n   - Provide clear next steps for resolving unfixable issues\n   - Show before/after comparison for significant changes\n\n5. **Validation:**\n   - Ensure the file is syntactically correct after all fixes\n   - Verify that existing functionality is not broken\n   - Run any relevant tests if they exist for the modified file\n\nPlease apply these fixes systematically and provide a detailed report of all changes made. If any fixes cannot be applied safely, explain why and provide manual fix suggestions."
+  }
+}
