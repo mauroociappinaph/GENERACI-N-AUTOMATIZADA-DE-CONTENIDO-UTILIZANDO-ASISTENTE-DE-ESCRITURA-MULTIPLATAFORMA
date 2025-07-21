@@ -8,6 +8,7 @@ const userService = new UserService(prisma);
 
 /**
  * Middleware de autenticación que verifica el JWT token
+ * Updated: 2025-07-21 - Testing security review hook
  */
 export const authenticateToken = async (
   req: Request,

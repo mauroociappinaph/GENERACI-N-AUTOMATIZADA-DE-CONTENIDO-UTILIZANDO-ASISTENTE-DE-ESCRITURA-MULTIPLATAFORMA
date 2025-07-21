@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 
 /**
  * Sistema de logging avanzado con debugging por componente
+ * Updated: 2025-07-21 - Testing hook system
  */
 export class DebugLogger {
   private static instance: DebugLogger;
@@ -249,7 +250,7 @@ export function createComponentLogger(component: string) {
     info: (message: string, meta?: any) => logger.info(component, message, meta),
     warn: (message: string, meta?: any) => logger.warn(component, message, meta),
     error: (message: string, error?: Error, meta?: any) => logger.error(component, message, error, meta),
-    performance: (operation: string, duration: number, meta?: any) => logger.performance(component, operation, duration, meta)
+    performance: (operation: string, duration: number, meta?: unknown) => logger.performance(component, operation, duration, meta)
   };
 }
 

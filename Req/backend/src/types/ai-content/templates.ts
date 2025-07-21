@@ -1,5 +1,6 @@
 /**
  * Tipos para plantillas y generación de contenido
+ * Updated: 2025-07-21 - Testing design compliance hook
  */
 
 import { ContentCategory, Platform, ContentTone, AIProvider, ContentStatus } from './base';
@@ -83,7 +84,7 @@ export interface GeneratedContent {
   createdBy: string;
   createdAt: Date;
   status: ContentStatus;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ContentSuggestion {
